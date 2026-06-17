@@ -7,24 +7,25 @@
           |____/ |____/ |_|  |_|
   -------------------------------------------------------------------------
   University of Campinas, Neuroimaging Laboratory
- 
+  
+
 ***SSM (Single-Subject Morphometry)*** is an open-source framework for individualized assessment of brain structural abnormalities using MRI. The software generates subject-specific maps of white and gray matter alterations based on normative models derived from healthy controls, enabling the detection and quantification of morphometric abnormalities at the voxel level.
 
 **SSM** supports the evaluation of atrophy, hypertrophy, and focal cortical dysplasia (FCD) recquiring only a high-quality T1-weighted MRI scan (FLAIR image optional). Demographic variables such as age and sex can be incorporated to improve model accuracy but are not required.
 
 The framework features a fully integrated graphical user interface (GUI), providing an accessible workflow without the need for programming expertise. SSM supports both single-subject analyses and automated batch processing of large datasets. Brain tissue metrics are extracted using the [CAT12](https://neuro-jena.github.io/cat/) toolbox, while all harmonization and statistical mapping procedures are implemented within the SSM framework.
 
-Key Features 
-
+Key Features</b>
 **Advanced Site Harmonization**: Embedded with SSM_combat to eliminate scanner and sequence biases (e.g., T1w vs. FLAIR) using single-subject projection algebra.
 **Biological Confounder Control**: Automatic regression for Age, Gender, and Total Intracranial Volume (TIV).
 **Fast Non-Parametric Inference**: Cluster-based permutation testing with an intelligent caching system for empirical thresholds.
 **Outlier & Quality Control**: Automated IQR-based outlier detection routines to protect the normative database from structural noise.
 
-Before running SSM, ensure you have the following dependencies installed and configured in your MATLAB environment (Third-Party Prerequisites for **SSM**):
- - Statistical Parametric Mapping ([SPM](https://www.fil.ion.ucl.ac.uk/spm/))
+Before running SSM, ensure you have the following dependencies installed and configured in your MATLAB environment (third-Party prerequisites for **SSM**):
+ - Statistical Parametric Mapping 25 ([SPM](https://www.fil.ion.ucl.ac.uk/spm/))
  - Computational Anatomy Toolbox ([CAT12](https://neuro-jena.github.io/cat/))
  - [ComBat](https://github.com/Jfortin1/ComBatHarmonization/tree/master) Multi-Site Harmonization Tool (Adapted version for SSM **included with SSM code**)
+
 
 <p align="center">
   <img width="400" height="600" alt="SSM graphical user interface (GUI)" src="https://github.com/user-attachments/assets/f626fa54-33e4-44ad-90cf-dff1c7fd2f2c" />
