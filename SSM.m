@@ -885,17 +885,53 @@ end
 
 function runbf(hObject, eventdata)%, handles)
 handles = guidata(hObject);
-fprintf('\n\n##############################################\n');
-fprintf('- Procedures started at: %s\n\n',datetime);
-DatStrT = datestr(now, 'yymmddHHMM');
+    fprintf('\n\n##############################################\n');
+    fprintf('- Procedures started at: %s\n\n',datetime);
+    DatStrT = datestr(now, 'yymmddHHMM');
 
-handles.OutDirQ = [handles.pathsub,filesep,'0_Settings_Quality_and_Harmon_',DatStrT];
-mkdir(handles.OutDirQ);
+    handles.OutDirQ = [handles.pathsub,filesep,'0_Settings_Quality_and_Harmon_',DatStrT];
+    mkdir(handles.OutDirQ);
 
-imgRR = getframe(handles.MainFig);
-imwrite(imgRR.cdata, [handles.OutDirQ,filesep,'00_user-defined_settings.png']);
-pathsub = handles.pathsub;
-filesub = handles.filesub;
+    imgRR = getframe(handles.MainFig);
+    imwrite(imgRR.cdata, [handles.OutDirQ,filesep,'00_user-defined_settings.png']);
+    pathsub = handles.pathsub;
+    filesub = handles.filesub;
+
+    SSdir21 = which('SSM');
+    SSdir2 = [SSdir21(1:end-5) 'DB' filesep];
+
+    fprintf('- Gunziping files: %s\n',datetime);
+    if ~exist([SSdir21,'AAL_SSM_vx15.nii'],'file')
+        gunzip([SSdir21,'AAL_SSM_vx15.nii.gz']);
+    end
+    if ~exist([SSdir21,'SSM_Mean_WpMd_Thres0.15.nii'],'file')
+        gunzip([SSdir21,'SSM_Mean_WpMd_Thres0.15.nii.gz']);
+    end
+    if ~exist([SSdir21,'SSM_Mean_WpMd_Mask.nii'],'file')
+        gunzip([SSdir21,'SSM_Mean_WpMd_Mask.nii.gz']);
+    end
+    if ~exist([SSdir21,'SSM_Mean_WpMd.nii'],'file')
+        gunzip([SSdir21,'SSM_Mean_WpMd.nii.gz']);
+    end
+    if ~exist([SSdir21,'SSM_mean_DB_P3_vx15.nii'],'file')
+        gunzip([SSdir21,'SSM_mean_DB_P3_vx15.nii.gz']);
+    end
+    if ~exist([SSdir21,'SSM_mean_DB_P2_vx15.nii'],'file')
+        gunzip([SSdir21,'SSM_mean_DB_P2_vx15.nii.gz']);
+    end
+    if ~exist([SSdir21,'SSM_mean_DB_P1_vx15.nii'],'file')
+        gunzip([SSdir21,'SSM_mean_DB_P1_vx15.nii.gz']);
+    end
+    if ~exist([SSdir21,'SSM_FinalExclusionAreas_GM.nii'],'file')
+        gunzip([SSdir21,'SSM_FinalExclusionAreas_GM.nii.gz']);
+    end
+    if ~exist([SSdir21,'SSM_FinalExclusionAreas_FCD.nii'],'file')
+        gunzip([SSdir21,'SSM_FinalExclusionAreas_FCD.nii.gz']);
+    end
+    if ~exist([SSdir21,'SSM_DimTmpl.nii'],'file')
+        gunzip([SSdir21,'SSM_DimTmpl.nii.gz']);
+    end
+    fprintf('- Done: %s\n',datetime);
 
     try
         ExpType = handles.ExpType;
@@ -925,8 +961,6 @@ filesub = handles.filesub;
     
     set(handles.status_txt,'String','Running...');
     drawnow
-    SSdir2 = which('SSM');
-    SSdir2 = [SSdir2(1:end-5) 'DB' filesep];
 
     fprintf('- Starting some verifications...\n');
 
