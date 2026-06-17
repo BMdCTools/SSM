@@ -1,4 +1,4 @@
-# SSM
+# <p align="center"> Single-Subject Morphometry Tool </p>
  -------------------------------------------------------------------------
            ____   ____   __  __ 
           / ___| / ___| |  \/  |
@@ -17,7 +17,7 @@ Key Features </b>
 **Advanced Site Harmonization**: Embedded with SSM_combat to eliminate scanner and sequence biases (e.g., T1w vs. FLAIR) using single-subject projection algebra.
 **Biological Confounder Control**: Automatic regression for Age, Gender, and Total Intracranial Volume (TIV).
 **Fast Non-Parametric Inference**: Cluster-based permutation testing with an intelligent caching system for empirical thresholds.
-**Outlier & Quality Control**: Automated IQR-based outlier detection routines to protect the normative database from structural noise.
+**Outlier & Quality Control**: Automated IQR-based outlier detection routines to protect the batch analysis from structural noise during harmonization.
 
 Before running SSM, ensure you have the following dependencies installed and configured in your MATLAB environment (third-Party prerequisites for **SSM**):
  - Statistical Parametric Mapping 25 ([SPM](https://www.fil.ion.ucl.ac.uk/spm/))
