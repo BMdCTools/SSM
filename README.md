@@ -26,7 +26,7 @@ Before running **SSM**, ensure you have the following dependencies installed and
 
  **SSM Installation:**<br>
 One of the goals during the SSM development was to ensure easy installation, broad hardware and operating system compatibility, and straightforward usability.<br>
-To install SSM, download the SSM folder and add it to your MATLAB path. You may also need to download the SSM database or follow the instructions to create your own database using using your own reference images.
+To install SSM, download the SSM folder and add it to your MATLAB path. You may also need to download the SSM database or follow the instructions to create your own database using your own reference images.
 
 <br>
 <p align="right">
