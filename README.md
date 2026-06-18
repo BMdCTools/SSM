@@ -19,10 +19,12 @@ Key Features </b>
 **Fast Non-Parametric Inference**: Cluster-based permutation testing with an intelligent caching system for empirical thresholds.
 **Outlier & Quality Control**: Automated IQR-based outlier detection routines to protect the batch analysis from structural noise during harmonization.
 
-Before running SSM, ensure you have the following dependencies installed and configured in your MATLAB environment (third-Party prerequisites for **SSM**):
- - Statistical Parametric Mapping 25 ([SPM](https://www.fil.ion.ucl.ac.uk/spm/))
- - Computational Anatomy Toolbox ([CAT12](https://neuro-jena.github.io/cat/))
- - [ComBat](https://github.com/Jfortin1/ComBatHarmonization/tree/master) Multi-Site Harmonization Tool (Adapted version for SSM **included with SSM code**)
+Before running **SSM**, ensure you have the following dependencies installed and configured in your MATLAB environment (third-party prerequisites for **SSM**):
+ - **Matlab (The MAthWorks Inc.)**: tested with versions from the 2019b to the 2026a
+      - **Matlab Parallel Computing Toolbox (optional)**
+ - **Statistical Parametric Mapping 25** ([SPM](https://www.fil.ion.ucl.ac.uk/spm/))
+ - **Computational Anatomy Toolbox** ([CAT12](https://neuro-jena.github.io/cat/))
+ - [**ComBat**](https://github.com/Jfortin1/ComBatHarmonization/tree/master) Multi-Site Harmonization Tool (Adapted version for SSM **included with SSM code**)
 
 <p>SSM was developed by Brunno M Campos, Ph.D. (brunno at unicamp dot br)</p>
 <b>
