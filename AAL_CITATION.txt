@@ -1,7 +1,6 @@
 CITATION
 
-If you use this repository, the processed shape data, or the Statistical Shape 
-Models (SSM) generated using this pipeline, please cite the following original 
+If you use this repository, or the processed data generated using this pipeline, please cite the following original 
 reference for the Automated Anatomical Labeling (AAL) template:
 
 -------------------------------------------------------------------------------
