@@ -1,0 +1,40 @@
+CITATION
+
+If you use this repository, the processed shape data, or the Statistical Shape 
+Models (SSM) generated using this pipeline, please cite the following original 
+reference for the Automated Anatomical Labeling (AAL) template:
+
+-------------------------------------------------------------------------------
+APA Format:
+-------------------------------------------------------------------------------
+Tzourio-Mazoyer, N., Landeau, B., Papathanassiou, D., Crivello, F., Etard, O., 
+Delcroix, N., Mazoyer, B., & Joliot, M. (2002). Automated anatomical labeling 
+of activations in SPM using a macroscopic anatomical parcellation of the MNI 
+MRI single-subject brain. NeuroImage, 15(1), 273-289.
+
+DOI: https://doi.org/10.1006/nimg.2001.0978
+
+-------------------------------------------------------------------------------
+BibTeX Format:
+-------------------------------------------------------------------------------
+@article{tzourio2002automated,
+  title={Automated anatomical labeling of activations in SPM using a macroscopic anatomical parcellation of the MNI MRI single-subject brain},
+  author={Tzourio-Mazoyer, N. and Landeau, B. and Papathanassiou, D. and Crivello, F. and Etard, O. and Delcroix, N. and Mazoyer, B. and Joliot, M.},
+  journal={NeuroImage},
+  volume={15},
+  number={1},
+  pages={273--289},
+  year={2002},
+  publisher={Elsevier},
+  doi={10.1006/nimg.2001.0978}
+}
+
+-------------------------------------------------------------------------------
+Project Context & Template Details:
+-------------------------------------------------------------------------------
+- Template: Automated Anatomical Labeling (AAL) - Original Version (v1)
+- Reference Space: MNI (Montreal Neurological Institute) single-subject brain
+- Structure: 90 cerebral regions (cortical and subcortical) and 26 cerebellar regions
+- Application: This atlas serves as the primary anatomical reference space for 
+  surface mesh extraction, co-registration alignment, and regional labeling 
+  of statistical shape variations.
