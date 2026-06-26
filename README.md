@@ -36,8 +36,8 @@ The first step is to install SSM, SPM25 and CAT12 in the MATLAB path.<br>
 2 - Download [CAT12](https://neuro-jena.github.io/cat/)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Unzip both downloads and add the uncompressed CAT12 folder to the SPM toolbox folder (spm > toolbox > cat12).<br>
 <br>
-3 - Download [SSM Database files](https://your-link-here) (optional, only if you intend to use the provided SSM normative database instead of creating your own, with your own conrol images).
-&nbsp;&nbsp;&nbsp;&nbsp;Unzip both downloads and add the uncompressed CAT12 folder to the SPM toolbox folder (spm > toolbox > cat12).<br>
+3 - Download [SSM Database files](https://your-link-here) (optional, only if you intend to use the provided SSM normative database instead of creating your own, with your own control images).
+&nbsp;&nbsp;&nbsp;&nbsp;Unzip the DB folder and add it to the SSM-main folder<br>
 <br>
 4 - Add SPM (with CAT12) and SSM to the MATLAB path. For example (replace "/home/user/spm25" with your actual folder path):<br>
 &nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
