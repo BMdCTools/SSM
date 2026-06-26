@@ -24,11 +24,10 @@ Before running **SSM**, ensure you have the following dependencies installed and
  - **Computational Anatomy Toolbox** ([CAT12](https://neuro-jena.github.io/cat/))<br>
  - [**ComBat**](https://github.com/Jfortin1/ComBatHarmonization/tree/master) Multi-Site Harmonization Tool (Adapted version for SSM **included with SSM code**)<br>
 
- **SSM Installation:**<br>
+**SSM Installation:**<br>
 One of the goals during the SSM development was to ensure easy installation, broad hardware and operating system compatibility, and straightforward usability.<br>
 To install SSM, download the SSM folder and add it to your MATLAB path. You may also need to download the SSM database or follow the instructions to create your own database using your own reference images.<br>
 
-<br>
 **Getting Started:**<br>
 The first step is to install SSM, SPM25 and CAT12 in the MATLAB path.<br>
 1 - Download [SPM](https://www.fil.ion.ucl.ac.uk/spm/);<br>
@@ -36,7 +35,7 @@ The first step is to install SSM, SPM25 and CAT12 in the MATLAB path.<br>
 2 - Download [CAT12](https://neuro-jena.github.io/cat/)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Unzip both downloads and add the uncompressed CAT12 folder to the SPM toolbox folder (spm > toolbox > cat12).<br>
 <br>
-3 - Download [SSM Database files](https://your-link-here) (optional, only if you intend to use the provided SSM normative database instead of creating your own, with your own control images).
+3 - Download [SSM Database files](https://your-link-here) (optional, only if you intend to use the provided SSM normative database instead of creating your own, with your own control images).<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Unzip the DB folder and add it to the SSM-main folder<br>
 <br>
 4 - Add SPM (with CAT12) and SSM to the MATLAB path. For example (replace "/home/user/spm25" with your actual folder path):<br>
