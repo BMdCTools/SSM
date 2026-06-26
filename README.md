@@ -26,14 +26,31 @@ Before running **SSM**, ensure you have the following dependencies installed and
 
  **SSM Installation:**<br>
 One of the goals during the SSM development was to ensure easy installation, broad hardware and operating system compatibility, and straightforward usability.<br>
-To install SSM, download the SSM folder and add it to your MATLAB path. You may also need to download the SSM database or follow the instructions to create your own database using your own reference images.
-
-
-**Getting Started:**<br>
-In the MATLAB Command Window, type: ```SSM``` <br>
-Follow the on-screen instructions to navigate the GUI. Additional guidance is available through the tooltip associated with each option.<br>
+To install SSM, download the SSM folder and add it to your MATLAB path. You may also need to download the SSM database or follow the instructions to create your own database using your own reference images.<br>
 
 <br>
+**Getting Started:**<br>
+The first step is to install SSM, SPM25 and CAT12 in the MATLAB path.<br>
+1 - Download [SPM](https://www.fil.ion.ucl.ac.uk/spm/);<br>
+<br>
+2 - Download [CAT12](https://neuro-jena.github.io/cat/)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Unzip both downloads and add the uncompressed CAT12 folder to the SPM toolbox folder (spm > toolbox > cat12).<br>
+<br>
+3 - Download [SSM Database files](https://your-link-here) (optional, only if you intend to use the provided SSM normative database instead of creating your own, with your own conrol images).
+&nbsp;&nbsp;&nbsp;&nbsp;Unzip both downloads and add the uncompressed CAT12 folder to the SPM toolbox folder (spm > toolbox > cat12).<br>
+<br>
+4 - Add SPM (with CAT12) and SSM to the MATLAB path. For example (replace "/home/user/spm25" with your actual folder path):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> addpath(genpath('/home/user/spm25')) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> addpath(genpath('/home/user/SSM')) <br>
+&nbsp;&nbsp;&nbsp;&nbsp; You can also add each folder separately using the "Set Path" button in MATLAB (Environment tab), selecting "Add with Subfolders".<br>
+<br>
+5 - To run SSM:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> SSM<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Follow the on-screen instructions to navigate the GUI. Additional guidance is available through tooltip text for each option.<br>
+<br>
+
 <p align="right">
 SSM was developed by Brunno M Campos, Ph.D. (brunno at unicamp dot br)<br>
 University of Campinas, Neuroimaging Laboratory<br>
