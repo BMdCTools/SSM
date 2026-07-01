@@ -35,7 +35,7 @@ The first step is to install SSM, SPM25 and CAT12 in the MATLAB path.<br>
 2 - Download [CAT12](https://neuro-jena.github.io/cat/)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Unzip both downloads and add the uncompressed CAT12 folder to the SPM toolbox folder (spm > toolbox > cat12).<br>
 <br>
-3a - Download [SSM Database files](https://your-link-here) (optional, only if you intend to use the provided SSM normative database instead of creating your own, with your own control images).<br>
+3a - Download [SSM Database files](https://will-create-soon-76ghe5f6f8edh7) (optional, only if you intend to use the provided SSM normative database instead of creating your own, with your own control images).<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Unzip the DB folder and add it to the SSM-main folder<br>
 <br>
 3b - Or create your own database using the SSM_CreateDatabase function<br>
