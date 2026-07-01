@@ -87,5 +87,20 @@ Example images:<br>
   <em><b>Figure 3:</b> Example resut for Grey Matter Atrophy Study on patient with left mesial temporal lobe epilepsy (hot-scaled map: SSM individual atrophy map).</em>
 </p>
 
+<p align="center">
+  <img width="900" height="630" alt="Example of control quality plots." src="https://github.com/user-attachments/assets/e85cf34d-240a-4d20-bbac-a7f6305cbcac" />
+  <br>
+  <em><b>Figure 4:</b> Example of control quality plots.: Top-left, images intercorrelation and outlier detection; Top-Right, Bland-Altman plot for pre-harmonization data; Bottom-left, Bland-Altman plot for post-harmonization data; Bottom-Right, pre and post harmonization batches histograms (mean and individual);</em>
+</p>
 
+<p align="center">
+  <img width="800" height="600" alt="Example of automated generated individual slice view plot." src="https://github.com/user-attachments/assets/250013cb-9405-41ae-874f-42c7cc7b5d19" />
+  <br>
+  <em><b>Figure 5:</b> Example of automated generated individual slice view plot;</em>
+</p>
 
+<p align="center">
+  <img width="1344" height="630" alt="Example of automated generated individual result anatomical report." src="https://github.com/user-attachments/assets/5cc40efa-4436-4503-a9bf-9b8a6d856af6" />
+  <br>
+  <em><b>Figure 6:</b> Example of automated generated individual result anatomical report;</em>
+</p>
