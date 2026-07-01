@@ -97,6 +97,8 @@ handles.nParallelPerm = 6;
 % SSM provides a function to assist users in creating their own reference dataset if desired.
 handles.Run_Encode_DB = 1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ATTENTON: AFTER CHANGING ANY OF THESE OPTIONS, YOU SHOULD START THE SSM AGAIN
+% ATTENTON: AFTER CHANGING ANY OF THESE OPTIONS, YOU SHOULD START THE SSM AGAIN
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1799,7 +1801,6 @@ handles = guidata(hObject);
 
                 strux = nifti(F2Run2{k,1});
                 wmmat(k,:) = reshape(strux.dat(:,:,:),[1,prod(strux.dat.dim(1:3))]);
-
             end
             fprintf('\n');
             if size(filesub,2) > 3
@@ -1886,12 +1887,13 @@ handles = guidata(hObject);
             end
             fprintf('- Reading Images: Case 0001 (000%%)');
             for k = 1:size(filesub,2)
-                fprintf('\b\b\b\b');
-                fprintf('%.3d%%',round(100*k/size(filesub,2)));
+                fprintf('\b\b\b\b\b\b\b\b\b\b\b');
+                fprintf('%.4d (%.3d%%)',k,round(100*k/size(filesub,2)));
 
                 strux = nifti(F2Run2{k,1});
                 wmmat(k,:) = reshape(strux.dat(:,:,:),[1,prod(strux.dat.dim(1:3))]);
             end
+            fprintf('\n');
             if size(filesub,2) > 3
                 fprintf('\n');
                 Co2D = corrcoef(wmmat');
@@ -1943,13 +1945,14 @@ handles = guidata(hObject);
 
             fprintf('- Reading Images: Case 0001 (000%%)');
             for k = 1:size(filesub,2)
-                fprintf('\b\b\b\b');
-                fprintf('%.3d%%',round(100*k/size(filesub,2)));
+                fprintf('\b\b\b\b\b\b\b\b\b\b\b');
+                fprintf('%.4d (%.3d%%)',k,round(100*k/size(filesub,2)));
 
                 strux = nifti(F2Run1{k,1});
                 gmmat(k,:) = reshape(strux.dat(:,:,:),[1,prod(strux.dat.dim(1:3))]);
 
             end
+            fprintf('\n');
             if size(filesub,2) > 3
                 fprintf('\n');
                 Co2D = corrcoef(gmmat');
@@ -2063,6 +2066,23 @@ handles = guidata(hObject);
         fprintf('\n');
     end
 
+    try
+        delete(gcp('nocreate'))
+    end
+    if license('test','Distrib_Computing_Toolbox')
+        if get(handles.ParallelCB,'Value')
+            try
+                parpool(handles.nParallelPerm);
+            end
+        else
+            try
+                parpool(1);
+            end
+        end
+    else
+       fprintf('- No Parallel Computing Toolbox available\n') 
+    end
+
     if get(handles.FixRan,'Value')
         % In the case the DATABASE is fixed for all, the statistical condition
         % were already verified, so we already know if a new permutation will
@@ -2097,23 +2117,6 @@ handles = guidata(hObject);
         % in the case of Relative Range DATABASE, the statistical conditions
         % are subject specific and could not be verified yet.
         PrevThresh = 0;
-    end
-    
-    try
-        delete(gcp('nocreate'))
-    end
-    if license('test','Distrib_Computing_Toolbox')
-        if get(handles.ParallelCB,'Value')
-            try
-                parpool(handles.nParallelPerm);
-            end
-        else
-            try
-                parpool(1);
-            end
-        end
-    else
-       fprintf('- No Parallel Computing Toolbox available\n') 
     end
     
     fprintf('- Starting individual final procedures\n')
@@ -2730,21 +2733,21 @@ handles = guidata(hObject);
                               end
                         end
                     else
-                    % for the case neither age or sex were included as covariates
-                          if PrevThresh
-                              [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_DB_GWM_Vx15(tmpt,fkeep,get(handles.covAge,'Value'),...
-                                                                            get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
-                                                                            SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
-                          else
-                              [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_DB_GWM_Vx15(tmpt,fkeep,get(handles.covAge,'Value'),...
-                                                                            get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
-                                                                            SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
+                    	% for the case neither age or sex were included as covariates
+                        if PrevThresh
+                          [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_DB_GWM_Vx15(tmpt,fkeep,get(handles.covAge,'Value'),...
+                                                                        get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
+                                                                        SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
+                        else
+                          [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_DB_GWM_Vx15(tmpt,fkeep,get(handles.covAge,'Value'),...
+                                                                        get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
+                                                                        SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                              fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
-                              fprintf(fidThres,'%.1f\n',FWER_thr(1));
-                              fprintf(fidThres,'%.1f',FWER_thr(2));
-                              fclose(fidThres);
-                          end
+                          fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                          fprintf(fidThres,'%.1f\n',FWER_thr(1));
+                          fprintf(fidThres,'%.1f',FWER_thr(2));
+                          fclose(fidThres);
+                        end
                     end
                 end
             end

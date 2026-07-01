@@ -31,7 +31,7 @@ function [OutPut4D] = SSM_AnatDescrip_Vx15(fileR,OutDir,OutName,type,TempDim)
 %  Read the manual for instructions 
 %
 % Anatomical Description Tool
-% [OutPut4D] = uf2c_AnatDescrip(fileR,OutDir,OutName,type,TempDim)
+% [OutPut4D] = SSM_AnatDescrip(fileR,OutDir,OutName,type,TempDim)
 % Inputs:
 % fileR: Cell of strings with ALL images or masks to perform the anatomical
 %        e.g.: {'Image1.nii';'Image2.nii';'Image3.nii'}
@@ -105,7 +105,7 @@ end
     LabelImgMAT(LabelImgMAT(:,:,:)==0) = 666;
     fideGx = fopen([OutDir,filesep,OutName],'w+'); % CHARGE OUTPUT LOG FILE
 
-    fprintf(fideGx,'UF2C: ROIs Anatomical Labeling and Quantifications\r\n\r\n');
+    fprintf(fideGx,'SSM: ROIs Anatomical Labeling and Quantifications\r\n\r\n');
     
     fprintf('-- Performing Anatomical labeling\r\n');
     fprintf('\t * The term "image" will always refer to the input image(s) provided by the user\n');
