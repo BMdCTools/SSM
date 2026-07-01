@@ -52,6 +52,9 @@ The first step is to install SSM, SPM25 and CAT12 in the MATLAB path.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> SSM_CreateDatabase<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Follow the on-screen instructions to navigate the GUI.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Add the "DB" folder created to the SSM main folder<br>
+&nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> rehash<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"rehash" will update the Matlab Path System<br>
 <br>
 5b - To run SSM:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
