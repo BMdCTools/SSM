@@ -164,5 +164,5 @@ SC_Cat_Tmp = TtmptReshFF(1:sizeTMP(4),:);
 SC_Cat_Tmp = reshape(SC_Cat_Tmp',sizeTMP);
 
 fprintf('-- Generating resultant harm. plots: GM\n')
-SSM_Decode_HarmPlots(SC_Cat_TmpCat,TtmptReshFF,vetBatch,'GM',OutDir)
+SSM_HarmPlots(SC_Cat_TmpCat,TtmptReshFF,vetBatch,'GM',OutDir)
 end

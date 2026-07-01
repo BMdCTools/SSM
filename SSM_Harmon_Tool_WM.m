@@ -173,7 +173,7 @@ function [wmmatPos,SB_Cat_Tmp] = SSM_Harmon_Tool_WM(wmmat,SB_Cat_Tmp,AgeVet,GenV
     
     if size(wmmatPos,1) > 3
         fprintf('-- Generating resultant harm. plots: WM\n')
-        SSM_Decode_HarmPlots(SB_Cat_TmpCat,TtmptReshFF2,vetBatch,'WM',OutDir)
+        SSM_HarmPlots(SB_Cat_TmpCat,TtmptReshFF2,vetBatch,'WM',OutDir)
     else
         fprintf('-- The loaded sample is to small to generate harm. plots\n')
     end
