@@ -35,8 +35,10 @@ The first step is to install SSM, SPM25 and CAT12 in the MATLAB path.<br>
 2 - Download [CAT12](https://neuro-jena.github.io/cat/)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Unzip both downloads and add the uncompressed CAT12 folder to the SPM toolbox folder (spm > toolbox > cat12).<br>
 <br>
-3 - Download [SSM Database files](https://your-link-here) (optional, only if you intend to use the provided SSM normative database instead of creating your own, with your own control images).<br>
+3a - Download [SSM Database files](https://your-link-here) (optional, only if you intend to use the provided SSM normative database instead of creating your own, with your own control images).<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Unzip the DB folder and add it to the SSM-main folder<br>
+<br>
+3b - Or create your own database using the SSM_CreateDatabase function<br>
 <br>
 4 - Add SPM (with CAT12) and SSM to the MATLAB path. For example (replace "/home/user/spm25" with your actual folder path):<br>
 &nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
@@ -44,7 +46,14 @@ The first step is to install SSM, SPM25 and CAT12 in the MATLAB path.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> addpath(genpath('/home/user/SSM')) <br>
 &nbsp;&nbsp;&nbsp;&nbsp; You can also add each folder separately using the "Set Path" button in MATLAB (Environment tab), selecting "Add with Subfolders".<br>
 <br>
-5 - To run SSM:<br>
+
+5a - If you opted to create your onw database run:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> SSM_CreateDatabase<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Follow the on-screen instructions to navigate the GUI.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Add the "DB" folder created to the SSM main folder<br>
+<br>
+5b - To run SSM:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> SSM<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Follow the on-screen instructions to navigate the GUI. Additional guidance is available through tooltip text for each option.<br>
