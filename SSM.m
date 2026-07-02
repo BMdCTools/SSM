@@ -2916,11 +2916,11 @@ handles = guidata(hObject);
             fprintf('-  Done\n');
 
             fprintf('- Starting procedures for anatomical description\n');
-            SSM_AnatDescrip_Vx15({AtrophyThresh},...
+            [~,AnatT] = SSM_AnatDescrip_Vx15_2({AtrophyThresh},...
                                     GMdir,[nx1,'.txt'],'map','AAL3');
 
             fprintf('- Done\n');
-            SSM_AnatDescrip_Vx15({HypertThresh},...
+            [~,AnatT2] = SSM_AnatDescrip_Vx15_2({HypertThresh},...
                                     GMdir,[nx2,'.txt'],'map','AAL3');
             fprintf('- Done\n');
 
@@ -3024,6 +3024,8 @@ handles = guidata(hObject);
                 delete([pathF,filesub{k}]);
             end
             
+            SSM_ResultReport(k,GMdir,handles,AnatT,AnatT2)
+
             clear tmpt
         end
         %%
@@ -3386,11 +3388,11 @@ handles = guidata(hObject);
             fprintf('-  Done\n');
 
             fprintf('- Starting procedures for anatomical description\n');
-            SSM_AnatDescrip_Vx15({AtrophyThresh},...
+            [~,AnatT] = SSM_AnatDescrip_Vx15_2({AtrophyThresh},...
                                     WMdir,[nx1,'.txt'],'map','AAL3');
 
             fprintf('- Done\n');
-            SSM_AnatDescrip_Vx15({HypertThresh},...
+            [~,AnatT2] = SSM_AnatDescrip_Vx15_2({HypertThresh},...
                                     WMdir,[nx2,'.txt'],'map','AAL3');
             fprintf('- Done\n');
 
@@ -3493,8 +3495,11 @@ handles = guidata(hObject);
             if exist([pathF,filesub{k}],'file')
                 delete([pathF,filesub{k}]);
             end
+            
+            SSM_ResultReport(k,WMdir,handles,AnatT,AnatT2)
 
             clear tmpt tpt4D_WM
+            
         end
 
         %% if Focal cortical dysplasia
@@ -3777,7 +3782,7 @@ handles = guidata(hObject);
             imgOvl = [FCDdir filesub{k}(1:end-4),'_FCD_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii'];
 
             fprintf('- Performing anatomical description\n');
-            SSM_AnatDescrip_Vx15({imgOvl},FCDdir,[filesub{k}(1:end-4),...
+            [~,AnatT] = SSM_AnatDescrip_Vx15_2({imgOvl},FCDdir,[filesub{k}(1:end-4),...
                 '_AAL_FCD_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',...
                 num2str(extThre),'vx_s',FWHMv,'.txt'],'map','AAL3');
 
@@ -3892,8 +3897,11 @@ handles = guidata(hObject);
             if exist([pathF,filesub{k}],'file')
                 delete([pathF,filesub{k}]);
             end
+            
+            SSM_ResultReport(k,FCDdir,handles,AnatT,[])
         end
-
+        
+        
         fprintf('- Done!');
         fprintf('\n');
     end
