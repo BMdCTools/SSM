@@ -333,55 +333,28 @@ fprintf(fid,'</html>\n');
 
 fclose(fid);
 
-%% ------------------------------------------------------------------------
-% Convert HTML -> PDF
-% -------------------------------------------------------------------------
-
 html = fullfile([Outdir,'FinalReport.html']);
 pdf  = fullfile([Outdir,'FinalReport.pdf']);
 
 browser = SSM_findBrowser();
+
 if isempty(browser)
     warning(['No Chromium-based browser was found.\n' ...
              'The HTML report was generated, but the PDF was not created.']);
 else
-    cmd = sprintf(['"%s" --headless --disable-gpu ' ...
-                    '--no-pdf-header-footer ' ...
-                    '--print-to-pdf="%s" "%s"'], ...
-                    browser,pdf,html);
+    if ispc
+        cmd = sprintf('"%s" --headless --disable-gpu --no-pdf-header-footer --print-to-pdf="%s" "%s"', ...
+            browser, pdf, html);
+    else
+        cmd = sprintf('env -u LD_LIBRARY_PATH "%s" --headless --disable-gpu --no-pdf-header-footer --print-to-pdf="%s" "%s"', ...
+            browser, pdf, html);
+    end
 
-    status = system(cmd);
+    [status, cmdout] = system(cmd);
 
     if status ~= 0
         warning('PDF generation failed. Report is stil accecible via HTML');
     end
 end
-
-
-% if ispc
-% 
-%     chrome = 'C:\Program Files\Google\Chrome\Application\chrome.exe';
-%     edge   = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe';
-% 
-%     if exist(chrome,'file')
-% 
-%         cmd = sprintf('"%s" --headless --disable-gpu --print-to-pdf="%s" "%s"',...
-%             chrome,pdf,html);
-%         system(cmd);
-% 
-%     elseif exist(edge,'file')
-%         cmd = sprintf('"%s" --headless --disable-gpu --print-to-pdf="%s" "%s"',...
-%             edge,pdf,html);
-% 
-%         system(cmd);
-%     else
-%         warning('Chrome/Edge not found.')
-%     end
-% 
-% else
-%     system(sprintf(...
-%         'google-chrome --headless --disable-gpu --print-to-pdf="%s" "%s"',...
-%         pdf,html));
-% end
 
 end
