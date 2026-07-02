@@ -18,7 +18,7 @@ The framework features a fully integrated graphical user interface (GUI), provid
 
 **SSM third-party prerequisites:**<br>
 Before running **SSM**, ensure you have the following dependencies installed and configured in your MATLAB environment.<br>
- - **Matlab (The MAthWorks Inc.)**: tested with versions from the 2019b to the 2026a<br>
+ - **Matlab (The MathWorks Inc.)**: tested with versions from the 2019b to the 2026a<br>
       - **Matlab Parallel Computing Toolbox (optional)**<br>
  - **Statistical Parametric Mapping 25** ([SPM](https://www.fil.ion.ucl.ac.uk/spm/))<br>
  - **Computational Anatomy Toolbox** ([CAT12](https://neuro-jena.github.io/cat/))<br>
