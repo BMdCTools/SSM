@@ -100,7 +100,27 @@ Example images:<br>
 </p>
 
 <p align="center">
-  <img width="1344" height="630" alt="Example of automated generated individual result anatomical report." src="https://github.com/user-attachments/assets/5cc40efa-4436-4503-a9bf-9b8a6d856af6" />
+  <img width="600" height="700" alt="Example of automated generated individual result report." src="https://github.com/user-attachments/assets/f78e5f8b-35de-4a77-b2a1-55bbac6532dc" />
   <br>
-  <em><b>Figure 6:</b> Example of automated generated individual result anatomical report;</em>
+  <em><b>Figure 6:</b> Example of automated generated individual result anatomical report (Page 1);</em>
 </p>
+
+<p align="center">
+  <img width="600" height="700" alt="Example of automated generated individual result report." src="https://github.com/user-attachments/assets/41010783-2ac4-431a-b0f3-e26c45d74ab6" />
+  <br>
+  <em><b>Figure 6:</b> Example of automated generated individual result anatomical report (Page 2);</em>
+</p>
+
+<p align="center">
+  <img width="600" height="700" alt="Example of automated generated individual result report." src="https://github.com/user-attachments/assets/91ca768a-42e9-43e6-ac2e-12f2d45c1dfb" />
+  <br>
+  <em><b>Figure 6:</b> Example of automated generated individual result anatomical report (Page 3);</em>
+</p>
+
+<p align="center">
+  <img width="600" height="700" alt="Example of automated generated individual result report." src="https://github.com/user-attachments/assets/0cf5ebcd-71a2-4eb7-8af9-662398943d03" />
+  <br>
+  <em><b>Figure 6:</b> Example of automated generated individual result anatomical report (Page 4);</em>
+</p>
+
+
