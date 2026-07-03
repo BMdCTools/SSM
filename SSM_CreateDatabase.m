@@ -409,6 +409,10 @@ guidata(MainFig, handles);
             return
         end
         
+        Descrip = inputdlg('Please, define a description for this database','DB Description');
+        Descrip = Descrip{1};
+        Descrip = [Descrip,'_',datestr(now, 'yyyymmddHHMM')];
+        
         fwhm = get(handles.EdtKernel,'String');
 
         disp('Running...')
@@ -424,15 +428,19 @@ guidata(MainFig, handles);
         
         SSdir2 = which('SSM');
         SSdir2 = SSdir2(1:end-5);
-        ExclMask = nifti([SSdir2,'SSM_Mean_WpMd_Mask.nii']);
+        
+        ExclMask = nifti([SSdir2,'AuxFiles',filesep,'SSM_Mean_WpMd_Mask.nii']);
+        
         MaskMat = ExclMask.dat(:,:,:);
         Gene_Ctr = handles.GenVet;
+        
         Ida_Ctr = handles.AgeVet;
+        
         OutDirF = [handles.Outpath,filesep,'DB'];
         
         mkdir(OutDirF)
-        save([OutDirF,filesep,'Gene_Ctr.mat'],'Gene_Ctr','-v7.3')
-        save([OutDirF,filesep,'Ida_Ctr.mat'],'Ida_Ctr','-v7.3')
+        save([OutDirF,filesep,'Gene_Ctr.mat'],'Gene_Ctr','Descrip','-v7.3')
+        save([OutDirF,filesep,'Ida_Ctr.mat'],'Ida_Ctr','Descrip','-v7.3')
         
         % After Smooth Thresholding:
         % This value will be stored with your new Reference Dataset, and used
@@ -463,7 +471,7 @@ guidata(MainFig, handles);
                 fprintf('- Done\n');
 
                 DB_TIV = GTIV';
-                save([OutDirF,filesep,'TIV_Ctr.mat'],'DB_TIV','-v7.3')
+                save([OutDirF,filesep,'TIV_Ctr.mat'],'DB_TIV','Descrip','-v7.3')
                 
                 fprintf('Running stage 1...\n')
                 TivIdx = 1;
@@ -488,7 +496,7 @@ guidata(MainFig, handles);
                 findSep = strfind(FWHM,'x');
                 SC_Tplate1 = single(SC_Tplate1);
                 fprintf('Saving...\n')
-                save([OutDirF,filesep,'SC_Ctr_DB1_FWHM' fwhm '.mat'],'SC_Tplate1','Thresh','-v7.3')
+                save([OutDirF,filesep,'SC_Ctr_DB1_FWHM' fwhm '.mat'],'SC_Tplate1','Thresh','Descrip','-v7.3')
                 clear SC_Tplate1
                 
                 fprintf('Running stage 2...\n')
@@ -510,7 +518,7 @@ guidata(MainFig, handles);
                 end
                 SC_Tplate2 = single(SC_Tplate2);
                 fprintf('Saving...\n')
-                save([OutDirF,filesep,'SC_Ctr_DB2_FWHM' fwhm '.mat'],'SC_Tplate2','Thresh','-v7.3')
+                save([OutDirF,filesep,'SC_Ctr_DB2_FWHM' fwhm '.mat'],'SC_Tplate2','Thresh','Descrip','-v7.3')
                 
                 clear SC_Tplate2
                 fprintf('Running stage 3...\n')
@@ -532,7 +540,7 @@ guidata(MainFig, handles);
                 end
                 SC_Tplate3 = single(SC_Tplate3);
                 fprintf('Saving...\n')
-                save([OutDirF,filesep,'SC_Ctr_DB3_FWHM' fwhm '.mat'],'SC_Tplate3','-v7.3')
+                save([OutDirF,filesep,'SC_Ctr_DB3_FWHM' fwhm '.mat'],'SC_Tplate3','Descrip','-v7.3')
                 fprintf('Done!\n')
                 clear SC_Tplate3
 
@@ -559,7 +567,7 @@ guidata(MainFig, handles);
                 fprintf('- Done\n');
 
                 DB_TIV = GTIV';
-                save([OutDirF,filesep,'TIV_Ctr.mat'],'DB_TIV','-v7.3')
+                save([OutDirF,filesep,'TIV_Ctr.mat'],'DB_TIV','Descrip','-v7.3')
                 
                 fprintf('Running stage 1...\n')
                 SB_Tplate1 = zeros([FOV,Size1]);
@@ -580,7 +588,7 @@ guidata(MainFig, handles);
                 end
                 SB_Tplate1 = single(SB_Tplate1);
                 fprintf('Saving...\n')
-                save([OutDirF,filesep,'SB_Ctr_DB1_FWHM' fwhm '.mat'],'SB_Tplate1','-v7.3')
+                save([OutDirF,filesep,'SB_Ctr_DB1_FWHM' fwhm '.mat'],'SB_Tplate1','Descrip','-v7.3')
                 
                 fprintf('Running stage 2...\n')
                 SB_Tplate2 = zeros([FOV,Size2]);
@@ -601,7 +609,7 @@ guidata(MainFig, handles);
                 end
                 SB_Tplate2 = single(SB_Tplate2);
                 fprintf('Saving...\n')
-                save([OutDirF,filesep,'SB_Ctr_DB2_FWHM' fwhm '.mat'],'SB_Tplate2','-v7.3')
+                save([OutDirF,filesep,'SB_Ctr_DB2_FWHM' fwhm '.mat'],'SB_Tplate2','Descrip','-v7.3')
                 
                 fprintf('Running stage 3...\n')
                 SB_Tplate3 = zeros([FOV,Size3]);
@@ -621,7 +629,7 @@ guidata(MainFig, handles);
                     SB_Tplate3(:,:,:,i - (Size1 + Size2)) = Mat;
                 end
                 SB_Tplate3 = single(SB_Tplate3);
-                save([OutDirF,filesep,'SB_Ctr_DB3_FWHM' fwhm '.mat'],'SB_Tplate3','-v7.3')
+                save([OutDirF,filesep,'SB_Ctr_DB3_FWHM' fwhm '.mat'],'SB_Tplate3','Descrip','-v7.3')
                 fprintf('Done!\n')
             
                 
@@ -879,7 +887,7 @@ guidata(MainFig, handles);
             fprintf('- Done\n');
             
             DB_TIV = GTIV';
-            save([OutDirF,filesep,'TIV_Ctr.mat'],'DB_TIV','-v7.3')
+            save([OutDirF,filesep,'TIV_Ctr.mat'],'DB_TIV','Descrip','-v7.3')
             
             exSt = nifti([pathF,handles.ControlFilesGM{1}]);
             FOV = exSt.dat.dim;
@@ -902,7 +910,7 @@ guidata(MainFig, handles);
 
 %             findSep = strfind(FWHM,'x');
             SC_Tplate1 = single(SC_Tplate1);
-            save([OutDirF,filesep,'SC_Ctr_DB1_FWHM' fwhm '.mat'],'SC_Tplate1','-v7.3')
+            save([OutDirF,filesep,'SC_Ctr_DB1_FWHM' fwhm '.mat'],'SC_Tplate1','Descrip','-v7.3')
             disp('Running...')
             clear SC_Tplate1
 
@@ -923,7 +931,7 @@ guidata(MainFig, handles);
                 SC_Tplate2(:,:,:,i - Size1) = Mat;
             end
             SC_Tplate2 = single(SC_Tplate2);
-            save([OutDirF,filesep,'SC_Ctr_DB2_FWHM' fwhm '.mat'],'SC_Tplate2','-v7.3')
+            save([OutDirF,filesep,'SC_Ctr_DB2_FWHM' fwhm '.mat'],'SC_Tplate2','Descrip','-v7.3')
             disp('Running...')
             clear SC_Tplate2
 
@@ -944,7 +952,7 @@ guidata(MainFig, handles);
                 SC_Tplate3(:,:,:,i - (Size1 + Size2)) = Mat;
             end
             SC_Tplate3 = single(SC_Tplate3);
-            save(['OutDirF,filesep,SC_Ctr_DB3_FWHM' fwhm '.mat'],'SC_Tplate3','-v7.3')
+            save(['OutDirF,filesep,SC_Ctr_DB3_FWHM' fwhm '.mat'],'SC_Tplate3','Descrip','-v7.3')
             disp('Done!')
             clear SC_Tplate3
 
@@ -968,7 +976,7 @@ guidata(MainFig, handles);
                 SB_Tplate1(:,:,:,i) = Mat;
             end
             SB_Tplate1 = single(SB_Tplate1);
-            save([OutDirF,filesep,'SB_Ctr_DB1_FWHM' fwhm '.mat'],'SB_Tplate1','-v7.3')
+            save([OutDirF,filesep,'SB_Ctr_DB1_FWHM' fwhm '.mat'],'SB_Tplate1','Descrip','-v7.3')
             disp('Running...')
 
                 SB_Tplate2 = zeros([FOV,Size2]);
@@ -988,7 +996,7 @@ guidata(MainFig, handles);
                     SB_Tplate2(:,:,:,i-Size1) = Mat;
                 end
                 SB_Tplate2 = single(SB_Tplate2);
-                save([OutDirF,filesep,'SB_Ctr_DB2_FWHM' fwhm '.mat'],'SB_Tplate2','-v7.3')
+                save([OutDirF,filesep,'SB_Ctr_DB2_FWHM' fwhm '.mat'],'SB_Tplate2','Descrip','-v7.3')
                 disp('Running...')
 
                 SB_Tplate3 = zeros([FOV,Size3]);
@@ -1008,7 +1016,7 @@ guidata(MainFig, handles);
                     SB_Tplate3(:,:,:,i - (Size1 + Size2)) = Mat;
                 end
                 SB_Tplate3 = single(SB_Tplate3);
-                save([OutDirF,filesep,'SB_Ctr_DB3_FWHM' fwhm '.mat'],'SB_Tplate3','-v7.3')
+                save([OutDirF,filesep,'SB_Ctr_DB3_FWHM' fwhm '.mat'],'SB_Tplate3','Descrip','-v7.3')
                 disp('Done!')
         end
         clear all

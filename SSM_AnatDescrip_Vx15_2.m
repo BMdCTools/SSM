@@ -95,8 +95,8 @@ end
     SSdir2 = which('SSM');
     SSdir3 = [SSdir2(1:end-5) filesep];
     try
-        LabelImgS = nifti([SSdir3 'AAL_SSM_vx15.nii']);
-        load([SSdir3 'AAL_Labels_Vx15.mat']); 
+        LabelImgS = nifti([SSdir3 'AuxFiles' filesep 'AAL_SSM_vx15.nii']);
+        load([SSdir3 'AuxFiles' filesep 'AAL_Labels_Vx15.mat']); 
     end
     LabelImgMAT = LabelImgS.dat(:,:,:);
     LabStruc = AAL;

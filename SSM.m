@@ -58,9 +58,45 @@ function SSM
 % University of Campinas, 2026
 
 clc;
+
+SSM_Dir = which('SSM');
+SSM_Dir = SSM_Dir(1:end-5);
+handles.SSM_Dir = SSM_Dir;
+ConfigFile = fullfile(handles.SSM_Dir, 'SSM_config.mat');
+
+if exist(ConfigFile, 'file')
+    fprintf('Loading existing configuration file...\n');
+    load(ConfigFile);
+    handles.RefDBPath   = RefDBPath;
+    handles.DBDescrip   = DBDescrip;
+    handles.nParallel   = nParallel;
+    handles.nParallelPerm = nParallelPerm;
+else
+    SSM_Settings()
+    
+    load(ConfigFile);
+    handles.RefDBPath   = RefDBPath;
+    handles.DBDescrip   = DBDescrip;
+    handles.nParallel   = nParallel;
+    handles.nParallelPerm = nParallelPerm;
+end
+
+if handles.DBDescrip == 'Standard SSM Reference Dataset (ENCODED)'
+    handles.Run_Encode_DB = 1;    
+else
+    handles.Run_Encode_DB = 0;    
+end
+clc;
+
 fprintf('SSM: %s\n',datetime);
 help('SSM');
 
+% cfgfile = fullfile(fileparts(mfilename('fullpath')),...
+%                    'SSM_Settings.mat');
+% if ~exist(cfgfile,'file')
+%     SSM_FirstRun(cfgfile);
+% end
+               
 InsT = ver;
 catE = find(contains({InsT.Name}, 'Computational Anatomy Toolbox', 'IgnoreCase', true));
 catEv = InsT(catE).Version;
@@ -83,19 +119,18 @@ fprintf(' - ComBat Multi-Site Harmonization Tool: Installed (Adapted version for
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Code defined INPUTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Number of parallel jobs for CAT12 processing
-handles.nParallel = 3;
-
-% Number of cores dedicated in the permutation loop
-% If Parallel Computing Toolbox is not available, this option has no effect
-handles.nParallelPerm = 6;
-
-% This boolean indicates whether the SSM standard reference dataset (1)
-% or a user-defined reference dataset (0) is used.
-% The SSM reference dataset is encoded due to ethical approval constraints.
-% SSM provides a function to assist users in creating their own reference dataset if desired.
-handles.Run_Encode_DB = 1;
+% % Number of parallel jobs for CAT12 processing
+% handles.nParallel = 3;
+% 
+% % Number of cores dedicated in the permutation loop
+% % If Parallel Computing Toolbox is not available, this option has no effect
+% handles.nParallelPerm = 6;
+% 
+% % This boolean indicates whether the SSM standard reference dataset (1)
+% % or a user-defined reference dataset (0) is used.
+% % The SSM reference dataset is encoded due to ethical approval constraints.
+% % SSM provides a function to assist users in creating their own reference dataset if desired.
+% handles.Run_Encode_DB = 1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ATTENTON: AFTER CHANGING ANY OF THESE OPTIONS, YOU SHOULD START THE SSM AGAIN
 % ATTENTON: AFTER CHANGING ANY OF THESE OPTIONS, YOU SHOULD START THE SSM AGAIN
@@ -899,39 +934,36 @@ handles = guidata(hObject);
     pathsub = handles.pathsub;
     filesub = handles.filesub;
 
-    SSdir21 = which('SSM');
-    SSdir2 = [SSdir21(1:end-5) 'DB' filesep];
-
     fprintf('- Gunziping files: %s\n',datetime);
-    if ~exist([SSdir21(1:end-5),'AAL_SSM_vx15.nii'],'file')
-        gunzip([SSdir21(1:end-5),'AAL_SSM_vx15.nii.gz']);
+    if ~exist([handles.SSM_Dir,'AuxFiles',filesep,'AAL_SSM_vx15.nii'],'file')
+        gunzip([handles.SSM_Dir,'AuxFiles',filesep,'AAL_SSM_vx15.nii.gz']);
     end
-    if ~exist([SSdir21(1:end-5),'SSM_Mean_WpMd_Thres0.15.nii'],'file')
-        gunzip([SSdir21(1:end-5),'SSM_Mean_WpMd_Thres0.15.nii.gz']);
+    if ~exist([handles.SSM_Dir,'AuxFiles',filesep,'SSM_Mean_WpMd_Thres0.15.nii'],'file')
+        gunzip([handles.SSM_Dir,'AuxFiles',filesep,'SSM_Mean_WpMd_Thres0.15.nii.gz']);
     end
-    if ~exist([SSdir21(1:end-5),'SSM_Mean_WpMd_Mask.nii'],'file')
-        gunzip([SSdir21(1:end-5),'SSM_Mean_WpMd_Mask.nii.gz']);
+    if ~exist([handles.SSM_Dir,'AuxFiles',filesep,'SSM_Mean_WpMd_Mask.nii'],'file')
+        gunzip([handles.SSM_Dir,'AuxFiles',filesep,'SSM_Mean_WpMd_Mask.nii.gz']);
     end
-    if ~exist([SSdir21(1:end-5),'SSM_Mean_WpMd.nii'],'file')
-        gunzip([SSdir21(1:end-5),'SSM_Mean_WpMd.nii.gz']);
+    if ~exist([handles.SSM_Dir,'AuxFiles',filesep,'SSM_Mean_WpMd.nii'],'file')
+        gunzip([handles.SSM_Dir,'AuxFiles',filesep,'SSM_Mean_WpMd.nii.gz']);
     end
-    if ~exist([SSdir21(1:end-5),'SSM_mean_DB_P3_vx15.nii'],'file')
-        gunzip([SSdir21(1:end-5),'SSM_mean_DB_P3_vx15.nii.gz']);
+    if ~exist([handles.SSM_Dir,'AuxFiles',filesep,'SSM_mean_DB_P3_vx15.nii'],'file')
+        gunzip([handles.SSM_Dir,'AuxFiles',filesep,'SSM_mean_DB_P3_vx15.nii.gz']);
     end
-    if ~exist([SSdir21(1:end-5),'SSM_mean_DB_P2_vx15.nii'],'file')
-        gunzip([SSdir21(1:end-5),'SSM_mean_DB_P2_vx15.nii.gz']);
+    if ~exist([handles.SSM_Dir,'AuxFiles',filesep,'SSM_mean_DB_P2_vx15.nii'],'file')
+        gunzip([handles.SSM_Dir,'AuxFiles',filesep,'SSM_mean_DB_P2_vx15.nii.gz']);
     end
-    if ~exist([SSdir21(1:end-5),'SSM_mean_DB_P1_vx15.nii'],'file')
-        gunzip([SSdir21(1:end-5),'SSM_mean_DB_P1_vx15.nii.gz']);
+    if ~exist([handles.SSM_Dir,'AuxFiles',filesep,'SSM_mean_DB_P1_vx15.nii'],'file')
+        gunzip([handles.SSM_Dir,'AuxFiles',filesep,'SSM_mean_DB_P1_vx15.nii.gz']);
     end
-    if ~exist([SSdir21(1:end-5),'SSM_FinalExclusionAreas_GM.nii'],'file')
-        gunzip([SSdir21(1:end-5),'SSM_FinalExclusionAreas_GM.nii.gz']);
+    if ~exist([handles.SSM_Dir,'AuxFiles',filesep,'SSM_FinalExclusionAreas_GM.nii'],'file')
+        gunzip([handles.SSM_Dir,'AuxFiles',filesep,'SSM_FinalExclusionAreas_GM.nii.gz']);
     end
-    if ~exist([SSdir21(1:end-5),'SSM_FinalExclusionAreas_FCD.nii'],'file')
-        gunzip([SSdir21(1:end-5),'SSM_FinalExclusionAreas_FCD.nii.gz']);
+    if ~exist([handles.SSM_Dir,'AuxFiles',filesep,'SSM_FinalExclusionAreas_FCD.nii'],'file')
+        gunzip([handles.SSM_Dir,'AuxFiles',filesep,'SSM_FinalExclusionAreas_FCD.nii.gz']);
     end
-    if ~exist([SSdir21(1:end-5),'SSM_DimTmpl.nii'],'file')
-        gunzip([SSdir21(1:end-5),'SSM_DimTmpl.nii.gz']);
+    if ~exist([handles.SSM_Dir,'AuxFiles',filesep,'SSM_DimTmpl.nii'],'file')
+        gunzip([handles.SSM_Dir,'AuxFiles',filesep,'SSM_DimTmpl.nii.gz']);
     end
     fprintf('- Done: %s\n',datetime);
 
@@ -1015,26 +1047,26 @@ handles = guidata(hObject);
 
         TextF = [TextF,'_',MinAge,'-',MaxAge,'_',SexM,'-',SexF,'_',AgeR,'-',SexR,'_',fwheU,'_',CtrSub,'_',nTests,'_',FWERu,'_',MaxTy];
 
-        if exist([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'file')
-            ThreshPrev = importdata([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt']);
+        if exist([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'file')
+            ThreshPrev = importdata([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt']);
             if isempty(ThreshPrev)
                 ThreshPrev = [];
                 PrevThresh = 0;
-                fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                 fprintf('- A new permutation loop will be recquired\n');
             else
                 PrevThresh = 1;
                 fprintf('- Previousy estimated and stored FWER threshold: %.1f\n',ThreshPrev);
             end
         else
-            fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+            fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
             PrevThresh = 0;
             fprintf('- A new permutation loop will be recquired\n');
         end
 
-        load([SSdir2 'Gene_Ctr.mat']);
-        load([SSdir2 'Ida_Ctr.mat']);
-        load([SSdir2 'TIV_Ctr.mat']);
+        load([handles.RefDBPath 'Gene_Ctr.mat']);
+        load([handles.RefDBPath 'Ida_Ctr.mat']);
+        load([handles.RefDBPath 'TIV_Ctr.mat']);
     %     load([SSdir2 filesep 'SurfPara_Ctr.mat']);
 
         VetGenF = Gene_Ctr;
@@ -1052,12 +1084,12 @@ handles = guidata(hObject);
         % of the threshold, on the other hand, will be done with the subject
         % specific DATABASE
 
-        SSdir2 = which('SSM');
-        SSdir2 = [SSdir2(1:end-5) 'DB' filesep];
+%         SSdir2 = which('SSM');
+%         SSdir2 = [SSdir2(1:end-5) 'DB' filesep];
 
-        load([SSdir2 'Gene_Ctr.mat']);
-        load([SSdir2 'Ida_Ctr.mat']);
-        load([SSdir2 'TIV_Ctr.mat']);
+        load([handles.RefDBPath 'Gene_Ctr.mat']);
+        load([handles.RefDBPath 'Ida_Ctr.mat']);
+        load([handles.RefDBPath 'TIV_Ctr.mat']);
     %     load([SSdir2 filesep 'SurfPara_Ctr.mat']);
 
         SelectVet = ones(size(Gene_Ctr,1),1);
@@ -1084,11 +1116,9 @@ handles = guidata(hObject);
     Verif_Covar_Age = get(handles.covAge,'Value');
     fprintf('.');
 
-
         %%%%%%%%%%%%%%%%%%%%%%%%%%% Conditions to load template variable
         if isequal(get(handles.GMa,'Value'),1)
-            direi = which('SSM');
-            direi = [direi(1:end-5) 'DB' filesep];
+            direi = handles.RefDBPath;
             % Loading GM DATABASE
             load([direi 'SC_Ctr_DB1_FWHM' FWHMv '.mat'])
             fprintf('..');
@@ -1159,8 +1189,7 @@ handles = guidata(hObject);
         end
 
         if isequal(get(handles.WMa,'Value'),1)
-            direi = which('SSM');
-            direi = [direi(1:end-5) 'DB' filesep];
+            direi = handles.RefDBPath;
             % Loading WM DATABASE
             load([direi 'SB_Ctr_DB1_FWHM' FWHMv '.mat'])
             fprintf('..');
@@ -1233,8 +1262,7 @@ handles = guidata(hObject);
         % For Focal Cortical Dysplasia Study
         if isequal(get(handles.FCD,'Value'),1)
 
-            direi = which('SSM');
-            direi = [direi(1:end-5) 'DB' filesep];
+            direi = handles.RefDBPath;
             % Loading GM DATABASE
             load([direi 'SC_Ctr_DB1_FWHM' FWHMv '.mat'])
             fprintf('..');
@@ -1358,7 +1386,7 @@ handles = guidata(hObject);
 
             if any(PixDim ~= [1 1 1])
                 clear matlabbatch
-                matlabbatch{1}.spm.spatial.coreg.estwrite.ref = {[SSdir2(1:end-3),'SSM_DimTmpl.nii']};
+                matlabbatch{1}.spm.spatial.coreg.estwrite.ref = {[handles.SSM_Dir,'AuxFiles',filesep,'SSM_DimTmpl.nii']};
                 matlabbatch{1}.spm.spatial.coreg.estwrite.source = {[pathF filesub{k}]};
                 matlabbatch{1}.spm.spatial.coreg.estwrite.other = {''};
                 matlabbatch{1}.spm.spatial.coreg.estwrite.eoptions.cost_fun = 'nmi';
@@ -1662,9 +1690,7 @@ handles = guidata(hObject);
     end
     fprintf('\n');
     fprintf('- Done\n');
-    SSdir3 = which('SSM');
-    SSdir3 = SSdir3(1:end-5);
-    ExclMask = nifti([SSdir3,'SSM_Mean_WpMd_Mask.nii']);
+    ExclMask = nifti([handles.SSM_Dir,'AuxFiles',filesep,'SSM_Mean_WpMd_Mask.nii']);
     MaskMat = ExclMask.dat(:,:,:);
 
     fprintf('- %s\n',datetime);
@@ -2126,8 +2152,8 @@ handles = guidata(hObject);
         fprintf('- %s\n',filesub{k}(1:end-4));
         fprintf('##########################################\n\n');
 
-        SSdir2 = which('SSM');
-        SSdir2 = [SSdir2(1:end-5) 'DB' filesep];
+%         SSdir2 = which('SSM');
+%         SSdir2 = [SSdir2(1:end-5) 'DB' filesep];
         TextF = tissue;
         clear imgF
 
@@ -2274,10 +2300,10 @@ handles = guidata(hObject);
                     MaxAge = num2str(max(AgesTemp));
                     TextF = [TextF,'_',MinAge,'-',MaxAge,'_',SexM,'-',SexF,'_',AgeR,'-',SexR,'_',fwheU,'_',CtrSub,'_',nTests,'_',FWERu,'_',MaxTy];
 
-                    if exist([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'file')
-                        ThreshPrev = importdata([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt']);
+                    if exist([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'file')
+                        ThreshPrev = importdata([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt']);
                         if isempty(ThreshPrev)
-                            fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                            fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                             ThreshPrev = [];
                             PrevThresh = 0;
                         else
@@ -2285,7 +2311,7 @@ handles = guidata(hObject);
                             fprintf('- Previousy estimated and stored FWER threshold: %.1f\n',ThreshPrev);
                         end
                     else
-                        fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                        fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                         PrevThresh = 0;
                     end
                 else
@@ -2332,10 +2358,10 @@ handles = guidata(hObject);
                     MaxAge = num2str(max(AgesTemp));
                     TextF = [TextF,'_',MinAge,'-',MaxAge,'_',SexM,'-',SexF,'_',AgeR,'-',SexR,'_',fwheU,'_',CtrSub,'_',nTests,'_',FWERu,'_',MaxTy];
 
-                    if exist([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'file')
-                        ThreshPrev = importdata([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt']);
+                    if exist([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'file')
+                        ThreshPrev = importdata([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt']);
                         if isempty(ThreshPrev)
-                            fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                            fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                             ThreshPrev = [];
                             PrevThresh = 0;
                         else
@@ -2343,7 +2369,7 @@ handles = guidata(hObject);
                             fprintf('- Previousy estimated and stored FWER threshold: %.1f\n',ThreshPrev);
                         end
                     else
-                        fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                        fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                         PrevThresh = 0;
                     end
                 end
@@ -2605,7 +2631,7 @@ handles = guidata(hObject);
                                                                         get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
                                                                         SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                          fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                          fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                           fprintf(fidThres,'%.1f\n',FWER_thr(1));
                           fprintf(fidThres,'%.1f',FWER_thr(2));
                           fclose(fidThres);
@@ -2624,7 +2650,7 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                                  fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                                  fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f\n',FWER_thr(1));
                                   fprintf(fidThres,'%.1f',FWER_thr(2));
                                   fclose(fidThres);
@@ -2641,7 +2667,7 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                                  fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                                  fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f\n',FWER_thr(1));
                                   fprintf(fidThres,'%.1f',FWER_thr(2));
                                   fclose(fidThres);
@@ -2658,7 +2684,7 @@ handles = guidata(hObject);
                                                                             get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
                                                                             SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                              fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                              fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                               fprintf(fidThres,'%.1f\n',FWER_thr(1));
                               fprintf(fidThres,'%.1f',FWER_thr(2));
                               fclose(fidThres);
@@ -2690,7 +2716,7 @@ handles = guidata(hObject);
                                                                         get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
                                                                         SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                          fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                          fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                           fprintf(fidThres,'%.1f\n',FWER_thr(1));
                           fprintf(fidThres,'%.1f',FWER_thr(2));
                           fclose(fidThres);
@@ -2709,7 +2735,7 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                                  fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                                  fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f\n',FWER_thr(1));
                                   fprintf(fidThres,'%.1f',FWER_thr(2));
                                   fclose(fidThres);
@@ -2726,7 +2752,7 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                                  fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                                  fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f\n',FWER_thr(1));
                                   fprintf(fidThres,'%.1f',FWER_thr(2));
                                   fclose(fidThres);
@@ -2743,7 +2769,7 @@ handles = guidata(hObject);
                                                                         get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
                                                                         SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                          fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                          fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                           fprintf(fidThres,'%.1f\n',FWER_thr(1));
                           fprintf(fidThres,'%.1f',FWER_thr(2));
                           fclose(fidThres);
@@ -2953,7 +2979,7 @@ handles = guidata(hObject);
                 PixDim = StruMat.hdr.pixdim(2:4);
 
                 clear matlabbatch
-                matlabbatch{1}.spm.spatial.coreg.estwrite.ref = {[SSdir2(1:end-3),'SSM_DimTmpl.nii']};
+                matlabbatch{1}.spm.spatial.coreg.estwrite.ref = {[handles.SSM_Dir,'AuxFiles',filesep,'SSM_DimTmpl.nii']};
                 matlabbatch{1}.spm.spatial.coreg.estwrite.source = {[pathF filesub{k}]};
                 matlabbatch{1}.spm.spatial.coreg.estwrite.other = {''};
                 matlabbatch{1}.spm.spatial.coreg.estwrite.eoptions.cost_fun = 'nmi';
@@ -3076,7 +3102,7 @@ handles = guidata(hObject);
                                                                         get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
                                                                         SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                          fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                          fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                           fprintf(fidThres,'%.1f\n',FWER_thr(1));
                           fprintf(fidThres,'%.1f',FWER_thr(2));
                           fclose(fidThres);
@@ -3095,7 +3121,7 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                                  fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                                  fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f\n',FWER_thr(1));
                                   fprintf(fidThres,'%.1f',FWER_thr(2));
                                   fclose(fidThres);
@@ -3112,7 +3138,7 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                                  fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                                  fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f\n',FWER_thr(1));
                                   fprintf(fidThres,'%.1f',FWER_thr(2));
                                   fclose(fidThres);
@@ -3129,7 +3155,7 @@ handles = guidata(hObject);
                                                                             get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
                                                                             SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                              fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                              fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                               fprintf(fidThres,'%.1f\n',FWER_thr(1));
                               fprintf(fidThres,'%.1f',FWER_thr(2));
                               fclose(fidThres);
@@ -3161,7 +3187,7 @@ handles = guidata(hObject);
                                                                         get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
                                                                         SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                          fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                          fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                           fprintf(fidThres,'%.1f\n',FWER_thr(1));
                           fprintf(fidThres,'%.1f',FWER_thr(2));
                           fclose(fidThres);
@@ -3180,7 +3206,7 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                                  fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                                  fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f\n',FWER_thr(1));
                                   fprintf(fidThres,'%.1f',FWER_thr(2));
                                   fclose(fidThres);
@@ -3197,7 +3223,7 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                                  fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                                  fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f\n',FWER_thr(1));
                                   fprintf(fidThres,'%.1f',FWER_thr(2));
                                   fclose(fidThres);
@@ -3214,7 +3240,7 @@ handles = guidata(hObject);
                                                                             get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
                                                                             SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                              fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                              fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                               fprintf(fidThres,'%.1f\n',FWER_thr(1));
                               fprintf(fidThres,'%.1f',FWER_thr(2));
                               fclose(fidThres);
@@ -3266,7 +3292,7 @@ handles = guidata(hObject);
             fstru2.dat.fname = AtrophyFull;
             fstru2.dat.dim = [size(Zsc_map3D,1) size(Zsc_map3D,2) size(Zsc_map3D,3)];
             fstru2.dat(:,:,:) = Zsc_map3D2 .* MMat;
-            delete(fstru2.dat.fname);
+            create(fstru2) 
 
             % Creating the whole-brain Z-Scored map
             fstru2 = fke;
@@ -3315,7 +3341,7 @@ handles = guidata(hObject);
             fstru2.dat(:,:,:) = Zsc_map3D .* MMat;
             create(fstru2) % Creating 4D file with the interactional maps
             fprintf('- Done\n');
-
+            
             % Creating the whole-brain Z-Scored map
             fstru2 = fke;
             fstru2.dat.fname = HypertThresh;
@@ -3359,12 +3385,12 @@ handles = guidata(hObject);
             Zsc_map3Dneg = Zsc_map3Dneg .* ClusMaskneg;
 
             % Creating the final thresholded z_scored map
-            fstru2 = fke;
-            fstru2.dat.fname = AtrophyThresh;
-            fstru2.dat.dim = [size(Zsc_map3D,1) size(Zsc_map3D,2) size(Zsc_map3D,3)];
-            fstru2.dat(:,:,:) = Zsc_map3D .* MMat;
-            create(fstru2) % Creating 4D file with the interactional maps
-            fprintf('- Done\n');
+%             fstru2 = fke;
+%             fstru2.dat.fname = AtrophyThresh;
+%             fstru2.dat.dim = [size(Zsc_map3D,1) size(Zsc_map3D,2) size(Zsc_map3D,3)];
+%             fstru2.dat(:,:,:) = Zsc_map3D .* MMat;
+%             create(fstru2) % Creating 4D file with the interactional maps
+%             fprintf('- Done\n');
 
             fprintf('- Creating slice view image with the results\n');
             imgBack = [pathF 'mri' filesep 'wm' filesub{k}];
@@ -3374,13 +3400,13 @@ handles = guidata(hObject);
                             [nx1,'.png'],WMdir)
             fprintf('- Done\n');
 
-            % Creating the final thresholded z_scored map
-            fstru2 = fke;
-            fstru2.dat.fname = HypertThresh;
-            fstru2.dat.dim = [size(Zsc_map3D,1) size(Zsc_map3D,2) size(Zsc_map3D,3)];
-            fstru2.dat(:,:,:) = Zsc_map3Dneg .* MMat;
-            create(fstru2) % Creating 4D file with the interactional maps
-            fprintf('- Done\n');
+%             % Creating the final thresholded z_scored map
+%             fstru2 = fke;
+%             fstru2.dat.fname = HypertThresh;
+%             fstru2.dat.dim = [size(Zsc_map3D,1) size(Zsc_map3D,2) size(Zsc_map3D,3)];
+%             fstru2.dat(:,:,:) = Zsc_map3Dneg .* MMat;
+%             create(fstru2) % Creating 4D file with the interactional maps
+%             fprintf('- Done\n');
 
             [~,nx2,~] = fileparts(HypertThresh);
             SSM_SliceView(imgBack,HypertThresh,0.01,0,'Axial','hot','best','Hypertrophy',...
@@ -3425,7 +3451,7 @@ handles = guidata(hObject);
                 PixDim = StruMat.hdr.pixdim(2:4);
 
                 clear matlabbatch
-                matlabbatch{1}.spm.spatial.coreg.estwrite.ref = {[SSdir2(1:end-3),'SSM_DimTmpl.nii']};
+                matlabbatch{1}.spm.spatial.coreg.estwrite.ref = {[handles.SSM_Dir,'AuxFiles',filesep,'SSM_DimTmpl.nii']};
                 matlabbatch{1}.spm.spatial.coreg.estwrite.source = {[pathF filesub{k}]};
                 matlabbatch{1}.spm.spatial.coreg.estwrite.other = {''};
                 matlabbatch{1}.spm.spatial.coreg.estwrite.eoptions.cost_fun = 'nmi';
@@ -3574,7 +3600,7 @@ handles = guidata(hObject);
                                                                         get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
                                                                         SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                          fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                          fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                           fprintf(fidThres,'%.1f',FWER_thr);
                           fclose(fidThres);
                       end
@@ -3592,7 +3618,7 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                                  fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                                  fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f',FWER_thr);
                                   fclose(fidThres);
                               end
@@ -3608,7 +3634,7 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                                  fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                                  fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f',FWER_thr);
                                   fclose(fidThres);
                               end
@@ -3624,7 +3650,7 @@ handles = guidata(hObject);
                                                                             get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
                                                                             SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                              fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                              fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                               fprintf(fidThres,'%.1f',FWER_thr);
                               fclose(fidThres);
                           end
@@ -3654,7 +3680,7 @@ handles = guidata(hObject);
                                                                         get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
                                                                         SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                          fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                          fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                           fprintf(fidThres,'%.1f',FWER_thr);
                           fclose(fidThres);
                       end
@@ -3672,7 +3698,7 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                                  fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                                  fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f',FWER_thr);
                                   fclose(fidThres);
                               end
@@ -3688,7 +3714,7 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                                  fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                                  fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f',FWER_thr);
                                   fclose(fidThres);
                               end
@@ -3704,7 +3730,7 @@ handles = guidata(hObject);
                                                                             get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
                                                                             SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
 
-                              fidThres = fopen([SSdir2(1:end-3),'TmpDir',filesep,TextF,'.txt'],'w+');
+                              fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                               fprintf(fidThres,'%.1f',FWER_thr);
                               fclose(fidThres);
                           end
@@ -3837,7 +3863,7 @@ handles = guidata(hObject);
                 PixDim = StruMat.hdr.pixdim(2:4);
 
                 clear matlabbatch
-                matlabbatch{1}.spm.spatial.coreg.estwrite.ref = {[SSdir2(1:end-3),'SSM_DimTmpl.nii']};
+                matlabbatch{1}.spm.spatial.coreg.estwrite.ref = {[handles.SSM_Dir,'AuxFiles',filesep,'SSM_DimTmpl.nii']};
                 matlabbatch{1}.spm.spatial.coreg.estwrite.source = {[pathF filesub{k}]};
                 matlabbatch{1}.spm.spatial.coreg.estwrite.other = {''};
                 matlabbatch{1}.spm.spatial.coreg.estwrite.eoptions.cost_fun = 'nmi';
@@ -4049,9 +4075,10 @@ end
 function AllCtrDBf(hObject, eventdata)
 handles = guidata(hObject);
 
-    SSdir2 = which('SSM');
-    SSdir2 = [SSdir2(1:end-5) 'DB' filesep];
-    load([SSdir2 'Ida_Ctr.mat']);
+%     SSdir2 = which('SSM');
+%     SSdir2 = SSdir2(1:end-5);
+    
+    load([handles.RefDBPath 'Ida_Ctr.mat']);
     set(handles.RefChe,'Value',0)
     set(handles.runb,'Enable','off')
 
@@ -4102,11 +4129,11 @@ function RefreshAgef(hObject, eventdata)
 handles = guidata(hObject);
 
     set(handles.RefChe,'Value',1)
-    SSdir2 = which('SSM');
-    SSdir2 = [SSdir2(1:end-5) 'DB' filesep];
+%     SSdir2 = which('SSM');
+%     SSdir2 = [SSdir2(1:end-5) 'DB' filesep];
     
-    load([SSdir2 'Gene_Ctr.mat']);
-    load([SSdir2 'Ida_Ctr.mat']);
+    load([handles.RefDBPath 'Gene_Ctr.mat']);
+    load([handles.RefDBPath 'Ida_Ctr.mat']);
 
     if isequal(get(handles.AllCtrDB,'Value'),1)
         SelectVet = ones(size(Gene_Ctr,1),1);

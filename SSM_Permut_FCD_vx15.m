@@ -51,9 +51,6 @@ function FWER_thr = SSM_Permut_FCD_vx15(TtmptReshFF,TtmptReshFF2,IdxSurv,MatS)
         frac = 1;
     end
     
-    SSdir2 = which('SSM');
-    SSdir2 = SSdir2(1:end-5);
-    
     if blobwise
         fprintf('--- Estimating local-blob-wise FWER threshold\n')
         switch SmoKm(1)

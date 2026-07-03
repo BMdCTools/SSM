@@ -50,7 +50,7 @@ function FWER_thr = SSM_DB_GWM_FixRan_CTRs_Vx15(tmpt,CovAgeBin,CovGenBin,Age_Cov
     %% ---------------- Background exclusion ----------------
     if GMs
         fprintf('-- Starting procedures to exclude regions of backgroud from the loop\n');
-        ExclRegi = nifti([SSdir2,'SSM_FinalExclusionAreas_GM.nii']);
+        ExclRegi = nifti([SSdir2,'AuxFiles',filesep,'SSM_FinalExclusionAreas_GM.nii']);
         ExcMat = ExclRegi.dat(:,:,:);
         ExcMaResh  = reshape(ExcMat,[size(TtmptResh,2),1]);
         TtmptResh = TtmptResh .* abs(ExcMaResh - 1)';

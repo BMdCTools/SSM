@@ -73,7 +73,7 @@ function [gmmatPos,wmmatPos,SC_Cat_Tmp,SB_Cat_Tmp] = SSM_Harmon_Tool_FCD(gmmat,w
     end
 
     if handles.HarmNativeFlair % load SSM native param (attenuates only FLAIR BIAS)
-        load(['DB_HarmomParam_FCD_FLAIR_Bias.mat']);
+        load('DB_HarmomParam_FCD_FLAIR_Bias.mat');
         % makes the vetBinMat be in the size of the current SC_Cat_TmpCat
         vetBinMat  = bsxfun(@and,vetBinMat(1,:), ones(1,size(testerMatx,1))');
         vetBinMat2 = bsxfun(@and,vetBinMat2(1,:), ones(1,size(testerMatx2,1))');

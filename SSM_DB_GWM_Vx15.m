@@ -72,7 +72,7 @@ clear tmptResh tmptResh2 tmpt tmpt2 fkeep fkeep2
 %% ---------------- Background exclusion ----------------
 if GMs
     fprintf('-- Starting procedures to exclude regions of backgroud from the loop\n');
-    ExclRegi = nifti([SSdir2,'SSM_FinalExclusionAreas_GM.nii']);
+    ExclRegi = nifti([SSdir2,'AuxFiles',filesep,'SSM_FinalExclusionAreas_GM.nii']);
     ExcMat = ExclRegi.dat(:,:,:);
     ExcMaResh  = reshape(ExcMat,[size(TtmptResh,2),1]);
     TtmptResh = TtmptResh .* abs(ExcMaResh - 1)';

@@ -72,7 +72,7 @@ clear tmptResh tmptResh2 tmpt tmpt2 fkeep fkeep2
 
 %% ---------------- Background exclusion ----------------
 fprintf('-- Starting procedures to exclude from the loop regions of backgroud\n');
-ExclRegi = nifti([SSdir2,'SSM_FinalExclusionAreas_FCD.nii']);
+ExclRegi = nifti([SSdir2,'AuxFiles',filesep,'SSM_FinalExclusionAreas_FCD.nii']);
 
 ExcMat = ExclRegi.dat(:,:,:);
 ExcMat(ExcMat > 0) = 1;
