@@ -723,6 +723,11 @@ title = uicontrol('Parent',MainFig,'Style','text','Fontweight','bold','Units','N
     'Tooltip',{},'HorizontalAlignment','Left','ForegroundColor',[0 0 0],...
     'Visible','on','Enable','off');
 
+    handles.SettsB = uicontrol('Parent',MainFig,'Style','pushbutton','Units',...
+    'normalized','ForegroundColor',[0 0 0],'Position',[0.857 0.038 0.13 0.023],'FontUnits',...
+    'normalized','FontSize',0.6,'String','Basic Settings','BackgroundColor',[0.87 0.87 0.87],...
+    'Tooltip',{''},'Visible','on','Enable','on','Callback',@SettsBf);
+
     handles.GenVet = 0;
     handles.ImgOk = 0;
     handles.AgeOk = 0;
@@ -731,8 +736,16 @@ title = uicontrol('Parent',MainFig,'Style','text','Fontweight','bold','Units','N
     
 set(0, 'CurrentFigure', MainFig)
 handles.output = MainFig;
+
 guidata(MainFig, handles);
 RefreshAgef(MainFig,[])
+end
+
+function SettsBf(hObject, eventdata)
+handles = guidata(hObject);
+    SSM_Settings()
+handles.output = hObject;
+guidata(hObject, handles);
 end
 
 function AddPatf(hObject, eventdata)
