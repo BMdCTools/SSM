@@ -63,10 +63,10 @@ end
 
 TtmptResh  = SC_Cat_TmpCat .* vetBinMat;
 
-fprintf('-- Removing zeros from the reshaped maps\n')
+fprintf('-- Removing zeros from the reshaped maps\n\n')
 TtmptResh(:, ~any(TtmptResh,1))   = [];
 
-fprintf('-- Creating Covariates\n')
+fprintf('-- Creating Covariates\n\n')
 if size(Gene_Ctr,2) > 1
     Gene_Ctr = Gene_Ctr';
 end
@@ -95,7 +95,7 @@ else
 end
 
 %%% ---------------- Regression ----------------
-fprintf('-- Regressing confounders\n');
+fprintf('-- Regressing confounders\n\n');
 betas1c = Covar2Ctr \ TtmptResh(1:size(Covar2Ctr,1),:);
 TtmptReshTMP = TtmptResh(1:size(Covar2Ctr,1),:) - (Covar2Ctr * betas1c) + betas1c(end,:);
 
@@ -163,6 +163,6 @@ gmmatPos = TtmptReshFF(sizeTMP(4) + 1:end,:);
 SC_Cat_Tmp = TtmptReshFF(1:sizeTMP(4),:);
 SC_Cat_Tmp = reshape(SC_Cat_Tmp',sizeTMP);
 
-fprintf('-- Generating resultant harm. plots: GM\n')
+fprintf('-- Generating resultant harm. plots: GM\n\n')
 SSM_HarmPlots(SC_Cat_TmpCat,TtmptReshFF,vetBatch,'GM',OutDir)
 end

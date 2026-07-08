@@ -36,7 +36,7 @@ hObj = findobj('Type', 'figure', 'Name', 'Single-Subject Morphometry');
     CovAgeBin = get(handles.covAge, 'Value');
     CovGenBin = get(handles.covAge, 'checkbox4');
 
-    fprintf('-- Working with the encoded database\n');
+    fprintf('-- Working with the encoded database\n\n');
     vetx = [84    53    15    80    63    68    71    64    48     1    29     5    21    87    62    73    39    76    69,...
            36    51    46   106   108    18    43    45   111    30    28   112    10    42    16    52    89   104    61,...
            107    90    77    32    14    78    47   109    95    91    37    99    83    85    65    19   103    13    22,...
@@ -100,11 +100,11 @@ vetBinMat2 = bsxfun(@and,vetBin2,ones(1,size(testerMatx2,1))');
 TtmptResh  = SC_Cat_TmpCat .* vetBinMat;
 TtmptResh2 = SB_Cat_TmpCat .* vetBinMat2;
 
-fprintf('-- Removing zeros from the reshaped maps\n')
+fprintf('-- Removing zeros from the reshaped maps\n\n')
 TtmptResh(:, ~any(TtmptResh,1))   = [];
 TtmptResh2(:,~any(TtmptResh2,1))  = [];
 
-fprintf('-- Creating Covariates\n')
+fprintf('-- Creating Covariates\n\n')
 if size(Gene_Ctr,2) > 1
     Gene_Ctr = Gene_Ctr';
 end
@@ -168,15 +168,15 @@ SB_Cat_Tmp = TtmptReshFF2(1:sizeTMP(4),:);
 SC_Cat_Tmp = reshape(SC_Cat_Tmp',sizeTMP);
 SB_Cat_Tmp = reshape(SB_Cat_Tmp',sizeTMP);
 
-fprintf('-- Encoding database\n')
+fprintf('-- Encoding database\n\n')
 for k = 1:size(SC_Cat_Tmp,4)
     SC_Cat_Tmp(:,:,:,k) = SC_Cat_Tmp(vetx,vety,vetz,k);
     SB_Cat_Tmp(:,:,:,k) = SB_Cat_Tmp(vetx,vety,vetz,k);
 end
 
-fprintf('-- Generating resultant harm. plots: GM\n')
+fprintf('-- Generating resultant harm. plots: GM\n\n')
 HarmPlots(SC_Cat_TmpCat,TtmptReshFF,vetBatch,'GM',OutDir)
-fprintf('-- Generating resultant harm. plots: WM\n')
+fprintf('-- Generating resultant harm. plots: WM\n\n')
 HarmPlots(SB_Cat_TmpCat,TtmptReshFF2,vetBatch,'WM',OutDir)
 
 

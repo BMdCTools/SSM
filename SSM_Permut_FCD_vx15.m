@@ -52,7 +52,7 @@ function FWER_thr = SSM_Permut_FCD_vx15(TtmptReshFF,TtmptReshFF2,IdxSurv,MatS)
     end
     
     if blobwise
-        fprintf('--- Estimating local-blob-wise FWER threshold\n')
+        fprintf('--- Estimating local-blob-wise FWER threshold\n\n')
         switch SmoKm(1)
             case 1
                 Radius = 3; % round values divided by Vox of 1.5 mm and by 2 (radiu)
@@ -70,7 +70,7 @@ function FWER_thr = SSM_Permut_FCD_vx15(TtmptReshFF,TtmptReshFF2,IdxSurv,MatS)
                 Radius = 8;
                 SmooK = 11;
         end
-        fprintf('--- The blobs are spheres with a %d voxels radius\n',Radius);
+        fprintf('--- The blobs are spheres with a %d voxels radius\n\n',Radius);
 
         dims = [MatS(1) MatS(2) MatS(3)];
 
@@ -80,7 +80,7 @@ function FWER_thr = SSM_Permut_FCD_vx15(TtmptReshFF,TtmptReshFF2,IdxSurv,MatS)
         mask = dist <= Radius;   % esfera real
         nbr_offsets = [dx(mask), dy(mask), dz(mask)];
     else
-        fprintf('--- Estimating voxel-wise FWER threshold\n')
+        fprintf('--- Estimating voxel-wise FWER threshold\n\n')
     end
     
     SubsetIdx = cell(Nperm,1);
@@ -89,14 +89,14 @@ function FWER_thr = SSM_Permut_FCD_vx15(TtmptReshFF,TtmptReshFF2,IdxSurv,MatS)
         Ns = Nctrl;
         Nperm = Nctrl;
         fprintf('--- ATTENTION: Ref. dataset with %d subjects\n',Nctrl)
-        fprintf('--- Permutation test will be limited to a leave-one-out scheme (%d permutations)\n',Nctrl)
+        fprintf('--- Permutation test will be limited to a leave-one-out scheme (%d permutations)\n\n',Nctrl)
         for ft = 1:Nctrl
             SubsetIdx{ft} = 1:Nperm;
         end
     else
         Ns = round(frac * Nctrl);
     
-        fprintf('--- Generating unique controls subsets\n')
+        fprintf('--- Generating unique controls subsets\n\n')
 
         used = containers.Map('KeyType','char','ValueType','logical');
         k = 1;

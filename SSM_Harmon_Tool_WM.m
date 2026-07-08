@@ -66,10 +66,10 @@ function [wmmatPos,SB_Cat_Tmp] = SSM_Harmon_Tool_WM(wmmat,SB_Cat_Tmp,AgeVet,GenV
 
     TtmptResh2 = SB_Cat_TmpCat .* vetBinMat2;
 
-    fprintf('-- Removing zeros from the reshaped maps\n')
+    fprintf('-- Removing zeros from the reshaped maps\n\n')
     TtmptResh2(:,~any(TtmptResh2,1))  = [];
 
-    fprintf('-- Creating Covariates\n')
+    fprintf('-- Creating Covariates\n\n')
     if size(Gene_Ctr,2) > 1
         Gene_Ctr = Gene_Ctr';
     end
@@ -98,7 +98,7 @@ function [wmmatPos,SB_Cat_Tmp] = SSM_Harmon_Tool_WM(wmmat,SB_Cat_Tmp,AgeVet,GenV
     end
 
     %%% ---------------- Regression ----------------
-    fprintf('-- Regressing confounders\n');
+    fprintf('-- Regressing confounders\n\n');
     betas2c = Covar2Ctr \ TtmptResh2(1:size(Covar2Ctr,1),:);
     TtmptReshTMP2 = TtmptResh2(1:size(Covar2Ctr,1),:) - (Covar2Ctr * betas2c) + betas2c(end,:);
 
@@ -166,15 +166,15 @@ function [wmmatPos,SB_Cat_Tmp] = SSM_Harmon_Tool_WM(wmmat,SB_Cat_Tmp,AgeVet,GenV
     SB_Cat_Tmp = TtmptReshFF2(1:sizeTMP(4),:);
     SB_Cat_Tmp = reshape(SB_Cat_Tmp',sizeTMP);
 
-    fprintf('-- Encoding database\n')
+    fprintf('-- Encoding database\n\n')
     for k = 1:size(SB_Cat_Tmp,4)
         SB_Cat_Tmp(:,:,:,k) = SB_Cat_Tmp(vetx,vety,vetz,k);
     end
     
     if size(wmmatPos,1) > 3
-        fprintf('-- Generating resultant harm. plots: WM\n')
+        fprintf('-- Generating resultant harm. plots: WM\n\n')
         SSM_HarmPlots(SB_Cat_TmpCat,TtmptReshFF2,vetBatch,'WM',OutDir)
     else
-        fprintf('-- The loaded sample is to small to generate harm. plots\n')
+        fprintf('-- The loaded sample is to small to generate harm. plots\n\n')
     end
 end

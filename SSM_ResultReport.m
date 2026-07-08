@@ -152,12 +152,20 @@ fprintf(fid,'</div>\n');
 %%%%%%
 fprintf(fid,'<h3>Case Demographics</h3>\n');
 fprintf(fid,'<div class="indent">\n');
-fprintf(fid,'<b> Case age (years):</b> %s<br>\n',num2str(handles.AgeVet(k)));
-Sex = handles.GenVet(k);
-if Sex
-    fprintf(fid,'<b> Case sex:</b> %s<br>\n','Male');
+if get(handles.covAge,'Value')
+    fprintf(fid,'<b> Case age (years):</b> %s<br>\n',num2str(handles.AgeVet(k)));
 else
-    fprintf(fid,'<b> Case sex:</b> %s<br>\n','Female');
+    fprintf(fid,'<b> Case age (years):</b> %s<br>\n','ND');
+end
+if get(handles.checkbox4,'Value')
+    Sex = handles.GenVet(k);
+    if Sex
+        fprintf(fid,'<b> Case sex:</b> %s<br>\n','Male');
+    else
+        fprintf(fid,'<b> Case sex:</b> %s<br>\n','Female');
+    end
+else
+    fprintf(fid,'<b> Case sex:</b> %s<br>\n','ND');
 end
 fprintf(fid,'</div>\n');
 

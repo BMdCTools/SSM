@@ -41,7 +41,7 @@ function [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_DB_GWM_Vx15(tmpt,fkeep,C
 
 %% ============= ORIGINAL PIPELINE  =============
 
-fprintf('-- Reshaping subject maps\n')
+fprintf('-- Reshaping subject maps\n\n')
 fkeepResh  = reshape(fkeep,[numel(fkeep),1]);
 
  % Reshaping the database maps 
@@ -71,7 +71,7 @@ clear tmptResh tmptResh2 tmpt tmpt2 fkeep fkeep2
 
 %% ---------------- Background exclusion ----------------
 if GMs
-    fprintf('-- Starting procedures to exclude regions of backgroud from the loop\n');
+    fprintf('-- Starting procedures to exclude regions of backgroud from the loop\n\n');
     ExclRegi = nifti([SSdir2,'AuxFiles',filesep,'SSM_FinalExclusionAreas_GM.nii']);
     ExcMat = ExclRegi.dat(:,:,:);
     ExcMaResh  = reshape(ExcMat,[size(TtmptResh,2),1]);
@@ -90,10 +90,10 @@ TtmptResh  = TtmptResh .* vetBinMat;
 
 fprintf('-- Removing zeros from the testing reshaped map\n')
 TtmptResh(:, ~any(TtmptResh,1))   = [];
-fprintf('-- Done\n');
+fprintf('-- Done\n\n');
 clear vetBinMat vetBinMat2 testerMatx testerMatx2
 
-fprintf('-- Creating Covariates\n')
+fprintf('-- Creating Covariates\n\n')
 DBTIV = round(DBTIV);
 SubjTIV = round(SubjTIV);
 
@@ -126,7 +126,7 @@ if ~UseHarm % a new regression will be performed only if we are not using
     end
 
     %% ---------------- Regression ----------------
-    fprintf('-- Regressing confounders\n');
+    fprintf('-- Regressing confounders\n\n');
     betas1c = Covar2Ctr \ TtmptResh(1:end-1,:);
     TtmptReshTMP = TtmptResh(1:end-1,:) - (Covar2Ctr * betas1c) + betas1c(end,:);
 
@@ -134,7 +134,7 @@ if ~UseHarm % a new regression will be performed only if we are not using
     TtmptReshTMP = [TtmptReshTMP;fkeepResh];
     
 else
-    fprintf('-- Skiping regression (harmonized data)\n')
+    fprintf('-- Skiping regression (harmonized data)\n\n')
     TtmptReshTMP = TtmptResh;
     clear TtmptResh TtmptResh2
 end
@@ -151,7 +151,7 @@ clear testerMatx testerMatx2 vetBin vetBin2 TtmptReshTMP TtmptReshTMP2
 fkeepResh  = TtmptReshFF(end,:)';
 TtmptReshFF(end,:)  = [];
 
-fprintf('-- Performing Global statistics\n')
+fprintf('-- Performing Global statistics\n\n')
 
 TtmptReshFF(isnan(TtmptReshFF)) = 0;
 fkeepResh(isnan(fkeepResh)) = 0;
@@ -197,13 +197,13 @@ clear fkeepResh fkeepResh2 AnalyMask Matmp1 Matmp2 MtmptResh MtmptResh2 STDtmptR
 
 if ~FixRa
     if isempty(FWER_thrIn)
-        fprintf('-- Estimating the threshold using permut\n');
+        fprintf('-- Estimating the threshold using permut\n\n');
         tic
         FWER_thr = SSM_Permut_GWM_vx15(TtmptReshFF,IdxSurv,S3D_mat);
         fprintf('-- ');
         toc
         fprintf('\n');
-        fprintf('-- ** Estimated FWER threshold is: %.1f **\n',FWER_thr);
+        fprintf('-- ** Estimated FWER threshold is: %.1f **\n\n',FWER_thr);
         
         Iteract_Tmap_Posi_Thr = Iteract_Tmap.*(Iteract_Tmap > 0);
         Iteract_Tmap_Posi_Thr(Iteract_Tmap_Posi_Thr < FWER_thr(1)) = 0;
@@ -224,7 +224,7 @@ if ~FixRa
         Iteract_Tmap_Neg_Thr = -1.*(Iteract_Tmap_Neg_Thr);
         
         Iteract_Tmap_Thr = (Iteract_Tmap_Posi_Thr + Iteract_Tmap_Neg_Thr);
-        fprintf('-- Previousy estimated and stored FWER threshold: %.1f\n',FWER_thr);
+        fprintf('-- Previousy estimated and stored FWER threshold: %.1f\n\n',FWER_thr);
     end
 else
     FWER_thr = FWER_thrIn;
@@ -236,10 +236,10 @@ else
     Iteract_Tmap_Neg_Thr = -1.*(Iteract_Tmap_Neg_Thr);
 
     Iteract_Tmap_Thr = (Iteract_Tmap_Posi_Thr + Iteract_Tmap_Neg_Thr);
-    fprintf('-- ** Estimated FWER threshold is: %.1f **\n',FWER_thrIn);
+    fprintf('-- ** Estimated FWER threshold is: %.1f **\n\n',FWER_thrIn);
 end
 
-fprintf('-- Done!\n');
+fprintf('-- Done\n\n');
     
 end
 

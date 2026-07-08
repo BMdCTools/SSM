@@ -49,7 +49,7 @@ function FWER_thr = SSM_DB_GWM_FixRan_CTRs_Vx15(tmpt,CovAgeBin,CovGenBin,Age_Cov
 
     %% ---------------- Background exclusion ----------------
     if GMs
-        fprintf('-- Starting procedures to exclude regions of backgroud from the loop\n');
+        fprintf('-- Starting procedures to exclude regions of backgroud from the loop\n\n');
         ExclRegi = nifti([SSdir2,'AuxFiles',filesep,'SSM_FinalExclusionAreas_GM.nii']);
         ExcMat = ExclRegi.dat(:,:,:);
         ExcMaResh  = reshape(ExcMat,[size(TtmptResh,2),1]);
@@ -64,12 +64,12 @@ function FWER_thr = SSM_DB_GWM_FixRan_CTRs_Vx15(tmpt,CovAgeBin,CovGenBin,Age_Cov
     vetBinMat  = bsxfun(@and,vetBin, ones(1,size(testerMatx,1))');
     TtmptResh  = TtmptResh .* vetBinMat;
 
-    fprintf('-- Removing zeros from the testing reshaped map\n')
+    fprintf('-- Removing zeros from the testing reshaped map\n\n')
     TtmptResh(:, ~any(TtmptResh,1))   = [];
     fprintf('-- Done\n');
     clear vetBinMat vetBinMat2 testerMatx testerMatx2
 
-    fprintf('-- Creating Covariates\n')
+    fprintf('-- Creating Covariates\n\n')
     DBTIV = round(DBTIV);
 
     if size(Gen_Covar,2) > 1
@@ -95,7 +95,7 @@ function FWER_thr = SSM_DB_GWM_FixRan_CTRs_Vx15(tmpt,CovAgeBin,CovGenBin,Age_Cov
     end
 
     %% ---------------- Regression ----------------
-    fprintf('-- Regressing confounders\n');
+    fprintf('-- Regressing confounders\n\n');
     betas1c = Covar2Ctr \ TtmptResh(1:end,:);
     TtmptReshTMP = TtmptResh(1:end,:) - (Covar2Ctr * betas1c) + betas1c(end,:);
     
@@ -126,14 +126,14 @@ function FWER_thr = SSM_DB_GWM_FixRan_CTRs_Vx15(tmpt,CovAgeBin,CovGenBin,Age_Cov
     TtmptReshFF(:,any(aVET,1))   = [];
 
     clear fkeepResh fkeepResh2 AnalyMask Matmp1 Matmp2 MtmptResh MtmptResh2 STDtmptResh STDtmptResh2 tWMF tGMF fkeep2
-    fprintf('-- Estimating the Interactional threshold using permut\n');
+    fprintf('-- Estimating the Interactional threshold using permut\n\n');
     tic
     FWER_thr = SSM_Permut_GWM_vx15(TtmptReshFF,IdxSurv,S3D_mat);
     fprintf('-- ');
     toc
     fprintf('\n');
     fprintf('-- ** Estimated FWER threshold is: %.1f **\n',FWER_thr);
-    fprintf('-- Done!\n');
+    fprintf('-- Done\n\n');
     
 end
 
