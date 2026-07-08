@@ -392,14 +392,14 @@ title = uicontrol('Parent',MainFig,'Style','text','Fontweight','bold','Units','N
         handles.text14 = uicontrol('Parent',MainFig,'Style','text','Units',...
         'normalized','ForegroundColor',[0 0 0],'Position',[0.475 0.473-0.005 0.19 0.03],'FontUnits',...
         'normalized','FontSize',0.55,'HorizontalAlignment','Left',...
-        'String','Average age/STD:','BackgroundColor',...
-        [0.87 0.87 0.87],'Visible','on','Enable','on');
+        'String','Age avg./mean/STD:','BackgroundColor',[0.87 0.87 0.87],...
+        'tooltip','final controls dataset average age, mean age and age standard deviation','Visible','on','Enable','on');
 
         handles.avgAge = uicontrol('Parent',MainFig,'Style','text','Units',...
         'normalized','ForegroundColor',[0 0 0],'Position',[0.659 0.481-0.005 0.1 0.023],'FontUnits',...
         'normalized','FontSize',0.8,'HorizontalAlignment','Center',...
-        'String','','BackgroundColor',...
-        [1 1 1],'Visible','on','Enable','on');
+        'String','','BackgroundColor',[1 1 1],...
+        'tooltip','final controls dataset average age, mean age and age standard deviation','Visible','on','Enable','on');
 
         handles.text16 = uicontrol('Parent',MainFig,'Style','text','Units',...
         'normalized','ForegroundColor',[0 0 0],'Position',[0.17 0.44-0.005 0.19 0.03],'FontUnits',...
@@ -942,7 +942,7 @@ handles = guidata(hObject);
     ConfigFile = fullfile(handles.SSM_Dir, 'SSM_config.mat');
 
     if exist(ConfigFile, 'file')
-        fprintf('Loading existing configuration file...\n');
+        fprintf('- Loading existing configuration file...\n\n');
         load(ConfigFile);
         handles.RefDBPath   = RefDBPath;
         handles.DBDescrip   = DBDescrip;
@@ -958,6 +958,13 @@ handles = guidata(hObject);
         handles.nParallelPerm = nParallelPerm;
     end
 
+    apool = gcp('nocreate');
+    if numel(apool) > 0
+        fprintf('- Closing previously oppened parallel pool...\n');
+        delete(gcp('nocreate'));
+        fprintf('- Done\n\n');
+    end
+    
     handles.OutDirQ = [handles.pathsub,filesep,'0_Settings_Quality_and_Harmon_',DatStrT];
     mkdir(handles.OutDirQ);
 
@@ -1167,7 +1174,7 @@ handles = guidata(hObject);
             load([direi 'SC_Ctr_DB2_FWHM' FWHMv '.mat'])
             fprintf('..');
             load([direi 'SC_Ctr_DB3_FWHM' FWHMv '.mat'])
-            fprintf('- Done')
+            
             fprintf('\n')
             fprintf('\n');
 
@@ -1209,7 +1216,7 @@ handles = guidata(hObject);
                 fprintf('    and the statistical threshold found will be considered for all \n');
                 fprintf('    testing images.\n');
 
-                fprintf('- Done');
+                
                 fprintf('\n');
                 fprintf('\n');
 
@@ -1227,7 +1234,7 @@ handles = guidata(hObject);
                 fprintf('    (if not previouly estimated) and the statistical\n');
                 fprintf('    threshold found will be considered also individually.\n');
 
-                fprintf('- Done');
+                
                 fprintf('\n');
                 fprintf('\n');
 
@@ -1245,7 +1252,7 @@ handles = guidata(hObject);
             fprintf('..');
             load([direi 'SB_Ctr_DB3_FWHM' FWHMv '.mat'])
             fprintf('..');
-            fprintf('- Done')
+            
             fprintf('\n')
 
             if get(handles.FixRan,'Value')
@@ -1282,7 +1289,7 @@ handles = guidata(hObject);
                 fprintf('    and the statistical threshold found will be considered for all \n');
                 fprintf('    testing images.\n');
 
-                fprintf('- Done');
+                
                 fprintf('\n');
                 fprintf('\n');
 
@@ -1300,7 +1307,7 @@ handles = guidata(hObject);
                 fprintf('    (if not previouly estimated) and the statistical\n');
                 fprintf('    threshold found will be considered also individually.\n');
 
-                fprintf('- Done');
+                
                 fprintf('\n');
                 fprintf('\n');
 
@@ -1328,7 +1335,7 @@ handles = guidata(hObject);
             fprintf('..');
             load([direi 'SB_Ctr_DB3_FWHM' FWHMv '.mat'])
             fprintf('..');
-            fprintf('- Done')
+            
             fprintf('\n')
 
             if get(handles.FixRan,'Value')
@@ -1376,7 +1383,7 @@ handles = guidata(hObject);
                 fprintf('    and the statistical threshold found will be considered for all \n');
                 fprintf('    testing images.\n');
 
-                fprintf('- Done');
+                
                 fprintf('\n');
                 fprintf('\n');
 
@@ -1396,7 +1403,7 @@ handles = guidata(hObject);
                 fprintf('    (if not previouly estimated) and the statistical\n');
                 fprintf('    threshold found will be considered also individually.\n');
 
-                fprintf('- Done');
+                
                 fprintf('\n');
                 fprintf('\n');
 
@@ -2165,23 +2172,20 @@ handles = guidata(hObject);
             FWER_thrIn = ThreshPrev;
         else
             if isequal(get(handles.FCD,'Value'),1)
-                try
-                    delete(gcp('nocreate'))
-                end
-                if license('test','Distrib_Computing_Toolbox')
-                    if get(handles.ParallelCB,'Value')
-                        try
-                            parpool(handles.nParallelPerm);
-                        catch
-                            parpool(4);
+                if get(handles.ParallelCB,'Value')
+                    if license('test','Distrib_Computing_Toolbox')
+                        apool = gcp('nocreate');
+                        if numel(apool) == 0
+                            try
+                                parpool(handles.nParallelPerm);
+                            catch
+                                parpool(4);
+                            end
                         end
                     else
-                        try
-                            parpool(1);
-                        end
+                       fprintf('- No Parallel Computing Toolbox available\n'); 
                     end
-                else
-                   fprintf('- No Parallel Computing Toolbox available\n') 
+                    fprintf('\n');
                 end
                 
                 FWER_thrIn = SSM_Decode_DB_FCD_FixRan_CTRs_Vx15(tpt4D_GM,tpt4D_WM,...
@@ -2191,45 +2195,39 @@ handles = guidata(hObject);
                 fclose(fidThres);
             else
                 if get(handles.GMa,'Value')
-                    try
-                        delete(gcp('nocreate'))
-                    end
-                    if license('test','Distrib_Computing_Toolbox')
-                        if get(handles.ParallelCB,'Value')
-                            try
-                                parpool(handles.nParallelPerm);
-                            catch
-                                parpool(4);
+                    if get(handles.ParallelCB,'Value')
+                        if license('test','Distrib_Computing_Toolbox')
+                            apool = gcp('nocreate');
+                            if numel(apool) == 0
+                                try
+                                    parpool(handles.nParallelPerm);
+                                catch
+                                    parpool(4);
+                                end
                             end
                         else
-                            try
-                                parpool(1);
-                            end
+                           fprintf('- No Parallel Computing Toolbox available\n');
                         end
-                    else
-                       fprintf('- No Parallel Computing Toolbox available\n') 
+                        fprintf('\n');
                     end
                     FWER_thrIn = SSM_Decode_DB_GWM_FixRan_CTRs_Vx15(tpt4D_GM,...
                                     get(handles.covAge,'Value'),get(handles.checkbox4,'Value'),...
                                     Age_Covar,Gen_Covar,DBTIV);
                 else
-                    try
-                        delete(gcp('nocreate'))
-                    end
-                    if license('test','Distrib_Computing_Toolbox')
-                        if get(handles.ParallelCB,'Value')
-                            try
-                                parpool(handles.nParallelPerm);
-                            catch
-                                parpool(4);
+                    if get(handles.ParallelCB,'Value')
+                        if license('test','Distrib_Computing_Toolbox')
+                            apool = gcp('nocreate');
+                            if numel(apool) == 0
+                                try
+                                    parpool(handles.nParallelPerm);
+                                catch
+                                    parpool(4);
+                                end
                             end
                         else
-                            try
-                                parpool(1);
-                            end
+                           fprintf('- No Parallel Computing Toolbox available\n');
                         end
-                    else
-                       fprintf('- No Parallel Computing Toolbox available\n') 
+                        fprintf('\n');
                     end
                     FWER_thrIn = SSM_Decode_DB_GWM_FixRan_CTRs_Vx15(tpt4D_WM,...
                                     get(handles.covAge,'Value'),get(handles.checkbox4,'Value'),...
@@ -2543,7 +2541,7 @@ handles = guidata(hObject);
                 end
                 fprintf(fidDem,'Number of male controls included: %s\r\n',get(handles.nOfMale,'String'));
                 fprintf(fidDem,'Number of female controls included: %s\r\n',get(handles.nOfFemale,'String'));
-                fprintf(fidDem,'Controls database age (average/STD): %s\r\n',get(handles.avgAge,'String'));
+                fprintf(fidDem,'Controls database age (Avg/Median/STD): %s\r\n',get(handles.avgAge,'String'));
                 fprintf(fidDem,'Controls lower age: %s\r\n',get(handles.text17,'String'));
                 fprintf(fidDem,'Controls max age: %s\r\n\r\n',get(handles.text21,'String'));
                 fclose(fidDem);
@@ -2598,7 +2596,7 @@ handles = guidata(hObject);
             end
             fprintf(fidDem,'Number of male controls included: %s\r\n',get(handles.nOfMale,'String'));
             fprintf(fidDem,'Number of female controls included: %s\r\n',get(handles.nOfFemale,'String'));
-            fprintf(fidDem,'Controls database age (average/STD): %s\r\n',get(handles.avgAge,'String'));
+            fprintf(fidDem,'Controls database age (Avg/Median/STD): %s\r\n',get(handles.avgAge,'String'));
             fprintf(fidDem,'Controls lower age: %s\r\n',get(handles.text17,'String'));
             fprintf(fidDem,'Controls max age: %s\r\n\r\n',get(handles.text21,'String'));
             fclose(fidDem);
@@ -2636,7 +2634,7 @@ handles = guidata(hObject);
                     end
                 end
                 fprintf('...');
-                fprintf('- Done')
+                
                 fprintf('\n')
                 tpt4D_GM = single(tpt4D_GM);
             end
@@ -2653,7 +2651,7 @@ handles = guidata(hObject);
                 end
                 tpt4D_WM = single(tpt4D_WM);
                 fprintf('...');
-                fprintf('- Done')
+                
                 fprintf('\n')
             end
 
@@ -2672,7 +2670,7 @@ handles = guidata(hObject);
                 tpt4D_GM = single(tpt4D_GM);
                 tpt4D_WM = single(tpt4D_WM);
                 fprintf('...');
-                fprintf('- Done')
+                
                 fprintf('\n')
             end
         end
@@ -2732,20 +2730,20 @@ handles = guidata(hObject);
                           % condition will be stored and for further analysis,
                           % this condition will not required a permutation
                           % again.
-                            if license('test','Distrib_Computing_Toolbox')
-                                if get(handles.ParallelCB,'Value')
-                                    try
-                                        parpool(handles.nParallelPerm);
-                                    catch
-                                        parpool(4);
+                            if get(handles.ParallelCB,'Value')
+                                if license('test','Distrib_Computing_Toolbox')
+                                    apool = gcp('nocreate');
+                                    if numel(apool) == 0
+                                        try
+                                            parpool(handles.nParallelPerm);
+                                        catch
+                                            parpool(4);
+                                        end
                                     end
                                 else
-                                    try
-                                        parpool(1);
-                                    end
+                                   fprintf('- No Parallel Computing Toolbox available\n');
                                 end
-                            else
-                               fprintf('- No Parallel Computing Toolbox available\n') 
+                                fprintf('\n');
                             end
                           [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_GWM_Vx15(tmpt,fkeep,get(handles.covAge,'Value'),...
                                                                         get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
@@ -2766,20 +2764,20 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
                               else
-                                    if license('test','Distrib_Computing_Toolbox')
-                                        if get(handles.ParallelCB,'Value')
-                                            try
-                                                parpool(handles.nParallelPerm);
-                                            catch
-                                                parpool(4);
+                                    if get(handles.ParallelCB,'Value')
+                                        if license('test','Distrib_Computing_Toolbox')
+                                            apool = gcp('nocreate');
+                                            if numel(apool) == 0
+                                                try
+                                                    parpool(handles.nParallelPerm);
+                                                catch
+                                                    parpool(4);
+                                                end
                                             end
                                         else
-                                            try
-                                                parpool(1);
-                                            end
+                                           fprintf('- No Parallel Computing Toolbox available\n'); 
                                         end
-                                    else
-                                       fprintf('- No Parallel Computing Toolbox available\n') 
+                                        fprintf('\n');
                                     end
                                   [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_GWM_Vx15(tmpt,fkeep,get(handles.covAge,'Value'),...
                                                                                 get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
@@ -2798,20 +2796,20 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
                               else
-                                    if license('test','Distrib_Computing_Toolbox')
-                                        if get(handles.ParallelCB,'Value')
-                                            try
-                                                parpool(handles.nParallelPerm);
-                                            catch
-                                                parpool(4);
+                                    if get(handles.ParallelCB,'Value')
+                                        if license('test','Distrib_Computing_Toolbox')
+                                            apool = gcp('nocreate');
+                                            if numel(apool) == 0
+                                                try
+                                                    parpool(handles.nParallelPerm);
+                                                catch
+                                                    parpool(4);
+                                                end
                                             end
                                         else
-                                            try
-                                                parpool(1);
-                                            end
+                                           fprintf('- No Parallel Computing Toolbox available\n');
                                         end
-                                    else
-                                       fprintf('- No Parallel Computing Toolbox available\n') 
+                                        fprintf('\n');
                                     end
                                   [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_GWM_Vx15(tmpt,fkeep,get(handles.covAge,'Value'),...
                                                                                 get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
@@ -2830,20 +2828,20 @@ handles = guidata(hObject);
                                                                             get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
                                                                             SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
                           else
-                                if license('test','Distrib_Computing_Toolbox')
-                                    if get(handles.ParallelCB,'Value')
-                                        try
-                                            parpool(handles.nParallelPerm);
-                                        catch
-                                            parpool(4);
+                                if get(handles.ParallelCB,'Value')
+                                    if license('test','Distrib_Computing_Toolbox')
+                                        apool = gcp('nocreate');
+                                        if numel(apool) == 0
+                                            try
+                                                parpool(handles.nParallelPerm);
+                                            catch
+                                                parpool(4);
+                                            end
                                         end
                                     else
-                                        try
-                                            parpool(1);
-                                        end
+                                       fprintf('- No Parallel Computing Toolbox available\n');
                                     end
-                                else
-                                   fprintf('- No Parallel Computing Toolbox available\n') 
+                                    fprintf('\n');
                                 end
 
                               [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_GWM_Vx15(tmpt,fkeep,get(handles.covAge,'Value'),...
@@ -2878,20 +2876,20 @@ handles = guidata(hObject);
                           % condition will be stored and for further analysis,
                           % this condition will not required a permutation
                           % again.
-                            if license('test','Distrib_Computing_Toolbox')
-                                if get(handles.ParallelCB,'Value')
-                                    try
-                                        parpool(handles.nParallelPerm);
-                                    catch
-                                        parpool(4);
+                            if get(handles.ParallelCB,'Value')
+                                if license('test','Distrib_Computing_Toolbox')
+                                    apool = gcp('nocreate');
+                                    if numel(apool) == 0
+                                        try
+                                            parpool(handles.nParallelPerm);
+                                        catch
+                                            parpool(4);
+                                        end
                                     end
                                 else
-                                    try
-                                        parpool(1);
-                                    end
+                                   fprintf('- No Parallel Computing Toolbox available\n');
                                 end
-                            else
-                               fprintf('- No Parallel Computing Toolbox available\n') 
+                                fprintf('\n');
                             end
                           [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_DB_GWM_Vx15(tmpt,fkeep,get(handles.covAge,'Value'),...
                                                                         get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
@@ -2912,20 +2910,20 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
                               else
-                                    if license('test','Distrib_Computing_Toolbox')
-                                        if get(handles.ParallelCB,'Value')
-                                            try
-                                                parpool(handles.nParallelPerm);
-                                            catch
-                                                parpool(4);
+                                    if get(handles.ParallelCB,'Value')
+                                        if license('test','Distrib_Computing_Toolbox')
+                                            apool = gcp('nocreate');
+                                            if numel(apool) == 0
+                                                try
+                                                    parpool(handles.nParallelPerm);
+                                                catch
+                                                    parpool(4);
+                                                end
                                             end
                                         else
-                                            try
-                                                parpool(1);
-                                            end
+                                           fprintf('- No Parallel Computing Toolbox available\n') ;
                                         end
-                                    else
-                                       fprintf('- No Parallel Computing Toolbox available\n') 
+                                        fprintf('\n');
                                     end
                                   [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_DB_GWM_Vx15(tmpt,fkeep,get(handles.covAge,'Value'),...
                                                                                 get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
@@ -2944,20 +2942,20 @@ handles = guidata(hObject);
                                                                                 get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
                                                                                 SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
                               else
-                                    if license('test','Distrib_Computing_Toolbox')
-                                        if get(handles.ParallelCB,'Value')
-                                            try
-                                                parpool(handles.nParallelPerm);
-                                            catch
-                                                parpool(4);
+                                    if get(handles.ParallelCB,'Value')
+                                        if license('test','Distrib_Computing_Toolbox')
+                                            apool = gcp('nocreate');
+                                            if numel(apool) == 0
+                                                try
+                                                    parpool(handles.nParallelPerm);
+                                                catch
+                                                    parpool(4);
+                                                end
                                             end
                                         else
-                                            try
-                                                parpool(1);
-                                            end
+                                           fprintf('- No Parallel Computing Toolbox available\n');
                                         end
-                                    else
-                                       fprintf('- No Parallel Computing Toolbox available\n') 
+                                        fprintf('\n')
                                     end
                                   [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_DB_GWM_Vx15(tmpt,fkeep,get(handles.covAge,'Value'),...
                                                                                 get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
@@ -2976,22 +2974,21 @@ handles = guidata(hObject);
                                                                         get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
                                                                         SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
                         else
-                            if license('test','Distrib_Computing_Toolbox')
-                                if get(handles.ParallelCB,'Value')
-                                    try
-                                        parpool(handles.nParallelPerm);
-                                    catch
-                                        parpool(4);
+                            if get(handles.ParallelCB,'Value')
+                                if license('test','Distrib_Computing_Toolbox')
+                                    apool = gcp('nocreate');
+                                    if numel(apool) == 0
+                                        try
+                                            parpool(handles.nParallelPerm);
+                                        catch
+                                            parpool(4);
+                                        end
                                     end
                                 else
-                                    try
-                                        parpool(1);
-                                    end
+                                   fprintf('- No Parallel Computing Toolbox available\n');
                                 end
-                            else
-                               fprintf('- No Parallel Computing Toolbox available\n') 
+                                fprintf('\n');
                             end
-                            
                           [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_DB_GWM_Vx15(tmpt,fkeep,get(handles.covAge,'Value'),...
                                                                         get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
                                                                         SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
@@ -3140,37 +3137,35 @@ handles = guidata(hObject);
             Zsc_map3Dneg = Zsc_map3Dneg .* ClusMaskneg;
 
             % Creating the final thresholded z_scored map
-            fstru2 = fke;
-            fstru2.dat.fname = AtrophyThresh;
-            fstru2.dat.dim = [size(Zsc_map3D,1) size(Zsc_map3D,2) size(Zsc_map3D,3)];
-            fstru2.dat(:,:,:) = Zsc_map3D .* MMat;
-            create(fstru2) % Creating 4D file with the interaction maps
-            fprintf('- Done\n');
-            fprintf('\n');
+%             fstru2 = fke;
+%             fstru2.dat.fname = AtrophyThresh;
+%             fstru2.dat.dim = [size(Zsc_map3D,1) size(Zsc_map3D,2) size(Zsc_map3D,3)];
+%             fstru2.dat(:,:,:) = Zsc_map3D .* MMat;
+%             create(fstru2) % Creating 4D file with the interaction maps
+%             fprintf('- Done\n');
+%             fprintf('\n');
             
-            fprintf('- Creating slice view image with the results\n');
+            fprintf('- Creating slice view image with the results\n\n');
             imgBack = [pathF 'mri' filesep 'wm' filesub{k}];
             gunzip([imgBack,'.gz']);
             [~,nx1,~] = fileparts(AtrophyThresh);
             SSM_SliceView(imgBack,AtrophyThresh,0.01,0,'Axial','hot','best','Atrophy',...
                             [nx1,'.png'],GMdir)
-            fprintf('- Done\n');
-            fprintf('\n');
             
-            % Creating the final thresholded z_scored map
-            fstru2 = fke;
-            fstru2.dat.fname = HypertThresh;
-            fstru2.dat.dim = [size(Zsc_map3D,1) size(Zsc_map3D,2) size(Zsc_map3D,3)];
-            fstru2.dat(:,:,:) = Zsc_map3Dneg .* MMat;
-            create(fstru2) % Creating 4D file with the interaction maps
-            fprintf('- Done\n');
+%             % Creating the final thresholded z_scored map
+%             fstru2 = fke;
+%             fstru2.dat.fname = HypertThresh;
+%             fstru2.dat.dim = [size(Zsc_map3D,1) size(Zsc_map3D,2) size(Zsc_map3D,3)];
+%             fstru2.dat(:,:,:) = Zsc_map3Dneg .* MMat;
+%             create(fstru2) % Creating 4D file with the interaction maps
+%             fprintf('- Done\n');
 
             [~,nx2,~] = fileparts(HypertThresh);
             SSM_SliceView(imgBack,HypertThresh,0.01,0,'Axial','hot','best','Hypertrophy',...
                             [nx2,'.png'],GMdir)
-            fprintf('-  Done\n');
+%             fprintf('-  Done\n');
 
-            fprintf('- Starting procedures for anatomical description\n');
+            fprintf('- Starting procedures for anatomical description\n\n');
             [~,AnatT] = SSM_AnatDescrip_Vx15_2({AtrophyThresh},...
                                     GMdir,[nx1,'.txt'],'map','AAL3');
 
@@ -3627,7 +3622,6 @@ handles = guidata(hObject);
             [~,nx1,~] = fileparts(AtrophyThresh);
             SSM_SliceView(imgBack,AtrophyThresh,0.01,0,'Axial','hot','best','Atrophy',...
                             [nx1,'.png'],WMdir)
-            fprintf('- Done\n');
 
 %             % Creating the final thresholded z_scored map
 %             fstru2 = fke;
@@ -4370,7 +4364,7 @@ handles = guidata(hObject);
         AllAGEs = Ida_Ctr;
 
         set(handles.nOfCtr,'String',num2str(size(Gene_Ctr,1)))
-        set(handles.avgAge,'String',[num2str(round(mean(Ida_Ctr))) '/' num2str(round(std(Ida_Ctr)))])
+        set(handles.avgAge,'String',[num2str(round(mean(Ida_Ctr))) '/' num2str(round(median(Ida_Ctr))) '/' num2str(round(std(Ida_Ctr)))])
         set(handles.text17,'String',num2str(min(Ida_Ctr)))
         set(handles.text21,'String',num2str(max(Ida_Ctr)))
         set(handles.nOfFemale,'String',num2str(size(Gene_Ctr,1)-sum(Gene_Ctr)))
@@ -4460,7 +4454,7 @@ handles = guidata(hObject);
             VetGenF(VetGenF == -1) = 0; %1 for male 0 for female
 
             set(handles.nOfCtr,'String',num2str(numOfsuj))
-            set(handles.avgAge,'String',[num2str(SelectAgeAvg) '/' num2str(desvPad)])
+            set(handles.avgAge,'String',[num2str(round(mean(AllAGEs))) '/' num2str(round(median(AllAGEs))) '/' num2str(desvPad)])
             set(handles.text17,'String',num2str(ActMinAge))
             set(handles.text21,'String',num2str(ActMaxAge))
             set(handles.nOfFemale,'String',num2str(NofFem))
