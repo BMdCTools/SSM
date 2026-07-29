@@ -58,7 +58,7 @@ function SSM
 % University of Campinas, 2026
 
 clc;
-
+cattestedV = '3347';
 SSM_Dir = which('SSM');
 SSM_Dir = SSM_Dir(1:end-5);
 handles.SSM_Dir = SSM_Dir;
@@ -73,7 +73,6 @@ if exist(ConfigFile, 'file')
     handles.nParallelPerm = nParallelPerm;
 else
     SSM_Settings()
-    
     load(ConfigFile);
     handles.RefDBPath   = RefDBPath;
     handles.DBDescrip   = DBDescrip;
@@ -91,12 +90,6 @@ clc;
 fprintf('SSM: %s\n',datetime);
 help('SSM');
 
-% cfgfile = fullfile(fileparts(mfilename('fullpath')),...
-%                    'SSM_Settings.mat');
-% if ~exist(cfgfile,'file')
-%     SSM_FirstRun(cfgfile);
-% end
-               
 InsT = ver;
 catE = find(contains({InsT.Name}, 'Computational Anatomy Toolbox', 'IgnoreCase', true));
 catEv = InsT(catE).Version;
@@ -105,37 +98,23 @@ spmEv = InsT(spmE).Version;
 
 fprintf('Third-Party Prerequisites for SSM:\n');
 if ~isempty(spmE)
-    fprintf(' - Statistical Parametric Mapping (SPM): Installed (v%s)\n',spmEv)
+    cprintf([0,0.7,0],' - Statistical Parametric Mapping (SPM): Installed (v%s)\n',spmEv);
 else
-    fprintf(' - Statistical Parametric Mapping (SPM): Not installed or added to the Matlab path\n')
+    cprintf('err',' - Statistical Parametric Mapping (SPM): Not installed or added to the Matlab path\n');
+    cprintf('err','  -- SSM can not work properly\n');
 end
 if ~isempty(catE)
-    fprintf(' - Computational Anatomy Toolbox (CAT12): Installed (v%s)\n',catEv)
+    if ~isequal(catEv,cattestedV)
+        cprintf([1,0.5,0],' - Computational Anatomy Toolbox (CAT): Installed (v%s)\n',catEv);
+        cprintf([1,0.5,0],'   -- This SSM version recommends the CAT version: %s\n',cattestedV);
+    else
+        cprintf([0,0.7,0],' - Computational Anatomy Toolbox (CAT): Installed (v%s)\n',catEv);
+    end
 else
-    fprintf(' - Computational Anatomy Toolbox (CAT12): Not installed or added to the Matlab path\n')
+    cprintf('err',' - Computational Anatomy Toolbox (CAT): Not installed or added to the Matlab path\n');
+    cprintf('err','  -- SSM can not work properly\n');
 end
-fprintf(' - ComBat Multi-Site Harmonization Tool: Installed (Adapted version for SSM)\n')
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Code defined INPUTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% % Number of parallel jobs for CAT12 processing
-% handles.nParallel = 3;
-% 
-% % Number of cores dedicated in the permutation loop
-% % If Parallel Computing Toolbox is not available, this option has no effect
-% handles.nParallelPerm = 6;
-% 
-% % This boolean indicates whether the SSM standard reference dataset (1)
-% % or a user-defined reference dataset (0) is used.
-% % The SSM reference dataset is encoded due to ethical approval constraints.
-% % SSM provides a function to assist users in creating their own reference dataset if desired.
-% handles.Run_Encode_DB = 1;
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ATTENTON: AFTER CHANGING ANY OF THESE OPTIONS, YOU SHOULD START THE SSM AGAIN
-% ATTENTON: AFTER CHANGING ANY OF THESE OPTIONS, YOU SHOULD START THE SSM AGAIN
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+cprintf([0,0.7,0],' - ComBat Multi-Site Harmonization Tool: Installed (Adapted version for SSM)\n');
 
 handles.year = '2026';
 handles.MainVersion = '1';
@@ -1520,21 +1499,12 @@ handles = guidata(hObject);
         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.WMHC = 2;
         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.SLC = 0;
         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.mrf = 1;
-%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.WMHtpm = {[spmDIR(1:end-5) filesep 'toolbox' filesep 'cat12' filesep 'templates_MNI152NLin2009cAsym' filesep 'cat_wmh_miccai2017.nii']};
-%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.BVtpm = {[spmDIR(1:end-5) filesep 'toolbox' filesep 'cat12' filesep 'templates_MNI152NLin2009cAsym' filesep 'cat_bloodvessels.nii']};
-%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.SLtpm = {[spmDIR(1:end-5) filesep 'toolbox' filesep 'cat12' filesep 'templates_MNI152NLin2009cAsym' filesep 'cat_strokelesions_ATLAS303.nii']};
-%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.regmethod.shooting.shootingtpm = {[spmDIR(1:end-5) filesep 'toolbox' filesep 'cat12' filesep 'templates_MNI152NLin2009cAsym' filesep 'Template_0_GS.nii']};
         matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.regmethod.shooting.regstr = 0.5;
         matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.vox = 1.5;
         matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.bb = 12;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.pbtres = 0.5;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.pbtmethod = 'pbtsimple';
         matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.SRP = 22;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.reduce_mesh = 1;
+        matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.pbtres = 0.5;
         matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.vdist = 2;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.scale_cortex = 0.7;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.add_parahipp = 0.1;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.close_parahipp = 1;
         matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.experimental = 0;
         matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.new_release = 0;
         matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.lazy = 0;
@@ -1544,24 +1514,8 @@ handles = guidata(hObject);
         matlabbatch{1}.spm.tools.cat.estwrite.output.BIDS.BIDSno = 1;
         matlabbatch{1}.spm.tools.cat.estwrite.output.surface = 0;
         matlabbatch{1}.spm.tools.cat.estwrite.output.surf_measures = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.neuromorphometrics = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.lpba40 = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.cobra = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.hammers = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.thalamus = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.thalamic_nuclei = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.suit = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.ibsr = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.aal3 = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.mori = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.anatomy3 = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.julichbrain = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.Tian_Subcortex_S4_7T = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.Schaefer2018_100Parcels_17Networks_order = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.Schaefer2018_200Parcels_17Networks_order = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.Schaefer2018_400Parcels_17Networks_order = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.Schaefer2018_600Parcels_17Networks_order = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.ownatlas = {''};
+        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.noROI = struct([]);
+        matlabbatch{1}.spm.tools.cat.estwrite.output.sROImenu.noROI = struct([]);
         matlabbatch{1}.spm.tools.cat.estwrite.output.GM.native = 0;
         matlabbatch{1}.spm.tools.cat.estwrite.output.GM.warped = 0;
         matlabbatch{1}.spm.tools.cat.estwrite.output.GM.mod = 1;
@@ -1606,7 +1560,6 @@ handles = guidata(hObject);
         matlabbatch{1}.spm.tools.cat.estwrite.output.jacobianwarped = 0;
         matlabbatch{1}.spm.tools.cat.estwrite.output.warps = [1 1];
         matlabbatch{1}.spm.tools.cat.estwrite.output.rmat = 0;
-
         cat12('expert'); % Cat12 recquires it to run in "expert mode"
         
         if size(F2Run,1) == 1 || get(handles.ParallelCB,'Value') == 0
@@ -1620,7 +1573,7 @@ handles = guidata(hObject);
         set(h2(2),'WindowState','minimized');
         set(h2(3),'WindowState','minimized');
 
-        DatStrT2 = datestr(now, 'yyyymmdd_HHMM');
+        DatStrT2 = datestr(now, 'yyyymmdd-HHMM');
 %         
         if size(F2Run,1) == 1 || get(handles.ParallelCB,'Value') == 0
             SSM_run_batch(matlabbatch);
@@ -1656,19 +1609,48 @@ handles = guidata(hObject);
         % preprocessing end
         if get(handles.ParallelCB,'Value')
             Allfiles = matlab.desktop.editor.getAll;
+            pause(2);
             pidT = dir(['catlog_main_',DatStrT2,'*.txt']);
             if isempty(pidT)
-                DatStrT2 = [DatStrT2(1:end-2),num2str(str2num(DatStrT2(end-2:end)) - 1)];
-                pidT = dir(['catlog_main_',DatStrT2,'*.txt']);
+                pidT = dir(['catlog_segment_',DatStrT2,'*.txt']);
             end
             if isempty(pidT)
                 pidT = dir([pwd,'log',filesep,'catlog_main_',DatStrT2,'*.txt']);
             end
+            if isempty(pidT)
+                pidT = dir([pwd,'log',filesep,'catlog_segment_',DatStrT2,'*.txt']);
+            end
+            if isempty(pidT)
+                DatStrT2 = [DatStrT2(1:end-2),num2str(str2num(DatStrT2(end-1:end)) - 1)];
+                pidT = dir(['catlog_main_',DatStrT2,'*.txt']);
+                if isempty(pidT)
+                    pidT = dir(['catlog_segment_',DatStrT2,'*.txt']);
+                end
+                if isempty(pidT)
+                    pidT = dir([pwd,'log',filesep,'catlog_main_',DatStrT2,'*.txt']);
+                end
+                if isempty(pidT)
+                    pidT = dir([pwd,'log',filesep,'catlog_segment_',DatStrT2,'*.txt']);
+                end
+            end
+            if isempty(pidT)
+                DatStrT2 = [DatStrT2(1:end-2),num2str(str2num(DatStrT2(end-1:end)) - 1)];
+                pidT = dir(['catlog_main_',DatStrT2,'*.txt']);
+                if isempty(pidT)
+                    pidT = dir(['catlog_segment_',DatStrT2,'*.txt']);
+                end
+                if isempty(pidT)
+                    pidT = dir([pwd,'log',filesep,'catlog_main_',DatStrT2,'*.txt']);
+                end
+                if isempty(pidT)
+                    pidT = dir([pwd,'log',filesep,'catlog_segment_',DatStrT2,'*.txt']);
+                end
+            end
+
             % identifying new Matlab instances PID
             for ipd = 1:size(pidT,1)
                 lines = fileread(pidT(ipd).name);
                 posTini = strfind(lines,'MATLAB PID: ');
-                posTend = posTini + 11;
                 StrinPID = lines(posTini+11:posTini+18);
                 PIDNumb = isstrprop(StrinPID, 'digit');
                 PID(ipd) = str2num(StrinPID(PIDNumb));
@@ -1686,16 +1668,36 @@ handles = guidata(hObject);
                 for ipd = 1:size(pidT,1)
                     if ~ismember(ipd,IxdAvoid)
                         lines = fileread(pidT(ipd).name);
-                        if contains(lines,'CAT12 Segmentation job finished.')
-                            pause(20);
-                            Finished = Finished + 1;
-                            % Cross-platform Process Termination
-                            if ispc
-                                [~,~] = system(sprintf('taskkill /PID %d /F', PID(ipd))); 
-                            else
-                                [~,~] = system(sprintf('kill -9 %d', PID(ipd)));
+%                         infMod = dir(pidT(ipd).name);
+%                         dataM = datetime(infMod.datenum, 'ConvertFrom', 'datenum');
+%                         horaA = datetime('now');
+%                         difMinu = horaA - dataM;
+%                         minuLapse = minutes(difMinu);
+                        
+                        if size(F2Run,1) <= handles.nParallel
+                            if contains(lines,'CAT Segmentation job finished.') || contains(lines,'CAT12 Segmentation job finished.') || contains(lines,'batches will may not work correctly!')% || minuLapse > 5
+                                pause(20);
+                                Finished = Finished + 1;
+                                % Cross-platform Process Termination
+                                if ispc
+                                    [~,~] = system(sprintf('taskkill /PID %d /F', PID(ipd))); 
+                                else
+                                    [~,~] = system(sprintf('kill -9 %d', PID(ipd)));
+                                end
+                                IxdAvoid = [IxdAvoid,ipd];
                             end
-                            IxdAvoid = [IxdAvoid,ipd];
+                        else
+                            if contains(lines,'CAT Segmentation job finished.')  || contains(lines,'CAT12 Segmentation job finished.') || contains(lines,'batches will may not work correctly!')% || minuLapse > 5
+                                pause(20);
+                                Finished = Finished + 1;
+                                % Cross-platform Process Termination
+                                if ispc
+                                    [~,~] = system(sprintf('taskkill /PID %d /F', PID(ipd))); 
+                                else
+                                    [~,~] = system(sprintf('kill -9 %d', PID(ipd)));
+                                end
+                                IxdAvoid = [IxdAvoid,ipd];
+                            end
                         end
                     end
                 end
@@ -1776,14 +1778,14 @@ handles = guidata(hObject);
 
             stru = nifti([pathF 'mri' filesep 's' FWHMv 'mwp1' filesub{k}]);
             Mat = stru.dat(:,:,:);
-            Mat(Mat < Thresh) = 0; %Thresh came from the DATABASE threshold (saved/declared in the file)
+%             Mat(Mat < Thresh) = 0; %Thresh came from the DATABASE threshold (saved/declared in the file)
             Mat = Mat .* MaskMat;
             stru.dat(:,:,:) = Mat;
             create(stru)
             
             stru = nifti([pathF 'mri' filesep 's' FWHMv 'mwp2' filesub{k}]);
             Mat = stru.dat(:,:,:);
-            Mat(Mat < Thresh) = 0;
+%             Mat(Mat < Thresh) = 0;
             Mat = Mat .* MaskMat;
             stru.dat(:,:,:) = Mat;
             create(stru)
