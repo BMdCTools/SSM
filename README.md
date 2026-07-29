@@ -8,7 +8,7 @@
  -------------------------------------------------------------------------
 ***SSM (Single-Subject Morphometry)*** is an open-source framework for individualized assessment of brain structural abnormalities using MRI. The software generates subject-specific maps of white and gray matter alterations and focal cortical dysplasia lesions based on normative models derived from healthy controls, enabling the detection and quantification of morphometric abnormalities at the voxel level. **SSM** supports the evaluation of atrophy, hypertrophy, and focal cortical dysplasia (FCD) recquiring only a high-quality T1-weighted MRI scan (FLAIR image optional). Demographic variables such as age and sex can be incorporated to improve model accuracy but are not required.<br>
 <br>
-The framework features a fully integrated graphical user interface (GUI), providing an accessible workflow without the need for programming expertise. SSM supports both single-subject analyses and automated batch processing of large datasets. Brain tissue metrics are extracted using the [CAT12](https://neuro-jena.github.io/cat/) toolbox, while all harmonization and statistical mapping procedures are implemented within the SSM framework.<br>
+The framework features a fully integrated graphical user interface (GUI), providing an accessible workflow without the need for programming expertise. SSM supports both single-subject analyses and automated batch processing of large datasets. Brain tissue metrics are extracted using the [CAT](https://neuro-jena.github.io/cat/) toolbox, while all harmonization and statistical mapping procedures are implemented within the SSM framework.<br>
 <br>
 **Key Features:**<br>
  - **Advanced Site Harmonization**: Embedded with SSM_combat to eliminate scanner and sequence biases (e.g., T1w vs. FLAIR) using single-subject projection algebra.<br>
@@ -21,7 +21,7 @@ Before running **SSM**, ensure you have the following dependencies installed and
  - **Matlab (The MathWorks Inc.)**: tested with versions from the 2019b to the 2026a<br>
       - **Matlab Parallel Computing Toolbox (optional)**<br>
  - **Statistical Parametric Mapping 25** ([SPM](https://www.fil.ion.ucl.ac.uk/spm/))<br>
- - **Computational Anatomy Toolbox** ([CAT12](https://neuro-jena.github.io/cat/))<br>
+ - **Computational Anatomy Toolbox** ([CAT](https://neuro-jena.github.io/cat/)) Version 3347 (CAT26.0.rc4)<br>
  - [**ComBat**](https://github.com/Jfortin1/ComBatHarmonization/tree/master) Multi-Site Harmonization Tool (Adapted version for SSM **included with SSM code**)<br>
 
 **SSM Installation:**<br>
@@ -29,18 +29,19 @@ One of the goals during the SSM development was to ensure easy installation, bro
 To install SSM, download the SSM folder and add it to your MATLAB path. You may also need to download the SSM database or follow the instructions to create your own database using your own reference images.<br>
 
 **Getting Started:**<br>
-The first step is to install SSM, SPM25 and CAT12 in the MATLAB path.<br>
+The first step is to install SSM, SPM25 and CAT in the MATLAB path.<br>
 1 - Download [SPM](https://www.fil.ion.ucl.ac.uk/spm/);<br>
 <br>
-2 - Download [CAT12](https://neuro-jena.github.io/cat/)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Unzip both downloads and add the uncompressed CAT12 folder to the SPM toolbox folder (spm > toolbox > cat12).<br>
+2 - Download [CAT](https://neuro-jena.github.io/cat/)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;For this version of SSM we recommend the CAT Version 3347 (CAT26.0.rc4)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Unzip both downloads and add the uncompressed CAT folder to the SPM toolbox folder (spm > toolbox > cat).<br>
 <br>
 3a - Download [SSM Database files](https://will-create-soon-76ghe5f6f8edh7) (optional, only if you intend to use the provided SSM normative database instead of creating your own, with your own control images).<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Unzip the DB folder and add it to the SSM-main folder<br>
 <br>
 3b - Or create your own database using the SSM_CreateDatabase function<br>
 <br>
-4 - Add SPM (with CAT12) and SSM to the MATLAB path. For example (replace "/home/user/spm25" with your actual folder path):<br>
+4 - Add SPM (with CAT) and SSM to the MATLAB path. For example (replace "/home/user/spm25" with your actual folder path):<br>
 &nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> addpath(genpath('/home/user/spm25')) <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> addpath(genpath('/home/user/SSM')) <br>
