@@ -21,7 +21,7 @@ Before running **SSM**, ensure you have the following dependencies installed and
  - **Matlab (The MathWorks Inc.)**: tested with versions from the 2019b to the 2026a<br>
       - **Matlab Parallel Computing Toolbox (optional)**<br>
  - **Statistical Parametric Mapping 25** ([SPM](https://www.fil.ion.ucl.ac.uk/spm/))<br>
- - **Computational Anatomy Toolbox** ([CAT](https://neuro-jena.github.io/cat/)) Version 3347 (CAT26.0.rc4)<br>
+ - **Computational Anatomy Toolbox** ([CAT](https://neuro-jena.github.io/cat/)) Version [3347](https://dbm.neuro.uni-jena.de/cat12/?C=M;O=D) (CAT26.0.rc4, from 2026-07-24)<br>
  - [**ComBat**](https://github.com/Jfortin1/ComBatHarmonization/tree/master) Multi-Site Harmonization Tool (Adapted version for SSM **included with SSM code**)<br>
 
 **SSM Installation:**<br>
@@ -33,7 +33,7 @@ The first step is to install SSM, SPM25 and CAT in the MATLAB path.<br>
 1 - Download [SPM](https://www.fil.ion.ucl.ac.uk/spm/);<br>
 <br>
 2 - Download [CAT](https://neuro-jena.github.io/cat/)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;For this version of SSM we recommend the CAT Version 3347 (CAT26.0.rc4)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;For this version of SSM we recommend the CAT Version [3347](https://dbm.neuro.uni-jena.de/cat12/?C=M;O=D) (CAT26.0.rc4)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Unzip both downloads and add the uncompressed CAT folder to the SPM toolbox folder (spm > toolbox > cat).<br>
 <br>
 3a - Download [SSM Database files](https://will-create-soon-76ghe5f6f8edh7) (optional, only if you intend to use the provided SSM normative database instead of creating your own, with your own control images).<br>
