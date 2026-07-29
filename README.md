@@ -37,14 +37,14 @@ The first step is to install SSM, SPM25 and CAT in the MATLAB path.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Unzip both downloads and add the uncompressed CAT folder to the SPM toolbox folder (spm > toolbox > cat).<br>
 <br>
 3a - Download [SSM Database files](https://will-create-soon-76ghe5f6f8edh7) (optional, only if you intend to use the provided SSM normative database instead of creating your own, with your own control images).<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Unzip the DB folder and add it to the SSM-main folder<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Unzip the DB folder and add it to the folder SSM_v1.1 > SSM_Enc_DB<br>
 <br>
 3b - Or create your own database using the SSM_CreateDatabase function<br>
 <br>
 4 - Add SPM (with CAT) and SSM to the MATLAB path. For example (replace "/home/user/spm25" with your actual folder path):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window (for example, replace by your real folder path):<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> addpath(genpath('/home/user/spm25')) <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> addpath(genpath('/home/user/SSM')) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> addpath(genpath('/home/user/SSM-v1.1')) <br>
 &nbsp;&nbsp;&nbsp;&nbsp; You can also add each folder separately using the "Set Path" button in MATLAB (Environment tab), selecting "Add with Subfolders".<br>
 <br>
 
