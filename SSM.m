@@ -67,14 +67,14 @@ ConfigFile = fullfile(handles.SSM_Dir, 'SSM_config.mat');
 if exist(ConfigFile, 'file')
     fprintf('Loading existing configuration file...\n');
     load(ConfigFile);
-    handles.RefDBPath   = RefDBPath;
+    handles.RefDBPath   = [RefDBPath,filesep];
     handles.DBDescrip   = DBDescrip;
     handles.nParallel   = nParallel;
     handles.nParallelPerm = nParallelPerm;
 else
     SSM_Settings()
     load(ConfigFile);
-    handles.RefDBPath   = RefDBPath;
+    handles.RefDBPath   = [RefDBPath,filesep];
     handles.DBDescrip   = DBDescrip;
     handles.nParallel   = nParallel;
     handles.nParallelPerm = nParallelPerm;
@@ -563,11 +563,11 @@ title = uicontrol('Parent',MainFig,'Style','text','Fontweight','bold','Units','N
     handles.PopMenuSmoothK = uicontrol('Parent',MainFig,'Style','popupmenu','Units',...
     'normalized','ForegroundColor',[0 0 0],'Position',[0.04 0.22 0.5 0.03],'FontUnits',...
     'normalized','FontSize',0.5,'String',...
-    {'FWHE = 4 x 4 x 4 mm² (very light)',...
-     'FWHE = 6 x 6 x 6 mm² (light)',...
-     'FWHE = 8 x 8 x 8 mm² (medium)',...
-     'FWHE = 10 x 10 x 10 mm² (restrictive)',...
-     'FWHE = 12 x 12 x 12 mm² (very restrictive)'},'Value',3,...
+    {'FWHE = 4 x 4 x 4 mmï¿½ (very light)',...
+     'FWHE = 6 x 6 x 6 mmï¿½ (light)',...
+     'FWHE = 8 x 8 x 8 mmï¿½ (medium)',...
+     'FWHE = 10 x 10 x 10 mmï¿½ (restrictive)',...
+     'FWHE = 12 x 12 x 12 mmï¿½ (very restrictive)'},'Value',3,...
     'BackgroundColor',[1 1 1],'Visible','on','Enable','on',...
     'Callback',@PopMenuSmoothKf);
 
@@ -923,7 +923,7 @@ handles = guidata(hObject);
     if exist(ConfigFile, 'file')
         fprintf('- Loading existing configuration file...\n\n');
         load(ConfigFile);
-        handles.RefDBPath   = RefDBPath;
+        handles.RefDBPath   = [RefDBPath,filesep];
         handles.DBDescrip   = DBDescrip;
         handles.nParallel   = nParallel;
         handles.nParallelPerm = nParallelPerm;
@@ -931,7 +931,7 @@ handles = guidata(hObject);
         SSM_Settings()
 
         load(ConfigFile);
-        handles.RefDBPath   = RefDBPath;
+        handles.RefDBPath   = [RefDBPath,filesep];
         handles.DBDescrip   = DBDescrip;
         handles.nParallel   = nParallel;
         handles.nParallelPerm = nParallelPerm;
@@ -1090,9 +1090,9 @@ handles = guidata(hObject);
             fprintf('\n');
         end
 
-        load([handles.RefDBPath 'Gene_Ctr.mat']);
-        load([handles.RefDBPath 'Ida_Ctr.mat']);
-        load([handles.RefDBPath 'TIV_Ctr.mat']);
+        load([handles.RefDBPath, 'Gene_Ctr.mat']);
+        load([handles.RefDBPath, 'Ida_Ctr.mat']);
+        load([handles.RefDBPath, 'TIV_Ctr.mat']);
     %     load([SSdir2 filesep 'SurfPara_Ctr.mat']);
 
         VetGenF = Gene_Ctr;
@@ -1115,9 +1115,9 @@ handles = guidata(hObject);
 %         SSdir2 = which('SSM');
 %         SSdir2 = [SSdir2(1:end-5) 'DB' filesep];
 
-        load([handles.RefDBPath 'Gene_Ctr.mat']);
-        load([handles.RefDBPath 'Ida_Ctr.mat']);
-        load([handles.RefDBPath 'TIV_Ctr.mat']);
+        load([handles.RefDBPath,'Gene_Ctr.mat']);
+        load([handles.RefDBPath, 'Ida_Ctr.mat']);
+        load([handles.RefDBPath,'TIV_Ctr.mat']);
     %     load([SSdir2 filesep 'SurfPara_Ctr.mat']);
 
         SelectVet = ones(size(Gene_Ctr,1),1);
@@ -1394,7 +1394,7 @@ handles = guidata(hObject);
 
     %% CAT12 Preproc
     spm_jobman('initcfg');
-
+    cd(pathsub);
     F2Run = {}; %subset of images that were not preprocessed
     kIdx = 1;
     fprintf('- %s\n',datetime);
@@ -4357,8 +4357,8 @@ handles = guidata(hObject);
 %     SSdir2 = which('SSM');
 %     SSdir2 = [SSdir2(1:end-5) 'DB' filesep];
     
-    load([handles.RefDBPath 'Gene_Ctr.mat']);
-    load([handles.RefDBPath 'Ida_Ctr.mat']);
+    load([handles.RefDBPath,filesep,'Gene_Ctr.mat']);
+    load([handles.RefDBPath,filesep,'Ida_Ctr.mat']);
 
     if isequal(get(handles.AllCtrDB,'Value'),1)
         SelectVet = ones(size(Gene_Ctr,1),1);
