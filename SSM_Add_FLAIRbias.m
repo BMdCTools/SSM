@@ -72,7 +72,7 @@ PixDim = StruMat.hdr.pixdim(2:4);
 
 if any(PixDim ~= [1 1 1])
     clear matlabbatch
-    matlabbatch{1}.spm.spatial.coreg.estwrite.ref = {[SSVBMpa,'SSM_DimTmpl.nii']};
+    matlabbatch{1}.spm.spatial.coreg.estwrite.ref = {[SSVBMpa,'AuxFiles',filesep,'SSM_DimTmpl.nii']};
     matlabbatch{1}.spm.spatial.coreg.estwrite.source = {RawT1};
     matlabbatch{1}.spm.spatial.coreg.estwrite.other(1) = {[ax,filesep,'r',bx,cx]};
     matlabbatch{1}.spm.spatial.coreg.estwrite.eoptions.cost_fun = 'nmi';
@@ -272,7 +272,7 @@ b2x2(6) = '2';
 
 SSdir3 = which('SSM');
 SSdir3 = SSdir3(1:end-5);
-ExclMask = nifti([SSdir3,'SSM_Mean_WpMd_Mask.nii']);
+ExclMask = nifti([SSdir3,'AuxFiles',filesep,'SSM_Mean_WpMd_Mask.nii']);
 MaskMat = ExclMask.dat(:,:,:);
 
 average = 0;

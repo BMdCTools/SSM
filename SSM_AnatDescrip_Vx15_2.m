@@ -183,7 +183,7 @@ end
         nofVoxTOT = nnz(roi11);
         RoiVol = nofVoxTOT.*prod(roi11_Stru.hdr.pixdim(2:4));
         fprintf(fideGx,'\tNumber of voxels (image):\t%d\r\n',nofVoxTOT);
-        fprintf(fideGx,'\tImage total volume:\t%d\tmm³\r\n',RoiVol);
+        fprintf(fideGx,'\tImage total volume:\t%d\tmm%s\r\n',RoiVol,char(179));
         fprintf(fideGx,'\tImage global maximum intensity:\t%.2f\r\n',max(roi11ori(:)));
         fprintf(fideGx,'\tImage global maximum label:\t%s\r\n\r\n',CentroidRegionsG);
         
@@ -259,7 +259,7 @@ end
                 fprintf(fideGx,'\t\tCentroid exact label:\t%s \r\n',CentroidRegions{1,1});
                 fprintf(fideGx,'\t\tSub region mean value:\t%.2f \r\n',MeanValue);
                 fprintf(fideGx,'\t\tSub region max value:\t%.2f \r\n',MaxValue);
-                fprintf(fideGx,'\t\tSub region volume:\t%.2fmm³ \r\n\r\n',SubRoiVol);
+                fprintf(fideGx,'\t\tSub region volume:\t%.2fmm%s \r\n\r\n',SubRoiVol,char(179));
                 fprintf(fideGx,'\t\tLabels included in the sub region:\r\n');
                 fprintf(fideGx,'\t\tLabel name\t Intersection voxels (region/label)\t %% of the label in the region\t %% of the region in the label\r\n');
                 
@@ -267,7 +267,7 @@ end
                 AnatT(end+1,:) = {'','Centroid exact label:',CentroidRegions{1,1},'',''};
                 AnatT(end+1,:) = {'','Cluster mean value:',num2str(round(MeanValue*100)/100),'',''};
                 AnatT(end+1,:) = {'','Cluster max value:',num2str(round(MaxValue*100)/100),'',''};
-                AnatT(end+1,:) = {'','Cluster volume (mm³):',num2str(round(SubRoiVol*100)/100),'',''};
+                AnatT(end+1,:) = {'',['Cluster volume (mm',char(179),'):'],num2str(round(SubRoiVol*100)/100),'',''};
                 AnatT(end+1,:) = {'','Labels included in the cluster:','','',''};
                 AnatT(end+1,:) = {'','Label name','Intersection cluster/label (voxels)','% of the label inside the cluster','% of the cluster inside the label'};
                 

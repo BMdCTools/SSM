@@ -28,8 +28,8 @@ function SSM_ResultReport(k,Outdir,handles,AnatT1,AnatT2)
 % ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED  OF THE
 % POSSIBILITY OF SUCH DAMAGE.
 
-fid = fopen([Outdir,'FinalReport.html'],'w+');
-
+% fid = fopen([Outdir,'FinalReport.html'],'w+');
+fid = fopen([Outdir,'FinalReport.html'],'w','n','UTF-8');
 fprintf(fid,'<!DOCTYPE html>\n');
 fprintf(fid,'<html>\n');
 

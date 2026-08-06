@@ -76,23 +76,36 @@ function HEstimf(hObject, eventdata)
 handles = guidata(hObject);
 
     handles.HarmParaAdded = 0;
-    HarAns = questdlg('Are the included test cases composed EXCLUSIVELY of reference subjects for harmonization parameter estimation?','User dataset harmonization definitions','Yes','No','Yes');
+    HarAns = questdlg({'Are the loaded cases composed exclusively of reference subjects used for harmonization parameter estimation?';...
+                       ' ';...
+                       ' - If YES, SSM will estimate the harmonization parameters using all loaded images and apply them to all images.';...
+                       ' ';...
+                       ' - If NO, SSM will prompt you to provide a binary vector identifying the loaded cases to be used for harmonization parameter estimation (e.g., control subjects). The estimated harmonization parameters will then be applied to all loaded images.';
+                       ' '},...
+                       'User dataset harmonization definitions','Yes','No','Yes');
     switch HarAns
         case 'Yes'
         	handles.HarmRef = ones(size(handles.filesub,2),1);
         case 'No'
-            [HarmFile,HarmPath] = uigetfile({'*.xlsx','XLSX files';'*.xls','XLS files'},'Select the XLSX (or XLS) file with a binary vector (column) indicating the reference subjects within the included cases.','MultiSelect','off',handles.pathsub);
+            [HarmFile,HarmPath] = uigetfile({'*.txt;*.xlsx;*.xls;*.csv','Tab Files'},'Select the file with a binary vector (column) indicating the reference subjects within the loaded cases.','MultiSelect','off',handles.pathsub);
 
-            [NUM2,TXT2,RAW2] = xlsread([HarmPath,HarmFile]);
-            RAW2(cellfun(@isempty,RAW2)) = [];
-
+            RAW2 = readmatrix([HarmPath,HarmFile]);
             for xi = 1:size(RAW2,1)
-                if ~isnan(RAW2{xi,1})
-                    handles.HarmRef(xi,1) = RAW2{xi,1};
+                if ~isnan(RAW2(xi,1))
+                    handles.HarmRef(xi,1) = RAW2(xi,1);
                 else
                     handles.HarmRef(xi,1) = [];
                 end
             end
+%             [NUM2,TXT2,RAW2] = xlsread([HarmPath,HarmFile]);
+%             RAW2(cellfun(@isempty,RAW2)) = [];
+%             for xi = 1:size(RAW2,1)
+%                 if ~isnan(RAW2{xi,1})
+%                     handles.HarmRef(xi,1) = RAW2{xi,1};
+%                 else
+%                     handles.HarmRef(xi,1) = [];
+%                 end
+%             end
             if sum(handles.HarmRef) < 10
                 warndlg(['Its recquired more 10 or more reference subjects for harmonization parameter estimation, and your files indicated you have only ',num2str(sum(handles.HarmRef))],'Cancelling harmonization')
                 set(handles.HarmCBf,'Value',0)
