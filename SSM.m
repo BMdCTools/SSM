@@ -681,7 +681,7 @@ title = uicontrol('Parent',MainFig,'Style','text','Fontweight','bold','Units','N
     'normalized','ForegroundColor',[0 0 0],'Position',[0.01 0.04 0.3 0.03],'FontUnits',...
     'normalized','FontSize',0.55,'HorizontalAlignment','Left',...
     'String','Paralellize processings','BackgroundColor',[0.9 0.9 0.9],...
-    'Tooltip',{'Option to paralellize the CAT12 and permutation processings'},...
+    'Tooltip',{'Option to paralellize the CAT and permutation processings'},...
     'Visible','on','Enable','on','Value',1,'Callback',@ParallelCBf);
 
     handles.runb = uicontrol('Parent',MainFig,'Style','pushbutton','Units',...
@@ -1468,7 +1468,7 @@ handles = guidata(hObject);
     % Case there are images to preprocess
     if ~isempty(F2Run)
         fprintf('- %s\n',datetime);
-        fprintf('- Starting CAT12 Preprocessing\n');
+        fprintf('- Starting CAT Preprocessing\n');
         spmDIR = which('spm');
         clear matlabbatch
         matlabbatch{1}.spm.tools.cat.estwrite.data = F2Run;    
@@ -1564,7 +1564,7 @@ handles = guidata(hObject);
         
         if size(F2Run,1) == 1 || get(handles.ParallelCB,'Value') == 0
             fprintf('- %s\n',datetime);
-            fprintf('- Running CAT12 preprocessings...\n');
+            fprintf('- Running CAT preprocessings...\n');
         end
         
         h2 = findall(groot,'Type','figure'); % find cat12 windows
@@ -2102,41 +2102,41 @@ handles = guidata(hObject);
 
             if isequal(get(handles.WMa,'Value'),1)
                 if get(handles.FloaRan,'Value')
-                    [wmmat,SB_Cat_Tmp] = SSM_Decode_Harmon_Tool_WM(wmmat,SB_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,handles.OutDirQ);
+                    [wmmat,SB_Cat_Tmp] = SSM_Decode_Harmon_Tool_WM(wmmat,SB_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,handles.OutDirQ,handles.HarmRef);
                 else
-                    [wmmat,tpt4D_WM] = SSM_Decode_Harmon_Tool_WM(wmmat,tpt4D_WM,AgeVet,GenVet,GTIV,Age_Covar,Gen_Covar,DBTIV,handles.OutDirQ);
+                    [wmmat,tpt4D_WM] = SSM_Decode_Harmon_Tool_WM(wmmat,tpt4D_WM,AgeVet,GenVet,GTIV,Age_Covar,Gen_Covar,DBTIV,handles.OutDirQ,handles.HarmRef);
                 end
             end
 
             if isequal(get(handles.GMa,'Value'),1)
                 if get(handles.FloaRan,'Value')
-                    [gmmat,SC_Cat_Tmp] = SSM_Decode_Harmon_Tool_GM(gmmat,SC_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,handles.OutDirQ);
+                    [gmmat,SC_Cat_Tmp] = SSM_Decode_Harmon_Tool_GM(gmmat,SC_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,handles.OutDirQ,handles.HarmRef);
                 else
-                    [gmmat,tpt4D_GM] = SSM_Decode_Harmon_Tool_GM(gmmat,tpt4D_GM,AgeVet,GenVet,GTIV,Age_Covar,Gen_Covar,DBTIV,handles.OutDirQ);
+                    [gmmat,tpt4D_GM] = SSM_Decode_Harmon_Tool_GM(gmmat,tpt4D_GM,AgeVet,GenVet,GTIV,Age_Covar,Gen_Covar,DBTIV,handles.OutDirQ,handles.HarmRef);
                 end
             end
         else
             if isequal(get(handles.FCD,'Value'),1)
                 if get(handles.FloaRan,'Value')
-                    [gmmat,wmmat,SC_Cat_Tmp,SB_Cat_Tmp] = SSM_Harmon_Tool_FCD(gmmat,wmmat,SC_Cat_Tmp,SB_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,handles.OutDirQ);
+                    [gmmat,wmmat,SC_Cat_Tmp,SB_Cat_Tmp] = SSM_Harmon_Tool_FCD(gmmat,wmmat,SC_Cat_Tmp,SB_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,handles.OutDirQ,handles.HarmRef);
                 else
-                    [gmmat,wmmat,tpt4D_GM,tpt4D_WM] = SSM_Harmon_Tool_FCD(gmmat,wmmat,tpt4D_GM,tpt4D_WM,AgeVet,GenVet,GTIV,Age_Covar,Gen_Covar,DBTIV,handles.OutDirQ);
+                    [gmmat,wmmat,tpt4D_GM,tpt4D_WM] = SSM_Harmon_Tool_FCD(gmmat,wmmat,tpt4D_GM,tpt4D_WM,AgeVet,GenVet,GTIV,Age_Covar,Gen_Covar,DBTIV,handles.OutDirQ,handles.HarmRef);
                 end
             end
 
             if isequal(get(handles.WMa,'Value'),1)
                 if get(handles.FloaRan,'Value')
-                    [wmmat,SB_Cat_Tmp] = SSM_Harmon_Tool_WM(wmmat,SB_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,handles.OutDirQ);
+                    [wmmat,SB_Cat_Tmp] = SSM_Harmon_Tool_WM(wmmat,SB_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,handles.OutDirQ,handles.HarmRef);
                 else
-                    [wmmat,tpt4D_WM] = SSM_Harmon_Tool_WM(wmmat,tpt4D_WM,AgeVet,GenVet,GTIV,Age_Covar,Gen_Covar,DBTIV,handles.OutDirQ);
+                    [wmmat,tpt4D_WM] = SSM_Harmon_Tool_WM(wmmat,tpt4D_WM,AgeVet,GenVet,GTIV,Age_Covar,Gen_Covar,DBTIV,handles.OutDirQ,handles.HarmRef);
                 end
             end
 
             if isequal(get(handles.GMa,'Value'),1)
                 if get(handles.FloaRan,'Value')
-                    [gmmat,SC_Cat_Tmp] = SSM_Harmon_Tool_GM(gmmat,SC_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,handles.OutDirQ);
+                    [gmmat,SC_Cat_Tmp] = SSM_Harmon_Tool_GM(gmmat,SC_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,handles.OutDirQ,handles.HarmRef);
                 else
-                    [gmmat,tpt4D_GM] = SSM_Harmon_Tool_GM(gmmat,tpt4D_GM,AgeVet,GenVet,GTIV,Age_Covar,Gen_Covar,DBTIV,handles.OutDirQ);
+                    [gmmat,tpt4D_GM] = SSM_Harmon_Tool_GM(gmmat,tpt4D_GM,AgeVet,GenVet,GTIV,Age_Covar,Gen_Covar,DBTIV,handles.OutDirQ,handles.HarmRef);
                 end
             end
         end
