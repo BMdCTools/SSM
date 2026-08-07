@@ -1,4 +1,4 @@
-function [wmmatPos,SB_Cat_Tmp] = SSM_Harmon_Tool_WM(wmmat,SB_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,OutDir)
+function [wmmatPos,SB_Cat_Tmp] = SSM_Harmon_Tool_WM(wmmat,SB_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,OutDir,HarmRef)
 %
 % Brunno Machado de Campos
 % University of Campinas, 2026
@@ -57,11 +57,11 @@ function [wmmatPos,SB_Cat_Tmp] = SSM_Harmon_Tool_WM(wmmat,SB_Cat_Tmp,AgeVet,GenV
     if handles.HarmnAdd %load user previously estimated parameter
         load([handles.HarmVarsFp,filesep,handles.HarmVarsF])
         % makes the vetBinMat be in the size of the current SC_Cat_TmpCat
-        vetBinMat2  = bsxfun(@and,vetBinMat(1,:), ones(1,size(testerMatx,1))');
+        vetBinMat2  = bsxfun(@and,vetBinMat(1,:), ones(1,size(testerMatx2,1))');
     end
 
     if handles.HarmEstim % estimates new harm parameters
-        vetBinMat2  = bsxfun(@and,vetBin2, ones(1,size(testerMatx,1))');
+        vetBinMat2  = bsxfun(@and,vetBin2, ones(1,size(testerMatx2,1))');
     end
 
     TtmptResh2 = SB_Cat_TmpCat .* vetBinMat2;

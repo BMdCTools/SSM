@@ -1,4 +1,4 @@
-function [gmmatPos,SC_Cat_Tmp] = SSM_Harmon_Tool_GM(gmmat,SC_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,OutDir)
+function [gmmatPos,SC_Cat_Tmp] = SSM_Harmon_Tool_GM(gmmat,SC_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,OutDir,HarmRef)
 %
 % Brunno Machado de Campos
 % University of Campinas, 2026
@@ -34,7 +34,7 @@ function [gmmatPos,SC_Cat_Tmp] = SSM_Harmon_Tool_GM(gmmat,SC_Cat_Tmp,AgeVet,GenV
 hObj = findobj('Type', 'figure', 'Name', 'Single-Subject Morphometry');
     handles = guidata(hObj);
     CovAgeBin = get(handles.covAge, 'Value');
-    CovGenBin = get(handles.covAge, 'checkbox4');
+    CovGenBin = get(handles.checkbox4, 'Value');
 
 sizeTMP = size(SC_Cat_Tmp);
     
