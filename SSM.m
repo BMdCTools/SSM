@@ -57,6 +57,7 @@ function SSM
 % brunno AT unicamp DOT br
 % University of Campinas, 2026
 
+diary off
 clc;
 cattestedV = '3347';
 SSM_Dir = which('SSM');
@@ -92,18 +93,18 @@ help('SSM');
 
 InsT = ver;
 catE = find(contains({InsT.Name}, 'Computational Anatomy Toolbox', 'IgnoreCase', true));
-catEv = InsT(catE).Version;
 spmE = find(contains({InsT.Name}, 'Statistical Parametric Mapping', 'IgnoreCase', true));
-spmEv = InsT(spmE).Version;
 
 fprintf('Third-Party Prerequisites for SSM:\n');
 if ~isempty(spmE)
+    spmEv = InsT(spmE).Version;
     cprintf([0,0.7,0],' - Statistical Parametric Mapping (SPM): Installed (v%s)\n',spmEv);
 else
     cprintf('err',' - Statistical Parametric Mapping (SPM): Not installed or added to the Matlab path\n');
-    cprintf('err','  -- SSM can not work properly\n');
+    cprintf('err','  -- SSM will not function\n');
 end
 if ~isempty(catE)
+    catEv = InsT(catE).Version;
     if ~isequal(catEv,cattestedV)
         cprintf([1,0.5,0],' - Computational Anatomy Toolbox (CAT): Installed (v%s)\n',catEv);
         cprintf([1,0.5,0],'   -- This SSM version recommends the CAT version: %s\n',cattestedV);
@@ -112,7 +113,7 @@ if ~isempty(catE)
     end
 else
     cprintf('err',' - Computational Anatomy Toolbox (CAT): Not installed or added to the Matlab path\n');
-    cprintf('err','  -- SSM can not work properly\n');
+    cprintf('err','  -- SSM will not function.\n');
 end
 cprintf([0,0.7,0],' - ComBat Multi-Site Harmonization Tool: Installed (Adapted version for SSM)\n');
 
@@ -563,11 +564,11 @@ title = uicontrol('Parent',MainFig,'Style','text','Fontweight','bold','Units','N
     handles.PopMenuSmoothK = uicontrol('Parent',MainFig,'Style','popupmenu','Units',...
     'normalized','ForegroundColor',[0 0 0],'Position',[0.04 0.22 0.5 0.03],'FontUnits',...
     'normalized','FontSize',0.5,'String',...
-    {['FWHE = 4 x 4 x 4 mm',char(179),' (very light)'],...
-     ['FWHE = 6 x 6 x 6 mm',char(179),' (light)'],...
-     ['FWHE = 8 x 8 x 8 mm',char(179),' (medium)'],...
-     ['FWHE = 10 x 10 x 10 mm',char(179),' (restrictive)'],...
-     ['FWHE = 12 x 12 x 12 mm',char(179),' (very restrictive)']},'Value',3,...
+    {['FWHM = 4 x 4 x 4 mm',char(179),' (very light)'],...
+     ['FWHM = 6 x 6 x 6 mm',char(179),' (light)'],...
+     ['FWHM = 8 x 8 x 8 mm',char(179),' (medium)'],...
+     ['FWHM = 10 x 10 x 10 mm',char(179),' (restrictive)'],...
+     ['FWHM = 12 x 12 x 12 mm',char(179),' (very restrictive)']},'Value',3,...
     'BackgroundColor',[1 1 1],'Visible','on','Enable','on',...
     'Callback',@PopMenuSmoothKf);
 
@@ -913,6 +914,8 @@ guidata(hObject, handles);
 end
 
 function runbf(hObject, eventdata)%, handles)
+global FS cat cat_bg catversion cprintferror defaults deffile expert oldStyles sc sz x2w
+
 handles = guidata(hObject);
     fprintf('\n\n##############################################\n');
     fprintf('- Procedures started at: %s\n\n',datetime);
@@ -1158,7 +1161,7 @@ handles = guidata(hObject);
             fprintf('\n');
 
             if get(handles.FixRan,'Value')
-                SC_Cat_Tmp = cat(4,SC_Tplate1,SC_Tplate2,SC_Tplate3);
+                SC_Cat_Tmp = builtin('cat',4,SC_Tplate1,SC_Tplate2,SC_Tplate3);
                 xlo=1;
                 fprintf('- Selecting Defined Controls\n')
                 fprintf('\n');
@@ -1200,7 +1203,7 @@ handles = guidata(hObject);
                 fprintf('\n');
 
             else
-                SC_Cat_Tmp = cat(4,SC_Tplate1,SC_Tplate2,SC_Tplate3);
+                SC_Cat_Tmp = builtin('cat',4,SC_Tplate1,SC_Tplate2,SC_Tplate3);
                 SC_Cat_Tmp = single(SC_Cat_Tmp);
 
                 if get(handles.radiobutton15,'Value')
@@ -1235,7 +1238,7 @@ handles = guidata(hObject);
             fprintf('\n')
 
             if get(handles.FixRan,'Value')
-                SB_Cat_Tmp = cat(4,SB_Tplate1,SB_Tplate2,SB_Tplate3);
+                SB_Cat_Tmp = builtin('cat',4,SB_Tplate1,SB_Tplate2,SB_Tplate3);
                 xlo=1;
                 for j = 1:size(SB_Cat_Tmp,4)
                     if isequal(SelectVet(j),1)
@@ -1273,7 +1276,7 @@ handles = guidata(hObject);
                 fprintf('\n');
 
             else
-                SB_Cat_Tmp = cat(4,SB_Tplate1,SB_Tplate2,SB_Tplate3);
+                SB_Cat_Tmp = builtin('cat',4,SB_Tplate1,SB_Tplate2,SB_Tplate3);
                 SB_Cat_Tmp = single(SB_Cat_Tmp);
 
                 if get(handles.radiobutton15,'Value')
@@ -1318,7 +1321,7 @@ handles = guidata(hObject);
             fprintf('\n')
 
             if get(handles.FixRan,'Value')
-                SC_Cat_Tmp = cat(4,SC_Tplate1,SC_Tplate2,SC_Tplate3);
+                SC_Cat_Tmp = builtin('cat',4,SC_Tplate1,SC_Tplate2,SC_Tplate3);
                 xlo=1;
                 fprintf('- Selecting Defined Controls\n')
                 for j = 1:size(SC_Cat_Tmp,4)
@@ -1329,7 +1332,7 @@ handles = guidata(hObject);
                 end
                 tpt4D_GM = single(tpt4D_GM);
 
-                SB_Cat_Tmp = cat(4,SB_Tplate1,SB_Tplate2,SB_Tplate3);
+                SB_Cat_Tmp = builtin('cat',4,SB_Tplate1,SB_Tplate2,SB_Tplate3);
                 xlo=1;
                 for j = 1:size(SB_Cat_Tmp,4)
                     if isequal(SelectVet(j),1)
@@ -1367,8 +1370,8 @@ handles = guidata(hObject);
                 fprintf('\n');
 
             else
-                SC_Cat_Tmp = cat(4,SC_Tplate1,SC_Tplate2,SC_Tplate3);
-                SB_Cat_Tmp = cat(4,SB_Tplate1,SB_Tplate2,SB_Tplate3);
+                SC_Cat_Tmp = builtin('cat',4,SC_Tplate1,SC_Tplate2,SC_Tplate3);
+                SB_Cat_Tmp = builtin('cat',4,SB_Tplate1,SB_Tplate2,SB_Tplate3);
 
                 SC_Cat_Tmp = single(SC_Cat_Tmp);
                 SB_Cat_Tmp = single(SB_Cat_Tmp);
@@ -1397,6 +1400,13 @@ handles = guidata(hObject);
     cd(pathsub);
     F2Run = {}; %subset of images that were not preprocessed
     kIdx = 1;
+    
+    spm('defaults','fmri');
+    spm_jobman('initcfg');
+    cat_defaults;
+    global cat
+    cat.extopts.expertgui = 1;
+    
     fprintf('- %s\n',datetime);
     fprintf('- Verifying recquirements and performing basic preprocessing: Case 0001 (000%%)');
     for k = 1:size(filesub,2)
@@ -1470,122 +1480,349 @@ handles = guidata(hObject);
         fprintf('- %s\n',datetime);
         fprintf('- Starting CAT Preprocessing\n');
         spmDIR = which('spm');
+        catDir2 = which('cat12');
+        catDir2 = catDir2(1:end-7);
         clear matlabbatch
         matlabbatch{1}.spm.tools.cat.estwrite.data = F2Run;    
         matlabbatch{1}.spm.tools.cat.estwrite.data_wmh = {''};
-
-        if get(handles.ParallelCB,'Value') && size(F2Run,1) > 1
+        
+        NotAvoidProblems = get(handles.ParallelCB,'Value'); %Not avoinding problems / trying CAT parallem processings
+%         NotAvoidProblems = 0; % Avoinding problems / skipping CAT parallel processings
+        
+        if NotAvoidProblems && size(F2Run,1) > 1 && handles.nParallel > 1
             fprintf('- Creating parallel process\n');
             matlabbatch{1}.spm.tools.cat.estwrite.nproc = handles.nParallel;
         else
             matlabbatch{1}.spm.tools.cat.estwrite.nproc = 0;
         end
-
-        matlabbatch{1}.spm.tools.cat.estwrite.useprior = '';
-        matlabbatch{1}.spm.tools.cat.estwrite.opts.tpm = {[spmDIR(1:end-5) filesep 'tpm' filesep 'TPM.nii']};
-        matlabbatch{1}.spm.tools.cat.estwrite.opts.affreg = 'mni';
-        matlabbatch{1}.spm.tools.cat.estwrite.opts.biasstr = 0.75;
-        matlabbatch{1}.spm.tools.cat.estwrite.opts.accstr = 0.75; 
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.restypes.fixed = [1 0.02];
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.setCOM = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.APP = 1070;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.affmod = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.NCstr = -Inf;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.LASstr = 0.5;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.LASmyostr = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.gcutstr = 2;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.cleanupstr = 0.5;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.BVCstr = 0.5;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.WMHC = 2;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.SLC = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.mrf = 1;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.regmethod.shooting.regstr = 0.5;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.vox = 1.5;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.bb = 12;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.SRP = 22;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.pbtres = 0.5;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.vdist = 2;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.experimental = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.new_release = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.lazy = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.ignoreErrors = 1;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.verb = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.print = 1;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.BIDS.BIDSno = 1;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.surface = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.surf_measures = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.noROI = struct([]);
-        matlabbatch{1}.spm.tools.cat.estwrite.output.sROImenu.noROI = struct([]);
-        matlabbatch{1}.spm.tools.cat.estwrite.output.GM.native = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.GM.warped = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.GM.mod = 1;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.GM.dartel = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.WM.native = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.WM.warped = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.WM.mod = 1;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.WM.dartel = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.native = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.warped = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.mod = 1;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.dartel = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ct.native = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ct.warped = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.ct.dartel = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.pp.native = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.pp.warped = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.pp.dartel = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.native = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.warped = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.mod = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.dartel = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.SL.native = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.SL.warped = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.SL.mod = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.SL.dartel = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.native = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.warped = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.mod = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.dartel = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.atlas.native = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.label.native = 1;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.label.warped = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.label.dartel = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.labelnative = 1;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.bias.native = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.bias.warped = 1;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.bias.dartel = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.las.native = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.las.warped = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.las.dartel = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.jacobianwarped = 0;
-        matlabbatch{1}.spm.tools.cat.estwrite.output.warps = [1 1];
-        matlabbatch{1}.spm.tools.cat.estwrite.output.rmat = 0;
-        cat12('expert'); % Cat12 recquires it to run in "expert mode"
         
-        if size(F2Run,1) == 1 || get(handles.ParallelCB,'Value') == 0
+%         matlabbatch{1}.spm.tools.cat.estwrite.useprior = '';
+%         matlabbatch{1}.spm.tools.cat.estwrite.opts.tpm = {[spmDIR(1:end-5) filesep 'tpm' filesep 'TPM.nii']};
+%         matlabbatch{1}.spm.tools.cat.estwrite.opts.affreg = 'mni';
+%         matlabbatch{1}.spm.tools.cat.estwrite.opts.biasacc = 0.5;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.restypes.fixed = [1 0.02];
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.setCOM = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.APP = 1070;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.affmod = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.LASstr = 0.5;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.LASmyostr = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.gcutstr = 2;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.WMHC = 2;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.shooting.shootingtpm = {[catDir2,filesep,'templates_MNI152NLin2009cAsym',filesep,'Template_0_GS.nii']};
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.shooting.regstr = 0.5;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.vox = 1.5;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.bb = 12;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.SRP = 22;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.ignoreErrors = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.BIDS.BIDSno = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.surface = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.surf_measures = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.noROI = struct([]);
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.sROImenu.noROI = struct([]);
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.GM.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.GM.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.GM.mod = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.GM.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WM.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WM.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WM.mod = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WM.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.mod = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.ct.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.ct.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.ct.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.pp.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.pp.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.pp.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.mod = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.SL.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.SL.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.SL.mod = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.SL.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.mod = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.atlas.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.label.native = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.label.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.label.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.labelnative = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.bias.warped = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.las.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.las.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.las.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.jacobianwarped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.warps = [1 1];
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.rmat = 0;        
+        
+
+            matlabbatch{1}.spm.tools.cat.estwrite.useprior = '';
+            matlabbatch{1}.spm.tools.cat.estwrite.opts.tpm = {[spmDIR(1:end-5) filesep 'tpm' filesep 'TPM.nii']};
+            matlabbatch{1}.spm.tools.cat.estwrite.opts.affreg = 'mni';
+            matlabbatch{1}.spm.tools.cat.estwrite.opts.biasstr = 0.75;
+            matlabbatch{1}.spm.tools.cat.estwrite.opts.accstr = 0.75; 
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.restypes.fixed = [1 0.02];
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.setCOM = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.APP = 1070;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.affmod = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.NCstr = -Inf;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.LASstr = 0.5;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.LASmyostr = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.gcutstr = 2;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.cleanupstr = 0.5;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.BVCstr = 0.5;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.WMHC = 2;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.SLC = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.mrf = 1;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.WMHtpm = {[catDir2,filesep,'templates_MNI152NLin2009cAsym' filesep 'cat_wmh_miccai2017.nii']};
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.BVtpm = {[catDir2,filesep, 'templates_MNI152NLin2009cAsym' filesep 'cat_bloodvessels.nii']};
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.SLtpm = {[catDir2,filesep,'templates_MNI152NLin2009cAsym' filesep 'cat_strokelesions_ATLAS303.nii']};
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.regmethod.shooting.shootingtpm = {[catDir2,filesep,'templates_MNI152NLin2009cAsym' filesep 'Template_0_GS.nii']};
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.regmethod.shooting.regstr = 0.5;
+%             matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.vox = 1.5;
+%             matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.bb = 12;
+%             matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.SRP = 22;
+%             matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.pbtres = 0.5;
+%             matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.vdist = 2;
+%             matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.pbtres = 0.5;
+% %             matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.pbtmethod = 'pbtsimple';
+% %             matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.SRP = 22;
+% %             matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.reduce_mesh = 1;
+% %             matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.vdist = 2;
+% %             matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.scale_cortex = 0.7;
+% %             matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.add_parahipp = 0.1;
+% %             matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.close_parahipp = 1;
+%             matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.experimental = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.new_release = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.lazy = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.ignoreErrors = 1;
+%             matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.verb = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.print = 1;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.BIDS.BIDSno = 1;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.surface = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.surf_measures = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.neuromorphometrics = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.lpba40 = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.cobra = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.hammers = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.thalamus = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.thalamic_nuclei = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.suit = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.ibsr = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.aal3 = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.mori = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.anatomy3 = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.julichbrain = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.Tian_Subcortex_S4_7T = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.Schaefer2018_100Parcels_17Networks_order = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.Schaefer2018_200Parcels_17Networks_order = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.Schaefer2018_400Parcels_17Networks_order = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.Schaefer2018_600Parcels_17Networks_order = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.ownatlas = {''};
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.GM.native = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.GM.warped = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.GM.mod = 1;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.GM.dartel = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.WM.native = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.WM.warped = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.WM.mod = 1;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.WM.dartel = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.native = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.warped = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.mod = 1;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.dartel = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ct.native = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ct.warped = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.ct.dartel = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.pp.native = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.pp.warped = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.pp.dartel = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.native = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.warped = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.mod = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.dartel = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.SL.native = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.SL.warped = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.SL.mod = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.SL.dartel = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.native = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.warped = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.mod = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.dartel = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.atlas.native = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.label.native = 1;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.label.warped = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.label.dartel = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.labelnative = 1;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.bias.native = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.bias.warped = 1;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.bias.dartel = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.las.native = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.las.warped = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.las.dartel = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.jacobianwarped = 0;
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.warps = [1 1];
+%             matlabbatch{1}.spm.tools.cat.estwrite.output.rmat = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.vox = 1.5;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.bb = 12;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.SRP = 22;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.pbtres = 0.5;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.vdist = 2;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.experimental = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.new_release = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.lazy = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.ignoreErrors = 1;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.verb = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.print = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.BIDS.BIDSno = 1;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.surface = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.surf_measures = 1;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.noROI = struct([]);
+            matlabbatch{1}.spm.tools.cat.estwrite.output.sROImenu.noROI = struct([]);
+            matlabbatch{1}.spm.tools.cat.estwrite.output.GM.native = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.GM.warped = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.GM.mod = 1;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.GM.dartel = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.WM.native = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.WM.warped = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.WM.mod = 1;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.WM.dartel = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.native = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.warped = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.mod = 1;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.dartel = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.ct.native = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.ct.warped = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.ct.dartel = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.pp.native = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.pp.warped = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.pp.dartel = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.native = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.warped = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.mod = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.dartel = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.SL.native = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.SL.warped = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.SL.mod = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.SL.dartel = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.native = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.warped = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.mod = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.dartel = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.atlas.native = 1;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.label.native = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.label.warped = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.label.dartel = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.labelnative = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.bias.native = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.bias.warped = 1;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.bias.dartel = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.las.native = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.las.warped = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.las.dartel = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.jacobianwarped = 0;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.warps = [1 1];
+            matlabbatch{1}.spm.tools.cat.estwrite.output.rmat = 0;
+            cat12('expert'); % Cat12 recquires it to run in "expert mode"
+%             load('cat12_expert_globals.mat');
+
+        
+%         matlabbatch{1}.spm.tools.cat.estwrite.useprior = '';
+%         matlabbatch{1}.spm.tools.cat.estwrite.opts.tpm = {[spmDIR(1:end-5) filesep 'tpm' filesep 'TPM.nii']};
+%         matlabbatch{1}.spm.tools.cat.estwrite.opts.affreg = 'mni';
+%         matlabbatch{1}.spm.tools.cat.estwrite.opts.biasstr = 0.75;
+%         matlabbatch{1}.spm.tools.cat.estwrite.opts.accstr = 0.75; 
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.restypes.fixed = [1 0.02];
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.setCOM = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.APP = 1070;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.affmod = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.NCstr = -Inf;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.LASstr = 0.5;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.LASmyostr = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.gcutstr = 2;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.cleanupstr = 0.5;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.BVCstr = 0.5;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.WMHC = 2;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.SLC = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.mrf = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.regmethod.shooting.regstr = 0.5;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.vox = 1.5;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.bb = 12;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.SRP = 22;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.pbtres = 0.5;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.vdist = 2;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.experimental = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.new_release = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.lazy = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.ignoreErrors = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.verb = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.print = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.BIDS.BIDSno = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.surface = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.surf_measures = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.noROI = struct([]);
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.sROImenu.noROI = struct([]);
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.GM.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.GM.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.GM.mod = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.GM.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WM.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WM.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WM.mod = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WM.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.mod = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.CSF.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.ct.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.ct.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.ct.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.pp.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.pp.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.pp.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.mod = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.WMH.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.SL.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.SL.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.SL.mod = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.SL.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.mod = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.atlas.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.label.native = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.label.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.label.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.labelnative = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.bias.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.bias.warped = 1;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.bias.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.las.native = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.las.warped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.las.dartel = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.jacobianwarped = 0;
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.warps = [1 1];
+%         matlabbatch{1}.spm.tools.cat.estwrite.output.rmat = 0;
+%          cat12('expert'); % Cat12 recquires it to run in "expert mode"
+%         load('cat12_expert_globals.mat');
+        
+        if size(F2Run,1) == 1 || get(handles.ParallelCB,'Value') == 0 || handles.nParallel == 1
             fprintf('- %s\n',datetime);
             fprintf('- Running CAT preprocessings...\n');
         end
         
         h2 = findall(groot,'Type','figure'); % find cat12 windows
         fnames = get(h2, 'Tag');
-        set(h2(1),'WindowState','minimized');
-        set(h2(2),'WindowState','minimized');
-        set(h2(3),'WindowState','minimized');
-
-        DatStrT2 = datestr(now, 'yyyymmdd-HHMM');
-%         
-        if size(F2Run,1) == 1 || get(handles.ParallelCB,'Value') == 0
-            SSM_run_batch(matlabbatch);
-        else
-            spm_jobman('run',matlabbatch) % executes cat12 with parallel jobs            
-        end
-
-%         if get(handles.ParallelCB,'Value') && size(F2Run,1) > 1
-%             spm_jobman('run',matlabbatch) % executes cat12 with parallel jobs
-%         else
-%             SSM_run_batch(matlabbatch);
-%         end
 
         % All this needed only to safely close cat12 openned windows
         idx2close = [];
@@ -1602,12 +1839,23 @@ handles = guidata(hObject);
         try
             close(h2(idx2close));
         end
+%         set(h2(1),'WindowState','minimized');
+%         set(h2(2),'WindowState','minimized');
+%         set(h2(3),'WindowState','minimized');
+
+        DatStrT2 = datestr(now, 'yyyymmdd-HHMM');
+        if size(F2Run,1) == 1 || get(handles.ParallelCB,'Value') == 0 || handles.nParallel == 1
+            SSM_run_batch(matlabbatch);
+        else
+            spm_jobman('run',matlabbatch) % executes cat12 with parallel jobs            
+        end
+
 
         % As Cat12 parallel jobs runs in separately Matlab instances, this
         % instance will be free to continue even before the preprocessing
         % finish. The following while loop is necessary to wait for the
         % preprocessing end
-        if get(handles.ParallelCB,'Value')
+        if get(handles.ParallelCB,'Value') && handles.nParallel > 1
             Allfiles = matlab.desktop.editor.getAll;
             pause(2);
             pidT = dir(['catlog_main_',DatStrT2,'*.txt']);
@@ -1718,7 +1966,7 @@ handles = guidata(hObject);
 %             fprintf('- Waiting for parallel process to finish...\n');
         end
     end
-    if size(F2Run,1) == 1 || handles.nParallel == 0
+    if size(F2Run,1) == 1 || handles.nParallel <= 1
         fprintf('- Done\n');
     end
     fprintf('\n');
