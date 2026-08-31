@@ -88,6 +88,8 @@ else
 end
 clc;
 
+handles.EM_Teste = 0; % beta for MultipleSclerosis Lesions
+
 fprintf('SSM: %s\n',datetime);
 help('SSM');
 
@@ -917,6 +919,9 @@ function runbf(hObject, eventdata)%, handles)
 global FS cat cat_bg catversion cprintferror defaults deffile expert oldStyles sc sz x2w
 
 handles = guidata(hObject);
+
+EM_Teste = handles.EM_Teste;
+
     fprintf('\n\n##############################################\n');
     fprintf('- Procedures started at: %s\n\n',datetime);
     DatStrT = datestr(now, 'yymmddHHMM');
@@ -1035,7 +1040,13 @@ handles = guidata(hObject);
 
     if get(handles.GMa,'Value'); tissue = 'GM'; end
     if get(handles.WMa,'Value'); tissue = 'WM'; end
-    if get(handles.FCD,'Value'); tissue = 'FCD'; end
+    if get(handles.FCD,'Value')
+        if EM_Teste
+            tissue = 'MEL';
+        else
+            tissue = 'FCD';
+        end
+    end
 
     TextF = tissue;
 
@@ -1716,7 +1727,7 @@ handles = guidata(hObject);
             matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.warped = 0;
             matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.mod = 0;
             matlabbatch{1}.spm.tools.cat.estwrite.output.TPMC.dartel = 0;
-            matlabbatch{1}.spm.tools.cat.estwrite.output.atlas.native = 1;
+            matlabbatch{1}.spm.tools.cat.estwrite.output.atlas.native = 0;
             matlabbatch{1}.spm.tools.cat.estwrite.output.label.native = 0;
             matlabbatch{1}.spm.tools.cat.estwrite.output.label.warped = 0;
             matlabbatch{1}.spm.tools.cat.estwrite.output.label.dartel = 0;
@@ -2437,10 +2448,15 @@ handles = guidata(hObject);
                     end
                     fprintf('\n');
                 end
-                
-                FWER_thrIn = SSM_Decode_DB_FCD_FixRan_CTRs_Vx15(tpt4D_GM,tpt4D_WM,...
-                                get(handles.covAge,'Value'),get(handles.checkbox4,'Value'),...
-                                Age_Covar,Gen_Covar,DBTIV);
+                if ~EM_Teste
+                    FWER_thrIn = SSM_Decode_DB_FCD_FixRan_CTRs_Vx15(tpt4D_GM,tpt4D_WM,...
+                                    get(handles.covAge,'Value'),get(handles.checkbox4,'Value'),...
+                                    Age_Covar,Gen_Covar,DBTIV);
+                else
+                    FWER_thrIn = SSM_Decode_DB_EM_FixRan_CTRs_Vx15(tpt4D_GM,tpt4D_WM,...
+                                    get(handles.covAge,'Value'),get(handles.checkbox4,'Value'),...
+                                    Age_Covar,Gen_Covar,DBTIV);
+                end
                 fprintf(fidThres,'%.1f',FWER_thrIn);
                 fclose(fidThres);
             else
@@ -2960,7 +2976,7 @@ handles = guidata(hObject);
             end
 
             if handles.Run_Encode_DB
-                % The SSM_Decode_DB_FCD_Vx15 function performs regressions of
+                % The SSM_Decode_GWM_FCD_Vx15 function performs regressions of
                 % covariates and the final test,
                 % contrasting parameters to identify the lesion. In the case 
                 % ThreshPrev is 0 (no previous threshold estimated with
@@ -3552,7 +3568,7 @@ handles = guidata(hObject);
             tmpt = tpt4D_WM; 
 
             if handles.Run_Encode_DB
-                % The SSM_Decode_DB_FCD_Vx15 function performs regressions of
+                % The SSM_Decode_GWM_FCD_Vx15 function performs regressions of
                 % covariates and the final test,
                 % contrasting parameters to identify the lesion. In the case 
                 % ThreshPrev is 0 (no previous threshold estimated with
@@ -4007,24 +4023,24 @@ handles = guidata(hObject);
 
             if get(handles.AddFlair,'Value')
                 if get(handles.HarmCB,'Value')
-                    FCDdir = [pathF,filesep,'FCD_Morph-SK',FWHMv,'-Fla-Harm_',DatStrT,filesep];
+                    FCDdir = [pathF,filesep,tissue,'_Morph-SK',FWHMv,'-Fla-Harm_',DatStrT,filesep];
                     fke = nifti([pathF 'mri' filesep 'hfs' FWHMv 'mwp1' filesub{k}]); %reading segmented image
                     fke2 = nifti([pathF 'mri' filesep 'hfs' FWHMv 'mwp2' filesub{k}]); %reading segmented image
                     UseHarm = 1;
                 else
-                    FCDdir = [pathF,filesep,'FCD_Morph-SK',FWHMv,'-Fla_',DatStrT,filesep];
+                    FCDdir = [pathF,filesep,tissue,'_Morph-SK',FWHMv,'-Fla_',DatStrT,filesep];
                     fke = nifti([pathF 'mri' filesep 'fs' FWHMv 'mwp1' filesub{k}]); %reading segmented image
                     fke2 = nifti([pathF 'mri' filesep 'fs' FWHMv 'mwp2' filesub{k}]); %reading segmented image
                     UseHarm = 0;
                 end
             else
                 if get(handles.HarmCB,'Value')
-                    FCDdir = [pathF,filesep,'FCD_Morph-SK',FWHMv,'-Harm_',DatStrT,filesep];
+                    FCDdir = [pathF,filesep,tissue,'_Morph-SK',FWHMv,'-Harm_',DatStrT,filesep];
                     fke = nifti([pathF 'mri' filesep 'hs' FWHMv 'mwp1' filesub{k}]); %reading segmented image
                     fke2 = nifti([pathF 'mri' filesep 'hs' FWHMv 'mwp2' filesub{k}]); %reading segmented image
                     UseHarm = 1;
                 else
-                    FCDdir = [pathF,filesep,'FCD_Morph-SK',FWHMv,'_',DatStrT,filesep];
+                    FCDdir = [pathF,filesep,tissue,'_Morph-SK',FWHMv,'_',DatStrT,filesep];
                     fke = nifti([pathF 'mri' filesep 's' FWHMv 'mwp1' filesub{k}]); %reading segmented image
                     fke2 = nifti([pathF 'mri' filesep 's' FWHMv 'mwp2' filesub{k}]); %reading segmented image
                     UseHarm = 0;
@@ -4059,19 +4075,33 @@ handles = guidata(hObject);
                 if get(handles.covAge,'Value') && get(handles.checkbox4,'Value')
                 % For the case age AND sex are covariates
                       if PrevThresh
-                          % For the case there is previously estimated threshold
-                          [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
-                                                                        get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
-                                                                        SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
+                          if ~EM_Teste
+                              % For the case there is previously estimated threshold
+                              [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                            get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
+                                                                            SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
+                          else
+                              % For the case there is previously estimated threshold
+                              [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_EM_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                            get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
+                                                                            SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
+                          end
                       else
                           % For the case there is not previously estimated threshold
                           % in this case, this very specific permutation
                           % condition will be stored and for further analysis,
                           % this condition will not recquired a permutation
                           % again.
-                          [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
-                                                                        get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
-                                                                        SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
+                          if ~EM_Teste
+                              [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                            get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
+                                                                            SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
+                          else
+                              % For the case there is previously estimated threshold
+                              [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                            get(handles.checkbox4,'Value'),Age_Covar,agePat,Gen_Covar,GenPat,DBTIV,...
+                                                                            SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
+                          end
 
                           fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                           fprintf(fidThres,'%.1f',FWER_thr);
@@ -4083,13 +4113,25 @@ handles = guidata(hObject);
                         if get(handles.covAge,'Value')
                         % For the case only age is covariate
                               if PrevThresh
-                                  [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
-                                                                                get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
-                                                                                SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
+                                  if ~EM_Teste
+                                      [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                                    get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
+                                                                                    SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
+                                  else
+                                      [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_EM_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                                    get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
+                                                                                    SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
+                                  end
                               else
-                                  [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
-                                                                                get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
-                                                                                SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
+                                  if ~EM_Teste
+                                      [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                                    get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
+                                                                                    SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
+                                  else
+                                      [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_EM_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                                    get(handles.checkbox4,'Value'),Age_Covar,agePat,[],[],DBTIV,...
+                                                                                    SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
+                                  end
 
                                   fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f',FWER_thr);
@@ -4099,13 +4141,25 @@ handles = guidata(hObject);
                         if get(handles.checkbox4,'Value')
                         % For the case only sex is covariate
                               if PrevThresh
-                                  [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
-                                                                                get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
-                                                                                SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
+                                  if ~EM_Teste
+                                      [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                                    get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
+                                                                                    SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
+                                  else
+                                      [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_EM_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                                    get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
+                                                                                    SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
+                                  end
                               else
-                                  [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
-                                                                                get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
-                                                                                SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
+                                  if ~EM_Teste
+                                      [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                                    get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
+                                                                                    SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
+                                  else
+                                      [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_EM_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                                    get(handles.checkbox4,'Value'),[],[],Gen_Covar,GenPat,DBTIV,...
+                                                                                    SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
+                                  end
 
                                   fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                                   fprintf(fidThres,'%.1f',FWER_thr);
@@ -4115,13 +4169,25 @@ handles = guidata(hObject);
                     else
                     % for the case neither age or sex were included as covariates
                           if PrevThresh
-                              [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
-                                                                            get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
-                                                                            SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
+                              if ~EM_Teste
+                                  [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                                get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
+                                                                                SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
+                              else
+                                  [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_EM_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                                get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
+                                                                                SubjTIV,get(handles.FixRan,'Value'),ThreshPrev,UseHarm);
+                              end
                           else
-                              [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
-                                                                            get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
-                                                                            SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
+                              if ~EM_Teste
+                                  [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_FCD_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                                get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
+                                                                                SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
+                              else
+                                  [Iteract_Tmap_Thr,Iteract_Tmap,FWER_thr] = SSM_Decode_DB_EM_Vx15(tmpt,tmpt2,fkeep,fkeep2,get(handles.covAge,'Value'),...
+                                                                                get(handles.checkbox4,'Value'),[],[],[],[],DBTIV,...
+                                                                                SubjTIV,get(handles.FixRan,'Value'),FWER_thrIn,UseHarm);
+                              end
 
                               fidThres = fopen([handles.SSM_Dir,'TmpDir',filesep,TextF,'.txt'],'w+');
                               fprintf(fidThres,'%.1f',FWER_thr);
@@ -4271,30 +4337,30 @@ handles = guidata(hObject);
 
             % Creating the final thresholded z_scored map
             fstru2 = fke;
-            fstru2.dat.fname = [FCDdir filesub{k}(1:end-4),'_FCD_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii'];
+            fstru2.dat.fname = [FCDdir filesub{k}(1:end-4),'_',tissue,'_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii'];
             fstru2.dat.dim = [size(fkeep,1) size(fkeep,2) size(fkeep,3)];
             fstru2.dat(:,:,:) = threshZF .* IncMask;
             create(fstru2); % Creating 4D file with the interactional maps
 
             clear tmpt tmpt2 Zsc_map Zsc_map2 Pmap Pmap2 threshZ threshZ2 threshZF P_map3D P_map3D2 P_map3D_Log P_map3D_Log2
 
-            imgOvl = [FCDdir filesub{k}(1:end-4),'_FCD_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii'];
+            imgOvl = [FCDdir filesub{k}(1:end-4),'_',tissue,'_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii'];
 
             fprintf('- Performing anatomical description\n');
             [~,AnatT] = SSM_AnatDescrip_Vx15_2({imgOvl},FCDdir,[filesub{k}(1:end-4),...
-                '_AAL_FCD_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',...
+                '_AAL_',tissue,'_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',...
                 num2str(extThre),'vx_s',FWHMv,'.txt'],'map','AAL3');
 
             fprintf('- Creating slice view image with the results\n');
             imgBack = [pathF 'mri' filesep 'wm' filesub{k}];
             gunzip([imgBack,'.gz']);
-            SSM_SliceView(imgBack,imgOvl,0.01,0,'Axial','hot','best','FCD',...
-                [filesub{k}(1:end-4),'_SliceView_FCD_map_Zsc',num2str(round(FWER_thr*10)/10),...
+            SSM_SliceView(imgBack,imgOvl,0.01,0,'Axial','hot','best',tissue,...
+                [filesub{k}(1:end-4),'_SliceView_',tissue,'_map_Zsc',num2str(round(FWER_thr*10)/10),...
                 '_ClustSz',num2str(extThre),'vx_s',FWHMv,'.png'],FCDdir);
 
             imgOv23 = [FCDdir filesub{k}(1:end-4),'_Interactional_Zmap_s',FWHMv,'.nii'];
-            SSM_SliceView(imgBack,imgOv23,1,0,'Axial','hot','best','FCD',...
-                [filesub{k}(1:end-4),'_SliceView_FCD_map_Unthresholded_s',FWHMv,'.png'],FCDdir);
+            SSM_SliceView(imgBack,imgOv23,1,0,'Axial','hot','best',tissue,...
+                [filesub{k}(1:end-4),'_SliceView_',tissue,'_map_Unthresholded_s',FWHMv,'.png'],FCDdir);
 
             % Now, the deformation of the MNI ROI into the registered (or not)
             % native T1 space
@@ -4328,7 +4394,7 @@ handles = guidata(hObject);
             PixDim = StruMat.hdr.pixdim(2:4);
 
             if any(PixDim ~= [1 1 1])
-                F1name = [FCDdir filesep,'Native_',filesub{k}(1:end-4),'_FCD_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii'];
+                F1name = [FCDdir filesep,'Native_',filesub{k}(1:end-4),'_',tissue,'_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii'];
                 F2name = [FCDdir filesep,'Native_',filesub{k}(1:end-4),'_Interactional_Zmap_s',FWHMv,'.nii'];
                 copyfile([pathsub,filesub{k}],[pathF,'z0',filesub{k}])
                 copyfile([pathsub,filesub{k}],[pathF,filesub{k}])
@@ -4363,18 +4429,18 @@ handles = guidata(hObject);
                 matlabbatch{1}.spm.spatial.coreg.estwrite.roptions.prefix = 'r';
                 SSM_run_batch(matlabbatch);
 
-                movefile([FCDdir filesep,'rNative_',filesub{k}(1:end-4),'_FCD_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii'],...
-                    [FCDdir filesep,'Native_',filesub{k}(1:end-4),'_FCD_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii']);
+                movefile([FCDdir filesep,'rNative_',filesub{k}(1:end-4),'_',tissue,'_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii'],...
+                    [FCDdir filesep,'Native_',filesub{k}(1:end-4),'_',tissue,'_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii']);
                 movefile([FCDdir filesep,'rNative_',filesub{k}(1:end-4),'_Interactional_Zmap_s',FWHMv,'.nii'],...
                     [FCDdir filesep,'Native_',filesub{k}(1:end-4),'_Interactional_Zmap_s',FWHMv,'.nii']);
             end
             
-            gzip([FCDdir filesep,'Native_',filesub{k}(1:end-4),'_FCD_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii']);
+            gzip([FCDdir filesep,'Native_',filesub{k}(1:end-4),'_',tissue,'_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii']);
             gzip([FCDdir filesep,'Native_',filesub{k}(1:end-4),'_Interactional_Zmap_s',FWHMv,'.nii']);
             gzip([FCDdir filesub{k}(1:end-4),'_Interactional_Zmap_s',FWHMv,'.nii']);
             gzip(imgOvl);
             
-            delete([FCDdir filesep,'Native_',filesub{k}(1:end-4),'_FCD_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii']);
+            delete([FCDdir filesep,'Native_',filesub{k}(1:end-4),'_',tissue,'_map_Zsc',num2str(round(FWER_thr*10)/10),'_ClustSz',num2str(extThre),'vx_s',FWHMv,'.nii']);
             delete([FCDdir filesep,'Native_',filesub{k}(1:end-4),'_Interactional_Zmap_s',FWHMv,'.nii']);
             delete([FCDdir filesub{k}(1:end-4),'_Interactional_Zmap_s',FWHMv,'.nii']);
             delete(imgOvl);
