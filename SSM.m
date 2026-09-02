@@ -2371,7 +2371,7 @@ EM_Teste = handles.EM_Teste;
                 if get(handles.FloaRan,'Value')
                     [gmmat,SC_Cat_Tmp] = SSM_Decode_Harmon_Tool_GM(gmmat,SC_Cat_Tmp,AgeVet,GenVet,GTIV,Ida_Ctr,Gene_Ctr,DB_TIV,handles.OutDirQ,handles.HarmRef);
                 else
-                    [gmmat,tpt4D_GM] = SSM_Decode_Harmon_Tool_GM(gmmat,tpt4D_GM,AgeVet,GenVet,GTIV,Age_Covar,Gen_Covar,DBTIV,handles.OutDirQ,handles.HarmRef);
+                    [gmmat,tpt4D_GM]   = SSM_Decode_Harmon_Tool_GM(gmmat,tpt4D_GM,AgeVet,GenVet,GTIV,Age_Covar,Gen_Covar,DBTIV,handles.OutDirQ,handles.HarmRef);
                 end
             end
         else
@@ -5538,7 +5538,26 @@ handles = guidata(hObject);
             handles.HarmRef = ones(size(handles.filesub,2),1);
             
             [handles.HarmVarsF,handles.HarmVarsFp] = uigetfile({'*.mat','MATLAB VAR files'},'Select the HarmomParam.mat file containing the harmonization parameters for the current cases','MultiSelect','off',handles.pathsub);
-            
+            ModHarm = load([handles.HarmVarsFp,filesep,handles.HarmVarsF], 'delta_star*');
+            ModHarm = fieldnames(ModHarm);
+            handles.ModalityHarm = ModHarm{1}(11:end);
+            if isequal(handles.ModalityHarm,'GM')
+                handles.ModalityHarm = 'Gray Matter';
+                if ~get(handles.GMa,'Value')
+                    warndlg('You have provided previously estimated parameters from a "gray matter" harmonization procedure. These parameters can only be used for studies involving the same modality. This is just a warning.','Attention!')
+                end
+            end
+            if isequal(handles.ModalityHarm ,'WM')
+                handles.ModalityHarm = 'White Matter';
+                if ~get(handles.WMa,'Value')
+                    warndlg('You have provided previously estimated parameters from a "white matter" harmonization procedure. These parameters can only be used for studies involving the same modality. This is just a warning.','Attention!')
+                end
+            end
+            if isequal(handles.ModalityHarm ,'FCD')
+                if ~get(handles.FCD,'Value')
+                    warndlg('You have provided previously estimated parameters from a "focal cortical displasya" harmonization procedure. These parameters can only be used for studies involving the same modality. This is just a warning.','Attention!')
+                end
+            end
             if isempty(handles.HarmVarsF) || isequal(handles.HarmVarsF,0)
                 handles.HarmEstim = 0;
                 handles.HarmNativeFlair = 0;
@@ -5660,7 +5679,7 @@ handles = guidata(hObject);
             set(handles.HarmCBTxt,'String','SSM default FLAIR bias parameters selected')
         end
         if isequal(handles.HarmnAdd,1)
-            set(handles.HarmCBTxt,'String','User-specified parameters loaded')
+            set(handles.HarmCBTxt,'String',['User-specified parameters loaded (for ',handles.ModalityHarm,' tests)'])
         end
     end
     
