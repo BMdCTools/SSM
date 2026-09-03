@@ -1,11 +1,14 @@
 function SSM
 % -------------------------------------------------------------------------
-%          ____   ____   __  __ 
-%         / ___| / ___| |  \/  |
-%         \___ \ \___ \ | |\/| |   Single-Subject Morphometry Tool, v1.1
-%          ___) | ___) || |  | |
-%         |____/ |____/ |_|  |_|
+%                 ____
+%          ____  |__  |  __  __ 
+%         / ___| /  __/ |  \/  |
+%         \___ \ \____| | |\/| |   Single-Subject Morphometry Tool, v1.1
+%          ___) |       | |  | |
+%         |____/        |_|  |_|
+%
 % -------------------------------------------------------------------------
+%
 % University of Campinas, Neuroimaging Laboratory, 2026
 %
 % Redistribution  and  use  in  source  and  binary  forms, with  or  without
