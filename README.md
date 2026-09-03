@@ -37,7 +37,7 @@ The first step is to install SSM, SPM25 and CAT in the MATLAB path.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Unzip both downloads and add the uncompressed CAT folder to the SPM toolbox folder (spm > toolbox > cat).<br>
 <br>
 3a - Download [SSM Database files](https://docs.google.com/forms/d/e/1FAIpQLSdkbyqeFkResFmUpGlqN3hHgSrwF3CydpqtoYqh8_40hipwlw/viewform?usp=dialog) (optional, only if you intend to use the provided SSM normative database instead of creating your own, with your own control images).<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Unzip the DB folder and add ITS CONTENT to the folder (SSM_v1.1 > SSM_Enc_DB). Note that each downloaded folder contains some common files, which is fine to replace or ignore if prompted.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Unzip the DB folder and add ITS CONTENTS to the folder: SSM_v1.1 > SSM_Enc_DB. Note that each downloaded folder contains some common files, which is fine to replace or ignore if prompted.<br>
 <br>
 3b - Or create your own database using the SSM_CreateDatabase function<br>
 <br>
