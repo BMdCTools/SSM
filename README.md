@@ -1,13 +1,9 @@
-# <p align="center"> Single-Subject Morphometry Tool </p>
- -------------------------------------------------------------------------
-                  ____
-           ____  |__  |  __  __ 
-          / ___| /  __/ |  \/  |
-          \___ \ \____| | |\/| |   Single-Subject Morphometry Tool, v1.1
-           ___) |       | |  | |
-          |____/        |_|  |_|
-  
-  -------------------------------------------------------------------------
+
+<p align="center">
+ <img width="1278" height="454" alt="s2m_GitH" src="https://github.com/user-attachments/assets/ea6bc36e-7431-4c14-9793-8f39cd168b45" />
+</p>
+
+
 ***S²M (Single-Subject Morphometry)*** is an open-source framework for individualized asseS²Ment of brain structural abnormalities using MRI. The software generates subject-specific maps of white and gray matter alterations and focal cortical dysplasia lesions based on normative models derived from healthy controls, enabling the detection and quantification of morphometric abnormalities at the voxel level. **S²M** supports the evaluation of atrophy, hypertrophy, and focal cortical dysplasia (FCD) recquiring only a high-quality T1-weighted MRI scan (FLAIR image optional). Demographic variables such as age and sex can be incorporated to improve model accuracy but are not required.<br>
 <br>
 The framework features a fully integrated graphical user interface (GUI), providing an accessible workflow without the need for programming expertise. S²M supports both single-subject analyses and automated batch processing of large datasets. Brain tissue metrics are extracted using the [CAT](https://neuro-jena.github.io/cat/) toolbox, while all harmonization and statistical mapping procedures are implemented within the S²M framework.<br>
