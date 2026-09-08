@@ -9,6 +9,9 @@
 The framework features a fully integrated graphical user interface (GUI), providing an accessible workflow without the need for programming expertise. S²M supports both single-subject analyses and automated batch processing of large datasets. Brain tissue metrics are extracted using the [CAT](https://neuro-jena.github.io/cat/) toolbox, while all harmonization and statistical mapping procedures are implemented within the S²M framework.<br>
 <br>
 **Key Features:**<br>
+ - **Gray Matter Analysis**: Analysis to identify regions of gray matter atrophies and hypertrophies (normalized and native space maps, slice view pictures and anatomical reports)<br>
+ - **White Matter Analysis**: Analysis to identify regions of white matter atrophies and hypertrophies (normalized and native space maps, slice view pictures and anatomical reports)<br>
+ - **Focal Cortical Dysplasia Analysis**: Analysis to identify regions suggestive of FCD (normalized and native space maps, slice view pictures and anatomical reports)<br>
  - **Advanced Site Harmonization**: Embedded with S²M_combat to eliminate scanner and sequence biases (e.g., T1w vs. FLAIR) using single-subject projection algebra.<br>
  - **Biological Confounder Control**: Automatic regression for Age, Gender, and Total Intracranial Volume (TIV).<br>
  - **Fast Non-Parametric Inference**: Cluster-based permutation testing with an intelligent caching system for empirical thresholds.<br>
