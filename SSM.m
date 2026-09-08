@@ -81,7 +81,7 @@ else
     handles.nParallelPerm = nParallelPerm;
 end
 
-if handles.DBDescrip == 'Standard S²M Reference Dataset (ENCODED)'
+if handles.DBDescrip == 'Standard SSM Reference Dataset (ENCODED)'
     handles.Run_Encode_DB = 1;    
 else
     handles.Run_Encode_DB = 0;    
