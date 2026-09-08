@@ -8,8 +8,7 @@ function SSM
 %         |____/        |_|  |_|
 %
 % -------------------------------------------------------------------------
-%
-% University of Campinas, Neuroimaging Laboratory, 2026
+%          University of Campinas, Neuroimaging Laboratory, 2026
 %
 % Redistribution  and  use  in  source  and  binary  forms, with  or  without
 % modification, are permitted provided that the following conditions are met:
@@ -18,7 +17,6 @@ function SSM
 %       * Redistributions in binary form must reproduce the  above  copyright
 %         notice, this list of conditions and the following disclaimer in the 
 %         documentation and/or other materials provided with the distribution
-% 
 % THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 % AND ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING, BUT  NOT LIMITED TO, THE
 % IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR  PURPOSE
@@ -30,7 +28,6 @@ function SSM
 % CONTRACT,  STRICT LIABILITY, OR  TORT (INCLUDING NEGLIGENCE  OR  OTHERWISE)
 % ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED  OF THE
 % POSSIBILITY OF SUCH DAMAGE.
-%
 %
 
 % Copyright (c) 2026, Brunno Machado de Campos
@@ -121,6 +118,103 @@ else
     cprintf('err','  -- SSM will not function.\n');
 end
 cprintf([0,0.7,0],' - ComBat Multi-Site Harmonization Tool: Installed (Adapted version for SSM)\n');
+
+DBfiles = dir([RefDBPath,'*DB1*FWHM*.mat']);
+if ~isempty(DBfiles)
+    fprintf('Defined database included files:\n')
+    
+    if ~isempty(dir([RefDBPath,'Gene_Ctr.mat']))
+        cprintf([0,0.7,0],' - Reference Database sex variable: Ok\n');
+    else
+        cprintf('err',' - - Reference Database sex variable: "Gene_Ctr.mat" is missing\n');
+    end
+    
+    if ~isempty(dir([RefDBPath,'Ida_Ctr.mat']))
+        cprintf([0,0.7,0],' - Reference Database age variable: Ok\n');
+    else
+        cprintf('err',' - - Reference Database sex variable: "Ida_Ctr.mat" is missing\n');
+    end
+    
+    if ~isempty(dir([RefDBPath,'TIV_Ctr.mat']))
+        cprintf([0,0.7,0],' - Reference Database TIV variable: Ok\n');
+    else
+        cprintf('err',' - - Reference Database sex variable: "TIV_Ctr.mat" is missing\n');
+    end
+    
+    if ~isempty(dir([RefDBPath,'*DB1*FWHM4*.mat']))
+        if ~isempty(dir([RefDBPath,'SC*DB1*FWHM4*.mat'])) && ~isempty(dir([RefDBPath,'SB*DB1*FWHM4*.mat']))
+            cprintf([0,0.7,0],' - Smoothing kernel 4 x 4 x 4 mm³: Gray and white matter\n');
+            handles.SmooK4 = 'Bo';
+        else
+            if ~isempty(dir([RefDBPath,'SC*DB1*FWHM4*.mat']))
+                 cprintf([1,0.5,0],' - Smoothing kernel 4 x 4 x 4 mm³: Gray matter only\n');
+                 handles.SmooK4 = 'GM';
+            else
+                 cprintf([1,0.5,0],' - Smoothing kernel 4 x 4 x 4 mm³: White matter only\n');
+                 handles.SmooK4 = 'WM';
+            end
+        end
+    end
+    if ~isempty(dir([RefDBPath,'*DB1*FWHM6*.mat']))
+        if ~isempty(dir([RefDBPath,'SC*DB1*FWHM6*.mat'])) && ~isempty(dir([RefDBPath,'SB*DB1*FWHM6*.mat']))
+            cprintf([0,0.7,0],' - Smoothing kernel 6 x 6 x 6 mm³: Gray and white matter\n');
+            handles.SmooK6 = 'Bo';
+        else
+            if ~isempty(dir([RefDBPath,'SC*DB1*FWHM6*.mat']))
+                 cprintf([1,0.5,0],' - Smoothing kernel 6 x 6 x 6 mm³: Gray matter only\n');
+                 handles.SmooK6 = 'GM';
+            else
+                 cprintf([1,0.5,0],' - Smoothing kernel 6 x 6 x 6 mm³: White matter only\n');
+                 handles.SmooK6 = 'WM';
+            end
+        end
+    end
+    if ~isempty(dir([RefDBPath,'*DB1*FWHM8*.mat']))
+        if ~isempty(dir([RefDBPath,'SC*DB1*FWHM8*.mat'])) && ~isempty(dir([RefDBPath,'SB*DB1*FWHM8*.mat']))
+            cprintf([0,0.7,0],' - Smoothing kernel 8 x 8 x 8 mm³: Gray and white matter\n');
+            handles.SmooK8 = 'Bo';
+        else
+            if ~isempty(dir([RefDBPath,'SC*DB1*FWHM8*.mat']))
+                 cprintf([1,0.5,0],' - Smoothing kernel 8 x 8 x 8 mm³: Gray matter only\n');
+                 handles.SmooK8 = 'GM';
+            else
+                 cprintf([1,0.5,0],' - Smoothing kernel 8 x 8 x 8 mm³: White matter only\n');
+                 handles.SmooK8 = 'WM';
+            end
+        end
+    end
+    if ~isempty(dir([RefDBPath,'*DB1*FWHM10*.mat']))
+        if ~isempty(dir([RefDBPath,'SC*DB1*FWHM10*.mat'])) && ~isempty(dir([RefDBPath,'SB*DB1*FWHM10*.mat']))
+            cprintf([0,0.7,0],' - Smoothing kernel 10 x 10 x 10 mm³: Gray and white matter\n');
+            handles.SmooK10 = 'Bo';
+        else
+            if ~isempty(dir([RefDBPath,'SC*DB1*FWHM10*.mat']))
+                 cprintf([1,0.5,0],' - Smoothing kernel 10 x 10 x 10 mm³: Gray matter only\n');
+                 handles.SmooK10 = 'GM';
+            else
+                 cprintf([1,0.5,0],' - Smoothing kernel 10 x 10 x 10 mm³: White matter only\n');
+                 handles.SmooK10 = 'WM';
+            end
+        end
+    end
+    if ~isempty(dir([RefDBPath,'*DB1*FWHM12*.mat']))
+        if ~isempty(dir([RefDBPath,'SC*DB1*FWHM12*.mat'])) && ~isempty(dir([RefDBPath,'SB*DB1*FWHM12*.mat']))
+            cprintf([0,0.7,0],' - Smoothing kernel 12 x 12 x 12 mm³: Gray and white matter\n');
+            handles.SmooK12 = 'Bo';
+        else
+            if ~isempty(dir([RefDBPath,'SC*DB1*FWHM12*.mat']))
+                 cprintf([1,0.5,0],' - Smoothing kernel 12 x 12 x 12 mm³: Gray matter only\n');
+                 handles.SmooK12 = 'GM';
+            else
+                 cprintf([1,0.5,0],' - Smoothing kernel 12 x 12 x 12 mm³: White matter only\n');
+                 handles.SmooK12 = 'WM';
+            end
+        end
+    end
+else
+    fprintf('\nDefined database included files:\n')
+    cprintf('err',' - No compatible reference database files added\n');
+end
 
 handles.year = '2026';
 handles.MainVersion = '1';
@@ -4977,7 +5071,7 @@ handles = guidata(hObject);
 
     switch  get(handles.PopMenuSmoothK,'Value')
         case 1
-            set(handles.edit6,'String',num2str(round((4/1.5)^3)))
+        	set(handles.edit6,'String',num2str(round((4/1.5)^3)))
         case 2
             set(handles.edit6,'String',num2str(round((6/1.5)^3)))
         case 3
