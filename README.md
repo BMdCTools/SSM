@@ -25,44 +25,26 @@ Before running **S²M**, ensure you have the following dependencies installed an
  - **Computational Anatomy Toolbox** ([CAT](https://neuro-jena.github.io/cat/)) Version [3347](https://dbm.neuro.uni-jena.de/cat12/?C=M;O=D) (CAT26.0.rc4, from 2026-07-24)<br>
  - [**ComBat**](https://github.com/Jfortin1/ComBatHarmonization/tree/master) Multi-Site Harmonization Tool (Adapted version for S²M **included with S²M code**)<br>
 
-**S²M Installation:**<br>
+**[S²M Installation](https://github.com/BMdCTools/SSM/wiki/Getting-Started):**<br>
 One of the goals during the S²M development was to ensure easy installation, broad hardware and operating system compatibility, and straightforward usability.<br>
-To install S²M, download the S²M folder and add it to your MATLAB path. You may also need to download the S²M database or follow the instructions to create your own database using your own reference images.<br>
 
-**Getting Started:**<br>
+**[Getting Started](https://github.com/BMdCTools/SSM/wiki/Getting-Started):**<br>
 The first step is to install S²M, SPM25 and CAT in the MATLAB path.<br>
 1 - Download [SPM](https://www.fil.ion.ucl.ac.uk/spm/);<br>
 <br>
 2 - Download [CAT](https://neuro-jena.github.io/cat/)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;For this version of S²M we recommend the CAT Version [3347](https://dbm.neuro.uni-jena.de/cat12/?C=M;O=D) (CAT26.0.rc4)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Unzip both downloads and add the uncompressed CAT folder to the SPM toolbox folder (spm > toolbox > cat).<br>
 <br>
 3a - Download [S²M Database files](https://docs.google.com/forms/d/e/1FAIpQLSdkbyqeFkResFmUpGlqN3hHgSrwF3CydpqtoYqh8_40hipwlw/viewform?usp=dialog) (optional, only if you intend to use the provided S²M normative database instead of creating your own, with your own control images).<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Unzip the DB folder and add ITS CONTENTS to the folder: SSM_v1.1 > SSM_Enc_DB. Note that each downloaded folder contains some common files, which is fine to replace or ignore if prompted.<br>
 <br>
-3b - Or create your own database using the SSM_CreateDatabase function<br>
+3b - Or [create your own database](https://github.com/BMdCTools/SSM/wiki/Creating-Personalized-Reference-Database) using the SSM_CreateDatabase function<br>
 <br>
-4 - Add SPM (with CAT) and S²M to the MATLAB path. For example (replace "/home/user/spm25" with your actual folder path):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window (for example, replace by your real folder path):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> addpath(genpath('/home/user/spm25')) <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> addpath(genpath('/home/user/SSM-v1.1')) <br>
-&nbsp;&nbsp;&nbsp;&nbsp; You can also add each folder separately using the "Set Path" button in MATLAB (Environment tab), selecting "Add with Subfolders".<br>
+4 - Add SPM (with CAT) and S²M to the MATLAB path.<br>
 <br>
 
-5a - If you opted to create your own database run:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> SSM_CreateDatabase<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Follow the on-screen instructions to navigate the GUI.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Add the "DB" folder created to the S²M main folder<br>
-&nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> rehash<br>
-&nbsp;&nbsp;&nbsp;&nbsp;"rehash" will update the Matlab Path System<br>
-<br>
-5b - To run S²M:<br>
+5 - [To run S²M](https://github.com/BMdCTools/SSM/wiki/Running-S%C2%B2M-for-the-first-time):<br>
 &nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> s2m or SSM<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Follow the on-screen instructions to navigate the GUI. Additional guidance is available through tooltip text for each option.<br>
-<br>
 
 <p align="right">
 S²M was developed by Brunno M Campos, Ph.D. (brunno at unicamp dot br)<br>
