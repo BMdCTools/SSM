@@ -179,15 +179,15 @@ uiwait(MainFig3);
         if isequal(chosenDir, 0)
             return; 
         end
-        nf = dir([chosenDir,'*Ctr_DB*_FWHM*']);
+        nf = dir([chosenDir,filesep,'*Ctr_DB*_FWHM*']);
         if numel(nf) >= 3
             DBfiN = 1;
         end
         if DBfiN && exist([chosenDir,filesep,'Gene_Ctr.mat'],'file') && exist([chosenDir,filesep,'Ida_Ctr.mat'],'file') && exist([chosenDir,filesep,'TIV_Ctr.mat'],'file')
             aD = load([chosenDir,filesep,'Gene_Ctr.mat']);
-            set(h.TxtDescrip, 'String', aD.DBDescrip);
-            h.DBDescrip = aD.DBDescrip;
-            h.RefDBPath = chosenDir;
+            set(h.TxtDescrip, 'String', aD.Descrip);
+            h.DBDescrip = aD.Descrip;
+            h.RefDBPath = [chosenDir,filesep];
             set(h.TxtDBPath, 'String', chosenDir);
         else
             warndlg('The defined folder does not contains database files', 'Attention');

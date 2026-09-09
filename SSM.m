@@ -81,7 +81,7 @@ else
     handles.nParallelPerm = nParallelPerm;
 end
 
-if handles.DBDescrip == 'Standard SSM Reference Dataset (ENCODED)'
+if isequal(handles.DBDescrip,'Standard SSM Reference Dataset (ENCODED)')
     handles.Run_Encode_DB = 1;    
 else
     handles.Run_Encode_DB = 0;    
@@ -213,7 +213,10 @@ if ~isempty(DBfiles)
     end
 else
     fprintf('\nFiles included in the defined database:\n')
-    cprintf('err',' - No compatible reference database files added\n');
+    cprintf('err',' - No compatible reference database files added.\n');
+    cprintf('err','   *You can create your own Reference Database running: >> SSM_CreateDatabase.\n');
+    cprintf('err','   Or you can download the "generic" S²M Reference Database files from:\n');
+    cprintf('err','   https://docs.google.com/forms/d/e/1FAIpQLSdkbyqeFkResFmUpGlqN3hHgSrwF3CydpqtoYqh8_40hipwlw/viewform?pli=1.\n');
 end
 
 handles.year = '2026';
