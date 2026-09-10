@@ -25,26 +25,9 @@ Before running **S²M**, ensure you have the following dependencies installed an
  - **Computational Anatomy Toolbox** ([CAT](https://neuro-jena.github.io/cat/)) Version [3347](https://dbm.neuro.uni-jena.de/cat12/?C=M;O=D) (CAT26.0.rc4, from 2026-07-24)<br>
  - [**ComBat**](https://github.com/Jfortin1/ComBatHarmonization/tree/master) Multi-Site Harmonization Tool (Adapted version for S²M **included with S²M code**)<br>
 
-**[S²M Installation]([https://github.com/BMdCTools/SSM/wiki/Getting-Started](https://github.com/BMdCTools/SSM/wiki/Download-and-Install)):**<br>
-One of the goals during the S²M development was to ensure easy installation, broad hardware and operating system compatibility, and straightforward usability.<br>
+[Download and Install](https://github.com/BMdCTools/SSM/wiki/Download-and-Install)
 
-**[Getting Started]([https://github.com/BMdCTools/SSM/wiki/Getting-Started](https://github.com/BMdCTools/SSM/wiki/Download-and-Install)):**<br>
-The first step is to install S²M, SPM25 and CAT in the MATLAB path.<br>
-1 - Download [SPM](https://www.fil.ion.ucl.ac.uk/spm/);<br>
-<br>
-2 - Download [CAT](https://neuro-jena.github.io/cat/)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;For this version of S²M we recommend the CAT Version [3347](https://dbm.neuro.uni-jena.de/cat12/?C=M;O=D) (CAT26.0.rc4)<br>
-<br>
-3a - Download [S²M Database files](https://docs.google.com/forms/d/e/1FAIpQLSdkbyqeFkResFmUpGlqN3hHgSrwF3CydpqtoYqh8_40hipwlw/viewform?usp=dialog) (optional, only if you intend to use the provided S²M normative database instead of creating your own, with your own control images).<br>
-<br>
-3b - Or [create your own database](https://github.com/BMdCTools/SSM/wiki/Creating-Personalized-Reference-Database) using the SSM_CreateDatabase function<br>
-<br>
-4 - Add SPM (with CAT) and S²M to the MATLAB path.<br>
-<br>
-
-5 - [To run S²M](https://github.com/BMdCTools/SSM/wiki/Running-S%C2%B2M-for-the-first-time):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;In MATLAB Command Window:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> s2m or SSM<br>
+[Running S²M](https://github.com/BMdCTools/SSM/wiki/Running-S%C2%B2M-for-the-first-time)
 
 <p align="right">
 S²M was developed by Brunno M Campos, Ph.D. (brunno at unicamp dot br)<br>
