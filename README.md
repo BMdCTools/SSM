@@ -25,10 +25,10 @@ Before running **S²M**, ensure you have the following dependencies installed an
  - **Computational Anatomy Toolbox** ([CAT](https://neuro-jena.github.io/cat/)) Version [3347](https://dbm.neuro.uni-jena.de/cat12/?C=M;O=D) (CAT26.0.rc4, from 2026-07-24)<br>
  - [**ComBat**](https://github.com/Jfortin1/ComBatHarmonization/tree/master) Multi-Site Harmonization Tool (Adapted version for S²M **included with S²M code**)<br>
 
-**[S²M Installation](https://github.com/BMdCTools/SSM/wiki/Getting-Started):**<br>
+**[S²M Installation]([https://github.com/BMdCTools/SSM/wiki/Getting-Started](https://github.com/BMdCTools/SSM/wiki/Download-and-Install)):**<br>
 One of the goals during the S²M development was to ensure easy installation, broad hardware and operating system compatibility, and straightforward usability.<br>
 
-**[Getting Started](https://github.com/BMdCTools/SSM/wiki/Getting-Started):**<br>
+**[Getting Started]([https://github.com/BMdCTools/SSM/wiki/Getting-Started](https://github.com/BMdCTools/SSM/wiki/Download-and-Install)):**<br>
 The first step is to install S²M, SPM25 and CAT in the MATLAB path.<br>
 1 - Download [SPM](https://www.fil.ion.ucl.ac.uk/spm/);<br>
 <br>
