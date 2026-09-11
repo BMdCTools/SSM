@@ -25,6 +25,8 @@ Before running **S²M**, ensure you have the following dependencies installed an
  - **Computational Anatomy Toolbox** ([CAT](https://neuro-jena.github.io/cat/)) Version [3347](https://dbm.neuro.uni-jena.de/cat12/?C=M;O=D) (CAT26.0.rc4, from 2026-07-24)<br>
  - [**ComBat**](https://github.com/Jfortin1/ComBatHarmonization/tree/master) Multi-Site Harmonization Tool (Adapted version for S²M **included with S²M code**)<br>
 
+[S²M Wiki (documentation)](https://github.com/BMdCTools/SSM/wiki)
+
 [Download and Install](https://github.com/BMdCTools/SSM/wiki/Download-and-Install)
 
 [Running S²M](https://github.com/BMdCTools/SSM/wiki/Running-S%C2%B2M-for-the-first-time)
