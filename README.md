@@ -14,7 +14,7 @@ The framework features a fully integrated graphical user interface (GUI), provid
  - **Focal Cortical Dysplasia Analysis**: Analysis to identify regions suggestive of FCD (normalized and native space maps, slice view pictures and anatomical reports)<br>
  - **Advanced Site Harmonization**: Embedded with S²M_combat to eliminate scanner and sequence biases (e.g., T1w vs. FLAIR) using single-subject projection algebra.<br>
  - **Biological Confounder Control**: Automatic regression for Age, Sex, and Total Intracranial Volume (TIV).<br>
- - **Fast Non-Parametric Inference**: Permutation-based statistical thresholding with an intelligent caching system for empirical null distributions.<br>
+ - **Fast Non-Parametric Inference**: Permutation-based statistical thresholding using voxel-wise or Blob-wise statistics, with an intelligent caching system for empirical null distributions.<br>
  - **Outlier & Quality Control**: Automated IQR-based outlier detection routines to protect the batch analysis from structural noise during harmonization.<br>
 
 **S²M third-party prerequisites:**<br>
