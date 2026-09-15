@@ -4,7 +4,7 @@
 </p>
 
 
-***S²M (Single-Subject Morphometry)*** is an open-source framework for individualized asseS²Ment of brain structural abnormalities using MRI. The software generates subject-specific maps of white and gray matter alterations and focal cortical dysplasia lesions based on normative models derived from healthy controls, enabling the detection and quantification of morphometric abnormalities at the voxel level. **S²M** supports the evaluation of atrophy, hypertrophy, and focal cortical dysplasia (FCD) recquiring only a high-quality T1-weighted MRI scan (FLAIR image optional). Demographic variables such as age and sex can be incorporated to improve model accuracy but are not required.<br>
+***S²M (Single-Subject Morphometry)*** is an open-source framework for individualized assessment of brain structural abnormalities using MRI. The software generates subject-specific maps of white and gray matter alterations and focal cortical dysplasia lesions based on normative models derived from healthy controls, enabling the detection and quantification of morphometric abnormalities at the voxel level. **S²M** supports the evaluation of atrophy, hypertrophy, and focal cortical dysplasia (FCD) requiring only a high-quality T1-weighted MRI scan (FLAIR image optional). Demographic variables such as age and sex can be incorporated to improve model accuracy but are not required.<br>
 <br>
 The framework features a fully integrated graphical user interface (GUI), providing an accessible workflow without the need for programming expertise. S²M supports both single-subject analyses and automated batch processing of large datasets. Brain tissue metrics are extracted using the [CAT](https://neuro-jena.github.io/cat/) toolbox, while all harmonization and statistical mapping procedures are implemented within the S²M framework.<br>
 <br>
@@ -13,13 +13,13 @@ The framework features a fully integrated graphical user interface (GUI), provid
  - **White Matter Analysis**: Analysis to identify regions of white matter atrophies and hypertrophies (normalized and native space maps, slice view pictures and anatomical reports)<br>
  - **Focal Cortical Dysplasia Analysis**: Analysis to identify regions suggestive of FCD (normalized and native space maps, slice view pictures and anatomical reports)<br>
  - **Advanced Site Harmonization**: Embedded with S²M_combat to eliminate scanner and sequence biases (e.g., T1w vs. FLAIR) using single-subject projection algebra.<br>
- - **Biological Confounder Control**: Automatic regression for Age, Gender, and Total Intracranial Volume (TIV).<br>
- - **Fast Non-Parametric Inference**: Cluster-based permutation testing with an intelligent caching system for empirical thresholds.<br>
+ - **Biological Confounder Control**: Automatic regression for Age, Sex, and Total Intracranial Volume (TIV).<br>
+ - **Fast Non-Parametric Inference**: Permutation-based statistical thresholding with an intelligent caching system for empirical null distributions.<br>
  - **Outlier & Quality Control**: Automated IQR-based outlier detection routines to protect the batch analysis from structural noise during harmonization.<br>
 
 **S²M third-party prerequisites:**<br>
 Before running **S²M**, ensure you have the following dependencies installed and configured in your MATLAB environment.<br>
- - **Matlab (The MathWorks Inc.)**: tested with versions from the 2019b to the 2026a<br>
+ - **Matlab (The MathWorks Inc.)**: tested with versions from 2019b to 2026a<br>
       - **Matlab Parallel Computing Toolbox (optional)**<br>
  - **Statistical Parametric Mapping 25** ([SPM](https://www.fil.ion.ucl.ac.uk/spm/))<br>
  - **Computational Anatomy Toolbox** ([CAT](https://neuro-jena.github.io/cat/)) Version [3347](https://dbm.neuro.uni-jena.de/cat12/?C=M;O=D) (CAT26.0.rc4, from 2026-07-24)<br>
