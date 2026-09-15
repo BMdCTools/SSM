@@ -2565,16 +2565,24 @@ EM_Teste = handles.EM_Teste;
             if isequal(get(handles.FCD,'Value'),1)
                 if get(handles.ParallelCB,'Value')
                     if license('test','Distrib_Computing_Toolbox')
-                        apool = gcp('nocreate');
-                        if numel(apool) == 0
-                            try
-                                parpool(handles.nParallelPerm);
-                            catch
-                                parpool(4);
+                        try
+                            apool = gcp('nocreate');
+                            ParY = 1;
+                        catch
+                            fprintf('- No Parallel Computing Toolbox license currently available\n'); 
+                            ParY = 0;
+                        end
+                        if ParY
+                            if numel(apool) == 0
+                                try
+                                    parpool(handles.nParallelPerm);
+                                catch
+                                    parpool(4);
+                                end
                             end
                         end
                     else
-                       fprintf('- No Parallel Computing Toolbox available\n'); 
+                       fprintf('- No Parallel Computing Toolbox installed\n'); 
                     end
                     fprintf('\n');
                 end
@@ -2593,16 +2601,24 @@ EM_Teste = handles.EM_Teste;
                 if get(handles.GMa,'Value')
                     if get(handles.ParallelCB,'Value')
                         if license('test','Distrib_Computing_Toolbox')
-                            apool = gcp('nocreate');
-                            if numel(apool) == 0
-                                try
-                                    parpool(handles.nParallelPerm);
-                                catch
-                                    parpool(4);
+                            try
+                                apool = gcp('nocreate');
+                                ParY = 1;
+                            catch
+                                fprintf('- No Parallel Computing Toolbox license currently available\n'); 
+                                ParY = 0;
+                            end
+                            if ParY
+                                if numel(apool) == 0
+                                    try
+                                        parpool(handles.nParallelPerm);
+                                    catch
+                                        parpool(4);
+                                    end
                                 end
                             end
                         else
-                           fprintf('- No Parallel Computing Toolbox available\n');
+                           fprintf('- No Parallel Computing Toolbox installed\n');
                         end
                         fprintf('\n');
                     end
@@ -2613,16 +2629,24 @@ EM_Teste = handles.EM_Teste;
                 else
                     if get(handles.ParallelCB,'Value')
                         if license('test','Distrib_Computing_Toolbox')
-                            apool = gcp('nocreate');
-                            if numel(apool) == 0
-                                try
-                                    parpool(handles.nParallelPerm);
-                                catch
-                                    parpool(4);
+                            try
+                                apool = gcp('nocreate');
+                                ParY = 1;
+                            catch
+                                fprintf('- No Parallel Computing Toolbox license currently available\n'); 
+                                ParY = 0;
+                            end
+                            if ParY
+                                if numel(apool) == 0
+                                    try
+                                        parpool(handles.nParallelPerm);
+                                    catch
+                                        parpool(4);
+                                    end
                                 end
                             end
                         else
-                           fprintf('- No Parallel Computing Toolbox available\n');
+                           fprintf('- No Parallel Computing Toolbox installed\n');
                         end
                         fprintf('\n');
                     end
@@ -3130,16 +3154,24 @@ EM_Teste = handles.EM_Teste;
                           % again.
                             if get(handles.ParallelCB,'Value')
                                 if license('test','Distrib_Computing_Toolbox')
-                                    apool = gcp('nocreate');
-                                    if numel(apool) == 0
-                                        try
-                                            parpool(handles.nParallelPerm);
-                                        catch
-                                            parpool(4);
+                                    try
+                                        apool = gcp('nocreate');
+                                        ParY = 1;
+                                    catch
+                                        fprintf('- No Parallel Computing Toolbox license currently available\n'); 
+                                        ParY = 0;
+                                    end
+                                    if ParY
+                                        if numel(apool) == 0
+                                            try
+                                                parpool(handles.nParallelPerm);
+                                            catch
+                                                parpool(4);
+                                            end
                                         end
                                     end
                                 else
-                                   fprintf('- No Parallel Computing Toolbox available\n');
+                                   fprintf('- No Parallel Computing Toolbox installed\n');
                                 end
                                 fprintf('\n');
                             end
@@ -3164,16 +3196,24 @@ EM_Teste = handles.EM_Teste;
                               else
                                     if get(handles.ParallelCB,'Value')
                                         if license('test','Distrib_Computing_Toolbox')
-                                            apool = gcp('nocreate');
-                                            if numel(apool) == 0
-                                                try
-                                                    parpool(handles.nParallelPerm);
-                                                catch
-                                                    parpool(4);
+                                            try
+                                                apool = gcp('nocreate');
+                                                ParY = 1;
+                                            catch
+                                                fprintf('- No Parallel Computing Toolbox license currently available\n'); 
+                                                ParY = 0;
+                                            end
+                                            if ParY
+                                                if numel(apool) == 0
+                                                    try
+                                                        parpool(handles.nParallelPerm);
+                                                    catch
+                                                        parpool(4);
+                                                    end
                                                 end
                                             end
                                         else
-                                           fprintf('- No Parallel Computing Toolbox available\n'); 
+                                           fprintf('- No Parallel Computing Toolbox installed\n'); 
                                         end
                                         fprintf('\n');
                                     end
@@ -3196,16 +3236,24 @@ EM_Teste = handles.EM_Teste;
                               else
                                     if get(handles.ParallelCB,'Value')
                                         if license('test','Distrib_Computing_Toolbox')
-                                            apool = gcp('nocreate');
-                                            if numel(apool) == 0
-                                                try
-                                                    parpool(handles.nParallelPerm);
-                                                catch
-                                                    parpool(4);
+                                            try
+                                                apool = gcp('nocreate');
+                                                ParY = 1;
+                                            catch
+                                                fprintf('- No Parallel Computing Toolbox license currently available\n'); 
+                                                ParY = 0;
+                                            end
+                                            if ParY
+                                                if numel(apool) == 0
+                                                    try
+                                                        parpool(handles.nParallelPerm);
+                                                    catch
+                                                        parpool(4);
+                                                    end
                                                 end
                                             end
                                         else
-                                           fprintf('- No Parallel Computing Toolbox available\n');
+                                           fprintf('- No Parallel Computing Toolbox installed\n');
                                         end
                                         fprintf('\n');
                                     end
@@ -3228,16 +3276,24 @@ EM_Teste = handles.EM_Teste;
                           else
                                 if get(handles.ParallelCB,'Value')
                                     if license('test','Distrib_Computing_Toolbox')
-                                        apool = gcp('nocreate');
-                                        if numel(apool) == 0
-                                            try
-                                                parpool(handles.nParallelPerm);
-                                            catch
-                                                parpool(4);
+                                        try
+                                            apool = gcp('nocreate');
+                                            ParY = 1;
+                                        catch
+                                            fprintf('- No Parallel Computing Toolbox license currently available\n'); 
+                                            ParY = 0;
+                                        end
+                                        if ParY
+                                            if numel(apool) == 0
+                                                try
+                                                    parpool(handles.nParallelPerm);
+                                                catch
+                                                    parpool(4);
+                                                end
                                             end
                                         end
                                     else
-                                       fprintf('- No Parallel Computing Toolbox available\n');
+                                       fprintf('- No Parallel Computing Toolbox installed\n');
                                     end
                                     fprintf('\n');
                                 end
@@ -3276,16 +3332,24 @@ EM_Teste = handles.EM_Teste;
                           % again.
                             if get(handles.ParallelCB,'Value')
                                 if license('test','Distrib_Computing_Toolbox')
-                                    apool = gcp('nocreate');
-                                    if numel(apool) == 0
-                                        try
-                                            parpool(handles.nParallelPerm);
-                                        catch
-                                            parpool(4);
+                                    try
+                                        apool = gcp('nocreate');
+                                        ParY = 1;
+                                    catch
+                                        fprintf('- No Parallel Computing Toolbox license currently available\n'); 
+                                        ParY = 0;
+                                    end
+                                    if ParY
+                                        if numel(apool) == 0
+                                            try
+                                                parpool(handles.nParallelPerm);
+                                            catch
+                                                parpool(4);
+                                            end
                                         end
                                     end
                                 else
-                                   fprintf('- No Parallel Computing Toolbox available\n');
+                                   fprintf('- No Parallel Computing Toolbox installed\n');
                                 end
                                 fprintf('\n');
                             end
@@ -3310,16 +3374,24 @@ EM_Teste = handles.EM_Teste;
                               else
                                     if get(handles.ParallelCB,'Value')
                                         if license('test','Distrib_Computing_Toolbox')
-                                            apool = gcp('nocreate');
-                                            if numel(apool) == 0
-                                                try
-                                                    parpool(handles.nParallelPerm);
-                                                catch
-                                                    parpool(4);
+                                            try
+                                                apool = gcp('nocreate');
+                                                ParY = 1;
+                                            catch
+                                                fprintf('- No Parallel Computing Toolbox license currently available\n'); 
+                                                ParY = 0;
+                                            end
+                                            if ParY
+                                                if numel(apool) == 0
+                                                    try
+                                                        parpool(handles.nParallelPerm);
+                                                    catch
+                                                        parpool(4);
+                                                    end
                                                 end
                                             end
                                         else
-                                           fprintf('- No Parallel Computing Toolbox available\n') ;
+                                           fprintf('- No Parallel Computing Toolbox installed\n') ;
                                         end
                                         fprintf('\n');
                                     end
@@ -3342,16 +3414,24 @@ EM_Teste = handles.EM_Teste;
                               else
                                     if get(handles.ParallelCB,'Value')
                                         if license('test','Distrib_Computing_Toolbox')
-                                            apool = gcp('nocreate');
-                                            if numel(apool) == 0
-                                                try
-                                                    parpool(handles.nParallelPerm);
-                                                catch
-                                                    parpool(4);
+                                            try
+                                                apool = gcp('nocreate');
+                                                ParY = 1;
+                                            catch
+                                                fprintf('- No Parallel Computing Toolbox license currently available\n'); 
+                                                ParY = 0;
+                                            end
+                                            if ParY
+                                                if numel(apool) == 0
+                                                    try
+                                                        parpool(handles.nParallelPerm);
+                                                    catch
+                                                        parpool(4);
+                                                    end
                                                 end
                                             end
                                         else
-                                           fprintf('- No Parallel Computing Toolbox available\n');
+                                           fprintf('- No Parallel Computing Toolbox installed\n');
                                         end
                                         fprintf('\n')
                                     end
@@ -3374,16 +3454,24 @@ EM_Teste = handles.EM_Teste;
                         else
                             if get(handles.ParallelCB,'Value')
                                 if license('test','Distrib_Computing_Toolbox')
-                                    apool = gcp('nocreate');
-                                    if numel(apool) == 0
-                                        try
-                                            parpool(handles.nParallelPerm);
-                                        catch
-                                            parpool(4);
+                                    try
+                                        apool = gcp('nocreate');
+                                        ParY = 1;
+                                    catch
+                                        fprintf('- No Parallel Computing Toolbox license currently available\n'); 
+                                        ParY = 0;
+                                    end
+                                    if ParY
+                                        if numel(apool) == 0
+                                            try
+                                                parpool(handles.nParallelPerm);
+                                            catch
+                                                parpool(4);
+                                            end
                                         end
                                     end
                                 else
-                                   fprintf('- No Parallel Computing Toolbox available\n');
+                                   fprintf('- No Parallel Computing Toolbox installed\n');
                                 end
                                 fprintf('\n');
                             end
