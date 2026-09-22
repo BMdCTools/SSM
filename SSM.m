@@ -5760,7 +5760,11 @@ handles = guidata(hObject);
             [handles.HarmVarsF,handles.HarmVarsFp] = uigetfile({'*.mat','MATLAB VAR files'},'Select the HarmomParam.mat file containing the harmonization parameters for the current cases','MultiSelect','off',handles.pathsub);
             ModHarm = load([handles.HarmVarsFp,filesep,handles.HarmVarsF], 'delta_star*');
             ModHarm = fieldnames(ModHarm);
-            handles.ModalityHarm = ModHarm{1}(11:end);
+            if numel(ModHarm) > 1
+                handles.ModalityHarm = 'FCD';
+            else
+                handles.ModalityHarm = ModHarm{1}(11:end);
+            end
             if isequal(handles.ModalityHarm,'GM')
                 handles.ModalityHarm = 'Gray Matter';
                 if ~get(handles.GMa,'Value')
